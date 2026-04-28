@@ -38,7 +38,7 @@ const calculate = () => {
 
     if (!stock) precio *= 1.3;
 
-    document.getElementById('precioFinal').textContent = `$${(Math.round(precio * 10) / 10).toFixed(1)}`;
+    document.getElementById('precioFinal').textContent = `S/.${(Math.round(precio * 10) / 10).toFixed(1)}`;
 };
 
 const logout = () => { localStorage.removeItem('user'); window.location.href = '/login/index.html'; };
