@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Taller Tech</title>
+    <!-- Pico CSS para estructura responsiva automatica -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <!-- Iconos futuristas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <article class="card-futurist">
+            <header class="text-center">
+                <hgroup>
+                    <h1><i class="bi bi-cpu-fill"></i> TALLER TECH</h1>
+                    <p>Sistema de Gestión de Servicios</p>
+                </hgroup>
+            </header>
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="bi bi-person-fill"></i>
+                    <input type="text" id="usuario" placeholder="Usuario" required autocomplete="username">
+                </div>
+                <div class="input-group">
+                    <i class="bi bi-lock-fill"></i>
+                    <input type="password" id="password" placeholder="Contraseña" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn-futurist">
+                    <i class="bi bi-box-arrow-in-right"></i> Ingresar al Sistema
+                </button>
+                <p id="error" class="error-msg" style="display:none;">Credenciales incorrectas</p>
+            </form>
+        </article>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>

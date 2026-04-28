@@ -1,0 +1,316 @@
+/* ==========================================
+   VARIABLES GLOBALES FUTURISTAS (Consistencia)
+   ========================================== */
+:root {
+    --neon-blue: #00f3ff;
+    --neon-purple: #bc13fe;
+    --bg-dark: #101014;
+    --bg-card: #1a1a24;
+    --text-main: #e0e0e0;
+}
+
+[data-theme="dark"] {
+    --pico-background-color: var(--bg-dark);
+    --pico-card-background-color: var(--bg-card);
+    --pico-card-border-color: #2a2a3a;
+    --pico-primary: var(--neon-blue);
+    --primary-hover: var(--neon-purple);
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    margin: 0;
+    padding-bottom: 2rem;
+}
+
+/* ==========================================
+   HEADER Y NAV SCROLL (Mobile First)
+   ========================================== */
+.header-futurist {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(16, 16, 20, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #2a2a3a;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.header-top h1 {
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    margin: 0 0 0.8rem 0;
+    background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+}
+
+.nav-scroll {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    /* Ocultar scrollbar pero permitir scroll */
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
+}
+.nav-scroll::-webkit-scrollbar { display: none; }
+
+.nav-item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    background: #1a1a24 !important;
+    border: 1px solid #2a2a3a !important;
+    border-radius: 20px !important;
+    color: #8a8a9a !important;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-item.active, .nav-item:hover {
+    border-color: var(--neon-blue) !important;
+    color: var(--neon-blue) !important;
+    background: rgba(0, 243, 255, 0.05) !important;
+}
+
+.nav-item.danger { color: #ff0050 !important; border-color: #3a1a2a !important; }
+.nav-item.danger:hover { background: rgba(255, 0, 80, 0.1) !important; }
+
+/* ==========================================
+   COMPONENTES BASE
+   ========================================== */
+.main-content { padding-top: 0.5rem; }
+
+.card-futurist {
+    background: var(--bg-card) !important;
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+    border-bottom: 1px solid #2a2a3a;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-main);
+    letter-spacing: 0.5px;
+}
+
+.card-header h3 i {
+    color: var(--neon-blue);
+    margin-right: 0.5rem;
+}
+
+/* Inputs generales */
+input[type="text"], input[type="password"], input[type="number"], input[type="date"], input[type="time"] {
+    background: #12121a !important;
+    border: 1px solid #2a2a3a !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    padding: 12px !important;
+    margin-bottom: 0.8rem !important;
+    font-size: 0.95rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    border-color: var(--neon-blue) !important;
+    box-shadow: 0 0 0 2px rgba(0, 243, 255, 0.15) !important;
+    outline: none;
+}
+
+label { color: #8a8a9a; font-size: 0.85rem; font-weight: 600; }
+
+.btn-futurist {
+    width: 100%;
+    padding: 12px !important;
+    background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 0 !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-futurist:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 243, 255, 0.3);
+}
+
+/* ==========================================
+   TOPO BAR Y FILTROS
+   ========================================== */
+.top-bar-filter {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.2rem;
+}
+
+.filter-date {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    width: 100%;
+}
+
+.filter-date label { white-space: nowrap; color: var(--neon-blue); }
+.filter-date input { flex: 1; margin-bottom: 0 !important; }
+
+/* ==========================================
+   SECCIONES ESPECÍFICAS
+   ========================================== */
+
+/* Métricas */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.metric-card {
+    background: #12121a;
+    padding: 1.2rem;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #2a2a3a;
+    transition: transform 0.2s;
+}
+
+.metric-card:hover { transform: translateY(-2px); border-color: var(--neon-blue); }
+
+.metric-card h4 { margin: 0 0 0.5rem 0; color: #8a8a9a; font-size: 0.8rem; text-transform: uppercase; }
+.metric-card p { margin: 0; font-size: 1.8rem; font-weight: bold; color: var(--neon-blue); }
+
+.tech-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tech-list li {
+    background: #12121a;
+    margin-bottom: 0.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--neon-purple);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+/* Forms */
+.grid-form-admin { display: flex; flex-direction: column; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+
+.config-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.input-icon-group.span-2, .span-2 { grid-column: span 2; }
+.input-icon-group label { display: block; margin-bottom: 0.5rem; }
+
+/* Tablas */
+.table-container { padding: 0 !important; overflow: hidden; }
+table { margin: 0 !important; width: 100%; border-collapse: collapse; }
+
+th {
+    background: #12121a !important;
+    color: var(--neon-blue) !important;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px !important;
+    border-bottom: 1px solid #2a2a3a !important;
+}
+
+td {
+    background: transparent !important;
+    border-bottom: 1px solid #1f1f2e !important;
+    color: #c0c0c0;
+    font-size: 0.9rem;
+    padding: 12px !important;
+}
+
+tbody tr:hover td { background: #1f1f2e !important; }
+
+/* Botones de tabla */
+.btn-table {
+    background: transparent !important;
+    border: 1px solid #ff0050 !important;
+    color: #ff0050 !important;
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+.btn-table:hover { background: #ff0050 !important; color: #fff !important; }
+
+.btn-table-outline {
+    background: transparent !important;
+    border: 1px solid var(--neon-blue) !important;
+    color: var(--neon-blue) !important;
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+.btn-table-outline:hover { background: rgba(0, 243, 255, 0.1) !important; }
+
+/* Mensajes */
+.messages-container { display: flex; flex-direction: column; gap: 0.8rem; }
+
+.msg {
+    background: #12121a;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--neon-blue);
+}
+
+.msg.unread {
+    border-left-color: #ff0050;
+    background: rgba(255, 0, 80, 0.05);
+}
+
+.msg p { margin: 0 0 0.5rem 0; color: #e0e0e0; }
+.msg small { color: #8a8a9a; font-size: 0.75rem; }
+.msg .msg-actions { margin-top: 0.5rem; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 2px; }
+
+/* Media queries para Tablets/Desktop */
+@media (min-width: 768px) {
+    .metrics-grid { grid-template-columns: repeat(4, 1fr); }
+}

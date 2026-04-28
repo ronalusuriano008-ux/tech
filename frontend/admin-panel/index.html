@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin</title>
+    <!-- Pico CSS para estructura responsiva automatica -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <!-- Iconos futuristas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header fijo -->
+    <header class="header-futurist">
+        <div class="header-top">
+            <h1><i class="bi bi-shield-lock-fill"></i> ADMIN PANEL</h1>
+        </div>
+        <!-- Menú deslizable en móvil -->
+        <nav class="nav-scroll">
+            <button onclick="showSection('metrics')" class="nav-item active" id="nav-metrics"><i class="bi bi-speedometer2"></i> Métricas</button>
+            <button onclick="showSection('users')" class="nav-item" id="nav-users"><i class="bi bi-people-fill"></i> Técnicos</button>
+            <button onclick="showSection('config')" class="nav-item" id="nav-config"><i class="bi bi-gear-fill"></i> Config</button>
+            <button onclick="showSection('asistencia')" class="nav-item" id="nav-asistencia"><i class="bi bi-calendar-check"></i> Asistencia</button>
+            <button onclick="showSection('mensajes')" class="nav-item" id="nav-mensajes"><i class="bi bi-envelope-fill"></i> Mensajes</button>
+            <button onclick="logout()" class="nav-item danger"><i class="bi bi-box-arrow-left"></i> Salir</button>
+        </nav>
+    </header>
+
+    <main class="container main-content">
+        <!-- Filtro Global -->
+        <div class="card-futurist top-bar-filter">
+            <div class="filter-date">
+                <label for="filterFecha"><i class="bi bi-funnel"></i> Filtrar por Fecha:</label>
+                <input type="date" id="filterFecha" onchange="loadAll()">
+            </div>
+        </div>
+
+        <!-- SECCIÓN: MÉTRICAS -->
+        <section id="sec-metrics" class="section">
+            <article class="card-futurist">
+                <header class="card-header">
+                    <h3><i class="bi bi-graph-up"></i> Métricas del Día</h3>
+                </header>
+                <div id="metricsContent" class="metrics-grid"></div>
+            </article>
+            
+            <article class="card-futurist">
+                <header class="card-header">
+                    <h3><i class="bi bi-person-workspace"></i> Servicios por Técnico</h3>
+                </header>
+                <ul id="techMetrics" class="tech-list"></ul>
+            </article>
+        </section>
+
+        <!-- SECCIÓN: TÉCNICOS -->
+        <section id="sec-users" class="section" style="display:none;">
+            <article class="card-futurist">
+                <header class="card-header">
+                    <h3><i class="bi bi-person-plus-fill"></i> Agregar Técnico</h3>
+                </header>
+                <form id="userForm" class="grid-form-admin">
+                    <input type="text" id="u-nombre" placeholder="Nombre completo" required>
+                    <input type="text" id="u-usuario" placeholder="Usuario de acceso" required>
+                    <input type="password" id="u-password" placeholder="Contraseña" required>
+                    <div class="form-row-2">
+                        <input type="time" id="u-entrada" required>
+                        <input type="time" id="u-salida" required>
+                    </div>
+                    <button type="submit" class="btn-futurist"><i class="bi bi-save"></i> Registrar Técnico</button>
+                </form>
+            </article>
+
+            <article class="card-futurist table-container">
+                <table id="usersTable" role="grid">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Usuario</th>
+                            <th>Horario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </article>
+        </section>
+
+        <!-- SECCIÓN: CONFIGURACIÓN -->
+        <section id="sec-config" class="section" style="display:none;">
+            <article class="card-futurist">
+                <header class="card-header">
+                    <h3><i class="bi bi-sliders"></i> Parámetros de Cálculo Global</h3>
+                </header>
+                <form id="configForm" class="config-grid">
+                    <div class="input-icon-group">
+                        <label for="c-vh">Valor Hora (vh)</label>
+                        <input type="number" step="0.1" id="c-vh">
+                    </div>
+                    <div class="input-icon-group">
+                        <label for="c-cf">Costo Fijo (cf)</label>
+                        <input type="number" step="0.1" id="c-cf">
+                    </div>
+                    <div class="input-icon-group">
+                        <label for="c-margen">Margen (%)</label>
+                        <input type="number" step="0.1" id="c-margen">
+                    </div>
+                    <div class="input-icon-group">
+                        <label for="c-riesgo">Riesgo (%)</label>
+                        <input type="number" step="0.1" id="c-riesgo">
+                    </div>
+                    <div class="input-icon-group span-2">
+                        <label for="c-garantia">Garantía (%)</label>
+                        <input type="number" step="0.1" id="c-garantia">
+                    </div>
+                    <div class="span-2">
+                        <button type="submit" class="btn-futurist"><i class="bi bi-check2-circle"></i> Guardar Configuración</button>
+                    </div>
+                </form>
+            </article>
+        </section>
+
+        <!-- SECCIÓN: ASISTENCIA -->
+        <section id="sec-asistencia" class="section" style="display:none;">
+            <article class="card-futurist table-container">
+                <header class="card-header">
+                    <h3><i class="bi bi-clipboard-check"></i> Registro de Asistencia</h3>
+                </header>
+                <table id="asistenciaTable" role="grid">
+                    <thead>
+                        <tr>
+                            <th>Técnico</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
+                            <th>Alertas</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </article>
+        </section>
+
+        <!-- SECCIÓN: MENSAJES -->
+        <section id="sec-mensajes" class="section" style="display:none;">
+            <article class="card-futurist">
+                <header class="card-header">
+                    <h3><i class="bi bi-chat-left-text-fill"></i> Buzón de Técnicos</h3>
+                </header>
+                <div id="mensajesList" class="messages-container"></div>
+            </article>
+        </section>
+
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "b81595fe-e810-4abf-97e4-c992a33c60ba",
+    "contenido": "hola ",
+    "de": "tech-001",
+    "leido": true,
+    "fechaRegistro": "2026-04-28T16:22:26.961Z"
+  },
+  {
+    "id": "1e95899f-a05c-41b8-b2a3-2cebbfa2d5b4",
+    "contenido": "nescesito ayuda conuna pantalla por favor ",
+    "de": "tech-001",
+    "leido": true,
+    "fechaRegistro": "2026-04-28T16:23:00.833Z"
+  },
+  {
+    "id": "d80d15cf-5745-465e-bdf0-281cae852418",
+    "contenido": "hola ",
+    "de": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "leido": true,
+    "fechaRegistro": "2026-04-28T16:34:06.544Z"
+  },
+  {
+    "id": "2599771f-8111-4496-aace-f33dae9785dc",
+    "contenido": "hola ",
+    "de": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "leido": false,
+    "fechaRegistro": "2026-04-28T16:49:56.103Z"
+  }
+]

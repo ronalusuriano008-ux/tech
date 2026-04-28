@@ -1,0 +1,155 @@
+
+/* ==========================================
+   VARIABLES GLOBALES FUTURISTAS
+   ========================================== */
+:root {
+    --neon-blue: #00f3ff;
+    --neon-purple: #bc13fe;
+    --bg-dark: #101014;
+    --bg-card: #1a1a24;
+    --text-main: #e0e0e0;
+}
+
+/* Forzar tema oscuro si Pico no lo detecta */
+[data-theme="dark"] {
+    --pico-background-color: var(--bg-dark);
+    --pico-card-background-color: var(--bg-card);
+    --pico-card-border-color: #2a2a3a;
+    --pico-primary: var(--neon-blue);
+    --primary-hover: var(--neon-purple);
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+/* ==========================================
+   COMPONENTES FUTURISTAS BASE
+   ========================================== */
+.container {
+    max-width: 400px;
+    width: 100%;
+    padding: 1rem;
+}
+
+.card-futurist {
+    background: var(--bg-card) !important;
+    border: 1px solid #2a2a3a;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 243, 255, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+h1 {
+    font-size: 2rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+h5, p {
+    color: #8a8a9a;
+    margin-bottom: 1.5rem;
+}
+
+/* Input group con iconos */
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    color: #4a4a5a;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    background: #12121a !important;
+    border: 1px solid #2a2a3a !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: var(--neon-blue) !important;
+    box-shadow: 0 0 0 2px rgba(0, 243, 255, 0.15);
+    outline: none;
+}
+
+.input-group input:focus + i,
+.input-group input:focus ~ i {
+    color: var(--neon-blue);
+}
+
+/* Botón principal */
+.btn-futurist {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-futurist:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 243, 255, 0.3);
+}
+
+.btn-futurist:active {
+    transform: translateY(0);
+}
+
+/* Mensajes de error */
+.error-msg {
+    background: rgba(255, 0, 80, 0.1);
+    color: #ff0050;
+    padding: 10px;
+    border-radius: 6px;
+    border-left: 3px solid #ff0050;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Scrollbar personalizado para Android */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+    background: #2a2a3a;
+    border-radius: 3px;
+}

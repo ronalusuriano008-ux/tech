@@ -1,0 +1,30 @@
+[
+  {
+    "id": "ffcfa467-bea0-4c4c-a008-391728134a67",
+    "servicio": "cambio de pantalla ",
+    "modelo": "Samsung a06",
+    "precio": 90,
+    "costo": 45,
+    "utilidad": 45,
+    "pagoCliente": 90,
+    "pagoProveedor": 45,
+    "fecha": "2026-04-28",
+    "hora": "11:21",
+    "usuarioId": "tech-001",
+    "fechaRegistro": "2026-04-28T16:21:38.889Z"
+  },
+  {
+    "id": "0af30c39-b077-4977-b2e4-c756ae0e965f",
+    "servicio": "cambio de pantalla ",
+    "modelo": "Samsung a06",
+    "precio": 90,
+    "costo": 45,
+    "utilidad": 45,
+    "pagoCliente": 90,
+    "pagoProveedor": 45,
+    "fecha": "2026-04-28",
+    "hora": "11:34",
+    "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "fechaRegistro": "2026-04-28T16:34:58.318Z"
+  }
+]

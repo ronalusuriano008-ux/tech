@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Servicios</title>
+    <!-- Pico CSS para estructura responsiva automatica -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <!-- Iconos futuristas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header flotante / sticky -->
+    <header class="header-futurist">
+        <div class="header-top">
+            <h1><i class="bi bi-phone"></i> <span id="userName">Técnico</span></h1>
+        </div>
+        <nav class="nav-grid">
+            <a href="/calculadora/index.html" class="btn-nav"><i class="bi bi-calculator"></i> Calc</a>
+            <button onclick="descargarReporte()" class="btn-nav"><i class="bi bi-download"></i> Reporte</button>
+            <button onclick="checkIn()" class="btn-nav success"><i class="bi bi-box-arrow-in-right"></i> In</button>
+            <button onclick="checkOut()" class="btn-nav danger"><i class="bi bi-box-arrow-right"></i> Out</button>
+            <button onclick="logout()" class="btn-nav"><i class="bi bi-box-arrow-left"></i> Salir</button>
+        </nav>
+    </header>
+
+    <main class="container main-content">
+        
+        <!-- Filtros y Asistencia -->
+        <div class="card-futurist top-bar">
+            <div class="filter-date">
+                <label for="filterFecha"><i class="bi bi-calendar3"></i> Fecha:</label>
+                <input type="date" id="filterFecha" onchange="loadServicios()">
+            </div>
+            <div id="asistenciaStatus" class="status-badge"></div>
+        </div>
+
+        <!-- Formulario de Registro -->
+        <article class="card-futurist">
+            <header class="card-header">
+                <h3><i class="bi bi-plus-circle"></i> Nuevo Servicio</h3>
+            </header>
+            <form id="servicioForm" class="grid-form">
+                <input type="text" id="s-servicio" placeholder="Ej: Cambio de pantalla" required>
+                <input type="text" id="s-modelo" placeholder="Ej: Samsung A54" required>
+                <div class="form-row-2">
+                    <input type="number" step="0.1" id="s-precio" placeholder="Precio ($)" required>
+                    <input type="number" step="0.1" id="s-costo" placeholder="Costo ($)" required>
+                </div>
+                <div class="form-row-2">
+                    <input type="number" step="0.1" id="s-pagoCliente" placeholder="Pago Cliente">
+                    <input type="number" step="0.1" id="s-pagoProveedor" placeholder="Pago Proveedor">
+                </div>
+                <button type="submit" class="btn-futurist">
+                    <i class="bi bi-save"></i> Registrar Servicio
+                </button>
+            </form>
+        </article>
+
+        <!-- Resumen -->
+        <article class="card-futurist resumen-card">
+            <header class="card-header">
+                <h3><i class="bi bi-graph-up-arrow"></i> Resumen del Día</h3>
+            </header>
+            <div class="resumen-grid">
+                <div class="resumen-item">
+                    <small>Ingresos</small>
+                    <span id="resIngresos" class="text-success">$0</span>
+                </div>
+                <div class="resumen-item">
+                    <small>Costos</small>
+                    <span id="resCostos" class="text-danger">$0</span>
+                </div>
+                <div class="resumen-item">
+                    <small>Utilidad</small>
+                    <span id="resUtilidad" class="text-neon">$0</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Tabla de Servicios -->
+        <article class="card-futurist table-container">
+            <table id="serviciosTable" role="grid">
+                <thead>
+                    <tr>
+                        <th>Hora</th>
+                        <th>Servicio</th>
+                        <th>Modelo</th>
+                        <th>Precio</th>
+                        <th>Costo</th>
+                        <th>Util.</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </article>
+
+        <!-- Mensajes -->
+        <article class="card-futurist">
+            <header class="card-header">
+                <h3><i class="bi bi-chat-dots"></i> Mensaje al Admin</h3>
+            </header>
+            <form id="msgForm" class="msg-form">
+                <input type="text" id="msg-contenido" placeholder="Escribe tu mensaje aquí..." required>
+                <button type="submit" class="btn-futurist btn-sm">
+                    <i class="bi bi-send"></i>
+                </button>
+            </form>
+        </article>
+
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
