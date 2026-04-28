@@ -1,6 +1,7 @@
 // backend/services/reporteService.js
 const servicioService = require('./servicioService');
 const userService = require('./userService');
+const { getLocalDateString } = require('../utils/dateUtils'); // <-- IMPORTAR
 
 const generarReporteDiario = async (userId) => {
     const servicios = await servicioService.getServicios(null, userId);
@@ -11,7 +12,7 @@ const generarReporteDiario = async (userId) => {
     const utilidadTotal = servicios.reduce((sum, s) => sum + (s.utilidad || 0), 0);
 
     return {
-        fecha: new Date().toISOString().split('T')[0],
+        fecha: getLocalDateString(), // <-- CAMBIO AQUÍ
         tecnico: user.nombre,
         servicios: servicios,
         totalIngresos: Math.round(totalIngresos * 100) / 100,

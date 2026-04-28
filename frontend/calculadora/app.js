@@ -8,7 +8,13 @@ if (!user) window.location.href = '/login/index.html';
 const loadConfig = async () => {
     const res = await fetch('/api/config', { headers });
     config = await res.json();
-    document.getElementById('configDisplay').innerHTML = `Config: VH=${config.vh} | CF=${config.cf} | Margen=${config.margen}% | Riesgo=${config.riesgo}% | Garantia=${config.garantia}%`;
+    document.getElementById('configDisplay').innerHTML =
+`Configuracion:
+Valor hora = ${config.vh} |
+Costo fijo = ${config.cf} |
+Margen = ${config.margen}% |
+Riesgo = ${config.riesgo}% |
+Garantía = ${config.garantia}%`;
 };
 
 const calculate = () => {

@@ -35,5 +35,16 @@
     "horarioSalida": "20:00",
     "diasDescanso": [],
     "fechaRegistro": "2026-04-28T16:24:47.615Z"
+  },
+  {
+    "id": "5559db78-468c-4c75-8f3f-6e3aeb588149",
+    "nombre": "raul",
+    "usuario": "raul",
+    "password": "475587",
+    "role": "TECNICO",
+    "horarioEntrada": "07:30",
+    "horarioSalida": "20:30",
+    "diasDescanso": [],
+    "fechaRegistro": "2026-04-28T17:32:17.809Z"
   }
 ]

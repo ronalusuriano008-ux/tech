@@ -1,6 +1,12 @@
 // backend/controllers/servicioController.js
 const servicioService = require('../services/servicioService');
 
+const { getLocalTimeString } = require('../utils/dateUtils'); // <--- IMPORTAR
+
+// ... (getServicios, updateServicio, deleteServicio permanecen igual)
+
+// ... (exportar lo demás)
+
 const getServicios = async (req, res) => {
     try {
         const { fecha } = req.query;
@@ -14,7 +20,12 @@ const getServicios = async (req, res) => {
 
 const createServicio = async (req, res) => {
     try {
-        const data = { ...req.body, usuarioId: req.user.id };
+        // Inyectamos la hora del servidor usando la zona horaria del taller
+        const data = { 
+            ...req.body, 
+            usuarioId: req.user.id,
+            hora: getLocalTimeString() // <--- FORZAR LA HORA AQUÍ
+        };
         const servicio = await servicioService.createServicio(data);
         res.status(201).json(servicio);
     } catch (error) {

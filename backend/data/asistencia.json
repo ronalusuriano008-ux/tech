@@ -5,7 +5,8 @@
     "fecha": "2026-04-28",
     "horaEntrada": "11:22",
     "alertas": [],
-    "fechaRegistro": "2026-04-28T16:22:13.647Z"
+    "fechaRegistro": "2026-04-28T16:22:13.647Z",
+    "horaSalida": "12:33"
   },
   {
     "id": "1f6a7307-635e-4d6e-bb76-7e5b7270804c",
@@ -13,7 +14,8 @@
     "fecha": "2026-04-28",
     "horaEntrada": "11:35",
     "alertas": [],
-    "fechaRegistro": "2026-04-28T16:35:10.747Z"
+    "fechaRegistro": "2026-04-28T16:35:10.747Z",
+    "horaSalida": "12:30"
   },
   {
     "id": "59aeaf49-c483-443d-bdde-b311030062e5",
@@ -21,6 +23,25 @@
     "fecha": "2026-04-28",
     "horaEntrada": "11:35",
     "alertas": [],
-    "fechaRegistro": "2026-04-28T16:35:15.330Z"
+    "fechaRegistro": "2026-04-28T16:35:15.330Z",
+    "horaSalida": "12:30"
+  },
+  {
+    "id": "b56fd8f0-67a7-4737-b152-14ff43bbdbfb",
+    "usuarioId": "5559db78-468c-4c75-8f3f-6e3aeb588149",
+    "fecha": "2026-04-28",
+    "horaEntrada": "12:52",
+    "alertas": [],
+    "fechaRegistro": "2026-04-28T17:52:16.796Z",
+    "horaSalida": "12:52"
+  },
+  {
+    "id": "f51311eb-1ef7-41fb-8640-a6ea981aaaf2",
+    "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "fecha": "2026-04-28",
+    "horaEntrada": "17:54",
+    "alertas": [],
+    "fechaRegistro": "2026-04-28T22:54:26.987Z",
+    "horaSalida": "17:54"
   }
 ]

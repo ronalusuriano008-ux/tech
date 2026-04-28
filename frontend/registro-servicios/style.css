@@ -27,7 +27,7 @@ body {
 }
 
 /* ==========================================
-   HEADER Y NAVEGACIÓN MÓVIL
+   HEADER FUTURISTA
    ========================================== */
 .header-futurist {
     position: sticky;
@@ -40,6 +40,7 @@ body {
     margin-bottom: 1.5rem;
 }
 
+/* Título */
 .header-top h1 {
     font-size: 1.2rem;
     letter-spacing: 1px;
@@ -51,12 +52,18 @@ body {
     text-transform: uppercase;
 }
 
+/* ==========================================
+   GRID DE NAVEGACIÓN
+   ========================================== */
 .nav-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 0.5rem;
 }
 
+/* ==========================================
+   BOTÓN BASE
+   ========================================== */
 .btn-nav {
     display: flex;
     flex-direction: column;
@@ -78,15 +85,64 @@ body {
     margin-bottom: 0.2rem;
 }
 
-.btn-nav:active, .btn-nav:hover {
+/* Hover general */
+.btn-nav:hover {
+    transform: translateY(-2px);
     border-color: var(--neon-blue) !important;
-    color: var(--neon-blue) !important;
-    box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+    box-shadow: 0 0 12px rgba(0, 243, 255, 0.15);
 }
 
-.btn-nav.success { color: #00ff9d !important; border-color: #1a3a2a !important; }
-.btn-nav.danger { color: #ff0050 !important; border-color: #3a1a2a !important; }
+/* ==========================================
+   ACCIONES (COLORES POR FUNCIÓN)
+   ========================================== */
+.btn-nav.calc {
+    color: #00f3ff !important;
+    border-color: #00f3ff !important;
+}
 
+.btn-nav.report {
+    color: #bc13fe !important;
+    border-color: #bc13fe !important;
+}
+
+.btn-nav.logout {
+    color: #ffae00 !important;
+    border-color: #ffae00 !important;
+}
+
+/* ==========================================
+   ESTADOS (OPERATIVOS)
+   ========================================== */
+.btn-nav.success {
+    color: #00ff9d !important;
+    border-color: #00ff9d !important;
+}
+
+.btn-nav.danger {
+    color: #ff0050 !important;
+    border-color: #ff0050 !important;
+}
+
+/* Hover glow por color */
+.btn-nav.calc:hover {
+    box-shadow: 0 0 12px rgba(0, 243, 255, 0.35);
+}
+
+.btn-nav.report:hover {
+    box-shadow: 0 0 12px rgba(188, 19, 254, 0.35);
+}
+
+.btn-nav.logout:hover {
+    box-shadow: 0 0 12px rgba(255, 174, 0, 0.35);
+}
+
+.btn-nav.success:hover {
+    box-shadow: 0 0 12px rgba(0, 255, 157, 0.35);
+}
+
+.btn-nav.danger:hover {
+    box-shadow: 0 0 12px rgba(255, 0, 80, 0.35);
+}
 /* ==========================================
    COMPONENTES BASE
    ========================================== */
@@ -235,7 +291,8 @@ input:focus {
 /* Tabla Responsiva (Pico envuelve en overflow-x automaticamente) */
 .table-container {
     padding: 0 !important;
-    overflow: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 table {

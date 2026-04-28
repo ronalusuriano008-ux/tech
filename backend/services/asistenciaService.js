@@ -1,19 +1,19 @@
 // backend/services/asistenciaService.js
 const fileDB = require('../db/fileDB');
-const getTodayString = () => new Date().toISOString().split('T')[0];
+const { getLocalDateString, getLocalTimeString, getLocalDayOfWeek } = require('../utils/dateUtils');
 
 const getAsistencia = async (fecha, userId) => {
     let asistencias = await fileDB.findAll('asistencia');
-    const filterDate = fecha || getTodayString();
+    const filterDate = fecha || getLocalDateString(); // <-- CAMBIO AQUÍ
     asistencias = asistencias.filter(a => a.fecha === filterDate);
     if (userId) asistencias = asistencias.filter(a => a.usuarioId === userId);
     return asistencias;
 };
 
 const registerCheckIn = async (usuarioId) => {
-    const fecha = getTodayString();
+    const fecha = getLocalDateString(); // <-- CAMBIO AQUÍ
     const user = await fileDB.findById('users', usuarioId);
-    const diaSemana = new Date().getDay();
+    const diaSemana = getLocalDayOfWeek(); // <-- CAMBIO AQUÍ
     const diaDescanso = user.diasDescanso || [];
     
     let alerta = null;
@@ -21,7 +21,7 @@ const registerCheckIn = async (usuarioId) => {
         alerta = 'Trabajando en día de descanso';
     }
     
-    const horaActual = new Date().toTimeString().substring(0, 5);
+    const horaActual = getLocalTimeString(); // <-- CAMBIO AQUÍ
     if (horaActual < user.horarioEntrada) {
         alerta = alerta ? `${alerta}, fuera de horario` : 'Fuera de horario de entrada';
     }
@@ -30,13 +30,13 @@ const registerCheckIn = async (usuarioId) => {
 };
 
 const registerCheckOut = async (usuarioId) => {
-    const fecha = getTodayString();
+    const fecha = getLocalDateString(); // <-- CAMBIO AQUÍ
     const asistencias = await fileDB.findAll('asistencia');
     const registro = asistencias.find(a => a.usuarioId === usuarioId && a.fecha === fecha && !a.horaSalida);
     
     if (!registro) throw new Error('No se encontró check-in para hoy');
     
-    const horaActual = new Date().toTimeString().substring(0, 5);
+    const horaActual = getLocalTimeString(); // <-- CAMBIO AQUÍ
     return await fileDB.update('asistencia', registro.id, { horaSalida: horaActual });
 };
 

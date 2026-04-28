@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <!-- Iconos futuristas -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,11 +19,11 @@
             <h1><i class="bi bi-phone"></i> <span id="userName">Técnico</span></h1>
         </div>
         <nav class="nav-grid">
-            <a href="/calculadora/index.html" class="btn-nav"><i class="bi bi-calculator"></i> Calc</a>
-            <button onclick="descargarReporte()" class="btn-nav"><i class="bi bi-download"></i> Reporte</button>
-            <button onclick="checkIn()" class="btn-nav success"><i class="bi bi-box-arrow-in-right"></i> In</button>
-            <button onclick="checkOut()" class="btn-nav danger"><i class="bi bi-box-arrow-right"></i> Out</button>
-            <button onclick="logout()" class="btn-nav"><i class="bi bi-box-arrow-left"></i> Salir</button>
+            <a href="/calculadora/index.html" class="btn-nav calc"><i class="bi bi-calculator"></i> Calculadora</a>
+            <button onclick="descargarReporte()" class="btn-nav report"><i class="bi bi-download"></i> Reporte</button>
+            <button onclick="checkIn()" class="btn-nav success"><i class="bi bi-box-arrow-in-right"></i>Entrada</button>
+            <button onclick="checkOut()" class="btn-nav danger"><i class="bi bi-box-arrow-right"></i>Salida</button>
+            <button onclick="logout()" class="btn-nav logout"><i class="bi bi-box-arrow-left"></i> Salir</button>
         </nav>
     </header>
 
@@ -45,13 +47,15 @@
                 <input type="text" id="s-servicio" placeholder="Ej: Cambio de pantalla" required>
                 <input type="text" id="s-modelo" placeholder="Ej: Samsung A54" required>
                 <div class="form-row-2">
-                    <input type="number" step="0.1" id="s-precio" placeholder="Precio ($)" required>
-                    <input type="number" step="0.1" id="s-costo" placeholder="Costo ($)" required>
+                    <input type="number" step="0.1" id="s-precio" placeholder="Precio" required>
+                    <input type="number" step="0.1" id="s-costo" placeholder="Costo" required>
                 </div>
+<!--
                 <div class="form-row-2">
                     <input type="number" step="0.1" id="s-pagoCliente" placeholder="Pago Cliente">
                     <input type="number" step="0.1" id="s-pagoProveedor" placeholder="Pago Proveedor">
                 </div>
+-->
                 <button type="submit" class="btn-futurist">
                     <i class="bi bi-save"></i> Registrar Servicio
                 </button>
@@ -66,15 +70,15 @@
             <div class="resumen-grid">
                 <div class="resumen-item">
                     <small>Ingresos</small>
-                    <span id="resIngresos" class="text-success">$0</span>
+                    <span id="resIngresos" class="text-success">S/.0</span>
                 </div>
                 <div class="resumen-item">
                     <small>Costos</small>
-                    <span id="resCostos" class="text-danger">$0</span>
+                    <span id="resCostos" class="text-danger">S/.0</span>
                 </div>
                 <div class="resumen-item">
                     <small>Utilidad</small>
-                    <span id="resUtilidad" class="text-neon">$0</span>
+                    <span id="resUtilidad" class="text-neon">S/.0</span>
                 </div>
             </div>
         </article>
@@ -89,7 +93,7 @@
                         <th>Modelo</th>
                         <th>Precio</th>
                         <th>Costo</th>
-                        <th>Util.</th>
+                        <th>Utilidad</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -100,7 +104,10 @@
         <!-- Mensajes -->
         <article class="card-futurist">
             <header class="card-header">
-                <h3><i class="bi bi-chat-dots"></i> Mensaje al Admin</h3>
+                <h3><i class="bi bi-chat-dots"></i> Comentarios para el administrador</h3>
+                <small class="text-muted" >
+    Este espacio está destinado a soporte técnico y comunicación interna.<p>Puedes mandar tus reportes indicaciones sugerencias o cualquier duda que tengas.</p>
+</small>
             </header>
             <form id="msgForm" class="msg-form">
                 <input type="text" id="msg-contenido" placeholder="Escribe tu mensaje aquí..." required>
@@ -111,6 +118,8 @@
         </article>
 
     </main>
+     <div id="reporte-render-container" style="position: absolute; left: -9999px; top: 0;"></div>
+    
     <script src="app.js"></script>
 </body>
 </html>
