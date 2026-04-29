@@ -11,22 +11,48 @@ const getAsistencia = async (fecha, userId) => {
 };
 
 const registerCheckIn = async (usuarioId) => {
-    const fecha = getLocalDateString(); // <-- CAMBIO AQUÍ
+    const fecha = getLocalDateString();
+
     const user = await fileDB.findById('users', usuarioId);
-    const diaSemana = getLocalDayOfWeek(); // <-- CAMBIO AQUÍ
+
+    if (!user) {
+        throw new Error('Usuario no encontrado');
+    }
+
+    const existente = (await fileDB.findAll('asistencia'))
+        .find(a =>
+            a.usuarioId === usuarioId &&
+            a.fecha === fecha &&
+            !a.horaSalida
+        );
+
+    if (existente) {
+        throw new Error('Ya existe un check-in activo');
+    }
+
+    const diaSemana = getLocalDayOfWeek();
     const diaDescanso = user.diasDescanso || [];
-    
+
     let alerta = null;
+
     if (diaDescanso.includes(diaSemana)) {
         alerta = 'Trabajando en día de descanso';
     }
-    
-    const horaActual = getLocalTimeString(); // <-- CAMBIO AQUÍ
+
+    const horaActual = getLocalTimeString();
+
     if (horaActual < user.horarioEntrada) {
-        alerta = alerta ? `${alerta}, fuera de horario` : 'Fuera de horario de entrada';
+        alerta = alerta
+            ? `${alerta}, fuera de horario`
+            : 'Fuera de horario de entrada';
     }
 
-    return await fileDB.create('asistencia', { usuarioId, fecha, horaEntrada: horaActual, alertas: alerta ? [alerta] : [] });
+    return await fileDB.create('asistencia', {
+        usuarioId,
+        fecha,
+        horaEntrada: horaActual,
+        alertas: alerta ? [alerta] : []
+    });
 };
 
 const registerCheckOut = async (usuarioId) => {

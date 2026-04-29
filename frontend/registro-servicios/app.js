@@ -1,13 +1,27 @@
 const API = '/api';
+
 const user = JSON.parse(localStorage.getItem('user'));
-const headers = { 'Content-Type': 'application/json', 'x-user-id': user.id, 'x-user-role': user.role };
 
-if (!user) window.location.href = '/login/index.html';
+if (!user) {
+    window.location.href = '/login/index.html';
+}
 
-document.getElementById('userName').textContent = `BIENVENIDO, ${user.nombre}.`;
-document.getElementById('filterFecha').valueAsDate = new Date();
+const headers = {
+    'Content-Type': 'application/json',
+    'x-user-id': user.id,
+    'x-user-role': user.role
+};
 
-const getFecha = () => document.getElementById('filterFecha').value;
+document.getElementById('userName').textContent =
+    `BIENVENIDO, ${user.nombre}.`;
+
+document.getElementById('filterFecha').value = new Date()
+    .toLocaleDateString('en-CA', {
+        timeZone: 'America/Lima'
+    });
+
+const getFecha = () =>
+    document.getElementById('filterFecha').value;
 
 const loadServicios = async () => {
     const res = await fetch(`${API}/servicios?fecha=${getFecha()}`, { headers });
@@ -48,8 +62,6 @@ document.getElementById('servicioForm').addEventListener('submit', async (e) => 
         precio,
         costo,
         utilidad: Math.round((precio - costo) * 100) / 100,
-        pagoCliente: parseFloat(document.getElementById('s-pagoCliente').value) || 0,
-        pagoProveedor: parseFloat(document.getElementById('s-pagoProveedor').value) || 0,
         fecha: getFecha()
     };
 
@@ -80,13 +92,39 @@ const loadAsistenciaStatus = async () => {
 };
 
 const checkIn = async () => {
-    await fetch(`${API}/asistencia/check-in`, { method: 'POST', headers });
-    loadAsistenciaStatus();
+    try {
+        const res = await fetch(`${API}/asistencia/check-in`, {
+            method: 'POST',
+            headers
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.message || 'Error en check-in');
+        }
+
+        loadAsistenciaStatus();
+
+    } catch (error) {
+        alert(error.message);
+        console.error(error);
+    }
 };
 
 const checkOut = async () => {
     try {
-        await fetch(`${API}/asistencia/check-out`, { method: 'POST', headers });
+        const res = await fetch(`${API}/asistencia/check-out`, {
+            method: 'POST',
+            headers
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.message || 'Error en check-out');
+        }
+
         loadAsistenciaStatus();
     } catch (e) {
         alert('Error: ' + e.message);
@@ -111,6 +149,8 @@ const descargarReporte = async () => {
                 <td>${s.hora || '--:--'}</td>
                 <td>${s.servicio} (${s.modelo})</td>
                 <td style="text-align:right">S/.${s.precio.toFixed(2)}</td>
+                <td style="text-align:right">S/.${s.costo.toFixed(2)}</td>
+                <td style="text-align:right">S/.${s.utilidad.toFixed(2)}</td>
             </tr>
         `).join('');
 
@@ -131,6 +171,8 @@ const descargarReporte = async () => {
                     <th style="border:1px solid #ccc; padding:8px;">Hora</th>
                     <th style="border:1px solid #ccc; padding:8px;">Servicio</th>
                     <th style="border:1px solid #ccc; padding:8px;">Precio</th>
+                    <th style="border:1px solid #ccc; padding:8px;">Costo</th>
+                    <th style="border:1px solid #ccc; padding:8px;">Utilidad</th>
                 </tr>
             </thead>
             <tbody>${serviciosHTML}</tbody>
@@ -165,8 +207,8 @@ const descargarReporte = async () => {
         await new Promise(r => setTimeout(r, 100));
 
         const canvas = await html2canvas(container.querySelector('.report-img-wrapper'), {
-            backgroundColor: null,
-            scale: 2,
+            backgroundColor: '#0d112e',
+            scale: 3,
             useCORS: true
         });
 

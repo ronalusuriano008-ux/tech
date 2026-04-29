@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +9,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <!-- Iconos futuristas -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Header flotante / sticky -->
     <header class="header-futurist">
@@ -19,21 +21,21 @@
             <h1><i class="bi bi-phone"></i> <span id="userName">Técnico</span></h1>
         </div>
         <nav class="nav-grid">
-            <a href="/calculadora/index.html" class="btn-nav calc"><i class="bi bi-calculator"></i> Calculadora</a>
-            <button onclick="descargarReporte()" class="btn-nav report"><i class="bi bi-download"></i> Reporte</button>
-            <button onclick="checkIn()" class="btn-nav success"><i class="bi bi-box-arrow-in-right"></i>Entrada</button>
-            <button onclick="checkOut()" class="btn-nav danger"><i class="bi bi-box-arrow-right"></i>Salida</button>
-            <button onclick="logout()" class="btn-nav logout"><i class="bi bi-box-arrow-left"></i> Salir</button>
+            <a href="/calculadora/index.html" class="btn-nav calc"><i class="bi bi-calculator"></i>Calculadora<br>precios</a>
+            <button onclick="descargarReporte()" class="btn-nav report"><i class="bi bi-download"></i>Descargar</br>Reporte</button>
+            <button onclick="checkIn()" class="btn-nav success"><i class="bi bi-box-arrow-in-right"></i>Registrar</br>Entrada</button>
+            <button onclick="checkOut()" class="btn-nav logout"><i class="bi bi-box-arrow-right"></i>Registrar</br>Salida</button>
+            <button onclick="logout()" class="btn-nav danger"><i class="bi bi-box-arrow-left"></i>Cerrar</br>Sesión</button>
         </nav>
     </header>
 
     <main class="container main-content">
-        
+
         <!-- Filtros y Asistencia -->
         <div class="card-futurist top-bar">
             <div class="filter-date">
                 <label for="filterFecha"><i class="bi bi-calendar3"></i> Fecha:</label>
-                <input type="date" id="filterFecha" onchange="loadServicios()">
+                <input type="date" id="filterFecha" onchange="loadServicios(); loadAsistenciaStatus();">
             </div>
             <div id="asistenciaStatus" class="status-badge"></div>
         </div>
@@ -50,7 +52,7 @@
                     <input type="number" step="0.1" id="s-precio" placeholder="Precio" required>
                     <input type="number" step="0.1" id="s-costo" placeholder="Costo" required>
                 </div>
-<!--
+                <!--
                 <div class="form-row-2">
                     <input type="number" step="0.1" id="s-pagoCliente" placeholder="Pago Cliente">
                     <input type="number" step="0.1" id="s-pagoProveedor" placeholder="Pago Proveedor">
@@ -105,9 +107,10 @@
         <article class="card-futurist">
             <header class="card-header">
                 <h3><i class="bi bi-chat-dots"></i> Comentarios para el administrador</h3>
-                <small class="text-muted" >
-    Este espacio está destinado a soporte técnico y comunicación interna.<p>Puedes mandar tus reportes indicaciones sugerencias o cualquier duda que tengas.</p>
-</small>
+                <small class="text-muted">
+                    Este espacio está destinado a soporte técnico y comunicación interna.<p>Puedes mandar tus reportes
+                        indicaciones sugerencias o cualquier duda que tengas.</p>
+                </small>
             </header>
             <form id="msgForm" class="msg-form">
                 <input type="text" id="msg-contenido" placeholder="Escribe tu mensaje aquí..." required>
@@ -118,8 +121,9 @@
         </article>
 
     </main>
-     <div id="reporte-render-container" style="position: absolute; left: -9999px; top: 0;"></div>
-    
+    <div id="reporte-render-container" style="position: absolute; left: -9999px; top: 0;"></div>
+
     <script src="app.js"></script>
 </body>
+
 </html>

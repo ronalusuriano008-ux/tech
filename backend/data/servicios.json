@@ -1,44 +1,50 @@
 [
   {
-    "id": "ffcfa467-bea0-4c4c-a008-391728134a67",
+    "id": "0b616c09-06bd-4d8f-9fb2-f684d898fdd8",
     "servicio": "cambio de pantalla ",
-    "modelo": "Samsung a06",
-    "precio": 90,
-    "costo": 45,
-    "utilidad": 45,
-    "pagoCliente": 90,
-    "pagoProveedor": 45,
-    "fecha": "2026-04-28",
-    "hora": "11:21",
-    "usuarioId": "tech-001",
-    "fechaRegistro": "2026-04-28T16:21:38.889Z"
-  },
-  {
-    "id": "bafb3853-5830-4bfd-88d7-1749c5d9d30e",
-    "servicio": "cambio de pantalla ",
-    "modelo": "Samsung a06",
-    "precio": 20,
-    "costo": 9,
-    "utilidad": 11,
-    "pagoCliente": 20,
-    "pagoProveedor": 0,
-    "fecha": "2026-04-28",
-    "hora": "12:36",
-    "usuarioId": "5559db78-468c-4c75-8f3f-6e3aeb588149",
-    "fechaRegistro": "2026-04-28T17:36:22.550Z"
-  },
-  {
-    "id": "d97f54d4-fb11-4f4f-ac38-150cca3c7fcf",
-    "servicio": "cambio de pantalla ",
-    "modelo": "redmi 9a",
-    "precio": 90,
-    "costo": 40,
-    "utilidad": 50,
-    "pagoCliente": 0,
-    "pagoProveedor": 0,
+    "modelo": "Samsung a88",
+    "precio": 500,
+    "costo": 200,
+    "utilidad": 300,
     "fecha": "2026-04-28",
     "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
-    "hora": "16:42",
-    "fechaRegistro": "2026-04-28T21:42:07.781Z"
+    "hora": "23:27",
+    "fechaRegistro": "2026-04-29T04:27:07.157Z"
+  },
+  {
+    "id": "c311a3e1-5014-43bc-8067-e1479ce69686",
+    "servicio": "cambio de pantalla ",
+    "modelo": "redmi 9a",
+    "precio": 70,
+    "costo": 40,
+    "utilidad": 30,
+    "fecha": "2026-04-28",
+    "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "hora": "23:37",
+    "fechaRegistro": "2026-04-29T04:37:49.481Z"
+  },
+  {
+    "id": "be09a7d6-0f98-435e-bc4a-9b9fac060b76",
+    "servicio": "cambio de zócalo tc",
+    "modelo": "redmi note 10",
+    "precio": 40,
+    "costo": 4,
+    "utilidad": 36,
+    "fecha": "2026-04-28",
+    "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "hora": "23:39",
+    "fechaRegistro": "2026-04-29T04:39:56.862Z"
+  },
+  {
+    "id": "58127537-2130-4133-b13a-247aaf2d5685",
+    "servicio": "cambio de zócalo tc",
+    "modelo": "Samsung a30",
+    "precio": 45,
+    "costo": 30,
+    "utilidad": 15,
+    "fecha": "2026-04-28",
+    "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "hora": "23:41",
+    "fechaRegistro": "2026-04-29T04:41:06.477Z"
   }
 ]
