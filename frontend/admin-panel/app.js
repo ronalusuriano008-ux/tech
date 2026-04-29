@@ -140,9 +140,69 @@ const marcarLeido = async (id) => {
     loadMensajes();
 };
 
+// ===============================
+// BACKUP / RESTORE DATABASE
+// ===============================
+
+const descargarBackup = async () => {
+    try {
+        const res = await fetch(`${API}/backup/export`, { headers });
+        const data = await res.json();
+
+        const blob = new Blob(
+            [JSON.stringify(data, null, 2)],
+            { type: 'application/json' }
+        );
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+
+        a.href = url;
+        a.download = `backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        alert('Error al descargar backup');
+        console.error(error);
+    }
+};
+
+const subirBackup = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!confirm('Esto reemplazará toda la base de datos actual. ¿Continuar?')) {
+        event.target.value = '';
+        return;
+    }
+
+    try {
+        const text = await file.text();
+        const backupData = JSON.parse(text);
+
+        await fetch(`${API}/backup/import`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(backupData)
+        });
+
+        alert('Backup restaurado correctamente');
+
+        loadAll();
+        event.target.value = '';
+
+    } catch (error) {
+        alert('Archivo inválido o error al restaurar');
+        console.error(error);
+    }
+};
+
 const logout = () => {
     localStorage.removeItem('user');
     window.location.href = '/login/index.html';
 };
+
+
 
 loadAll();

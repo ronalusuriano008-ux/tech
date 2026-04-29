@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Header fijo -->
     <header class="header-futurist">
@@ -18,11 +20,18 @@
         </div>
         <!-- Menú deslizable en móvil -->
         <nav class="nav-scroll">
-            <button onclick="showSection('metrics')" class="nav-item active" id="nav-metrics"><i class="bi bi-speedometer2"></i> Métricas</button>
-            <button onclick="showSection('users')" class="nav-item" id="nav-users"><i class="bi bi-people-fill"></i> Técnicos</button>
-            <button onclick="showSection('config')" class="nav-item" id="nav-config"><i class="bi bi-gear-fill"></i> Config</button>
-            <button onclick="showSection('asistencia')" class="nav-item" id="nav-asistencia"><i class="bi bi-calendar-check"></i> Asistencia</button>
-            <button onclick="showSection('mensajes')" class="nav-item" id="nav-mensajes"><i class="bi bi-envelope-fill"></i> Mensajes</button>
+            <button onclick="showSection('metrics')" class="nav-item active" id="nav-metrics"><i
+                    class="bi bi-speedometer2"></i> Métricas</button>
+            <button onclick="showSection('users')" class="nav-item" id="nav-users"><i class="bi bi-people-fill"></i>
+                Técnicos</button>
+            <button onclick="showSection('config')" class="nav-item" id="nav-config"><i class="bi bi-gear-fill"></i>
+                Config</button>
+            <button onclick="showSection('asistencia')" class="nav-item" id="nav-asistencia"><i
+                    class="bi bi-calendar-check"></i> Asistencia</button>
+            <button onclick="showSection('mensajes')" class="nav-item" id="nav-mensajes"><i
+                    class="bi bi-envelope-fill"></i> Mensajes</button>
+            <button onclick="showSection('backup')" class="nav-item" id="nav-backup"><i class="bi bi-database"></i>
+                Backup</button>
             <button onclick="logout()" class="nav-item danger"><i class="bi bi-box-arrow-left"></i> Salir</button>
         </nav>
     </header>
@@ -44,7 +53,7 @@
                 </header>
                 <div id="metricsContent" class="metrics-grid"></div>
             </article>
-            
+
             <article class="card-futurist">
                 <header class="card-header">
                     <h3><i class="bi bi-person-workspace"></i> Servicios por Técnico</h3>
@@ -114,7 +123,8 @@
                         <input type="number" step="0.1" id="c-garantia">
                     </div>
                     <div class="span-2">
-                        <button type="submit" class="btn-futurist"><i class="bi bi-check2-circle"></i> Guardar Configuración</button>
+                        <button type="submit" class="btn-futurist"><i class="bi bi-check2-circle"></i> Guardar
+                            Configuración</button>
                     </div>
                 </form>
             </article>
@@ -140,6 +150,37 @@
             </article>
         </section>
 
+        <!-- SECCIÓN: BACKUP -->
+        <section id="sec-backup" class="section" style="display:none;">
+            <article class="card-futurist">
+                <header class="card-header">
+                    <h3><i class="bi bi-database-fill-gear"></i> Gestión de Base de Datos</h3>
+                </header>
+
+                <p>
+                    Desde aquí puedes descargar un respaldo completo de todos los datos
+                    del sistema o restaurarlos desde un archivo de backup.
+                </p>
+
+                <div class="backup-actions">
+
+                    <button onclick="descargarBackup()" class="btn-futurist">
+                        <i class="bi bi-download"></i>
+                        Descargar Backup Completo
+                    </button>
+
+                    <label class="btn-futurist outline" for="backupFile">
+                        <i class="bi bi-upload"></i>
+                        Subir Backup
+                    </label>
+
+                    <input type="file" id="backupFile" accept=".json" style="display:none"
+                        onchange="subirBackup(event)">
+                </div>
+            </article>
+        </section>
+
+
         <!-- SECCIÓN: MENSAJES -->
         <section id="sec-mensajes" class="section" style="display:none;">
             <article class="card-futurist">
@@ -153,4 +194,5 @@
     </main>
     <script src="app.js"></script>
 </body>
+
 </html>

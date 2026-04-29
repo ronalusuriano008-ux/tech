@@ -11,6 +11,7 @@ const inventarioRoutes = require('./routes/inventarioRoutes');
 const mensajeRoutes = require('./routes/mensajeRoutes');
 const asistenciaRoutes = require('./routes/asistenciaRoutes');
 const reporteRoutes = require('./routes/reporteRoutes');
+const backupRoutes = require('./routes/backupRoutes');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use('/api/inventario', inventarioRoutes);
 app.use('/api/mensajes', mensajeRoutes);
 app.use('/api/asistencia', asistenciaRoutes);
 app.use('/api/reportes', reporteRoutes);
+app.use('/api/backup', backupRoutes);
 
 // Redirección de la raíz al login
 app.get('/', (req, res) => {
