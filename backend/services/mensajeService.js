@@ -1,16 +1,30 @@
 // backend/services/mensajeService.js
 const fileDB = require('../db/fileDB');
 
-const getMensajes = async (userId) => {
-    let mensajes = await fileDB.findAll('mensajes');
-    if (userId) {
-        mensajes = mensajes.filter(m => m.de === userId);
-    }
-    return mensajes.sort((a,b) => new Date(b.fechaRegistro) - new Date(a.fechaRegistro));
+// ADMIN: sin userId → devuelve todos los mensajes
+// (el frontend los agrupa y ordena por conversación)
+const getMensajes = async () => {
+    const mensajes = await fileDB.findAll('mensajes');
+    return mensajes.sort((a, b) => new Date(b.fechaRegistro) - new Date(a.fechaRegistro));
 };
 
-const createMensaje = async (data) => await fileDB.create('mensajes', { ...data, leido: false });
+// TECNICO: devuelve mensajes donde es remitente O destinatario
+const getMensajesByParticipant = async (userId) => {
+    const mensajes = await fileDB.findAll('mensajes');
+    return mensajes
+        .filter(m => m.de === userId || m.para === userId)
+        .sort((a, b) => new Date(b.fechaRegistro) - new Date(a.fechaRegistro));
+};
+
+const createMensaje = async (data) => {
+    return await fileDB.create('mensajes', {
+        de: data.de,
+        para: data.para,
+        contenido: data.contenido,
+        leido: false
+    });
+};
 
 const marcarLeido = async (id) => await fileDB.update('mensajes', id, { leido: true });
 
-module.exports = { getMensajes, createMensaje, marcarLeido };
+module.exports = { getMensajes, getMensajesByParticipant, createMensaje, marcarLeido };

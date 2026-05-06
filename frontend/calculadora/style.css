@@ -258,3 +258,84 @@ body {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
 ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 2px; }
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 480px) {
+    .container {
+        max-width: 100%;
+        padding: 1rem;
+    }
+    
+    .header-title h1 {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+        margin-bottom: 0.2rem;
+    }
+    
+    .header-title p {
+        font-size: 0.8rem;
+    }
+    
+    .card-futurist {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .config-strip {
+        padding: 10px 12px;
+        font-size: 0.7rem;
+        margin-bottom: 1rem;
+    }
+    
+    .calc-grid input[type="number"] {
+        padding: 12px !important;
+        font-size: 1rem;
+    }
+    
+    .neon-glow-text {
+        font-size: 2.5rem !important;
+    }
+    
+    .nav-bottom {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .btn-futurist.btn-outline {
+        width: 100%;
+    }
+    
+    .btn-nav.danger {
+        width: 100%;
+        padding: 12px !important;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .container {
+        max-width: 400px;
+        padding: 1.2rem;
+    }
+    
+    .header-title h1 {
+        font-size: 1.7rem;
+    }
+    
+    .neon-glow-text {
+        font-size: 2.8rem !important;
+    }
+    
+    .nav-bottom {
+        flex-direction: column;
+    }
+    
+    .btn-futurist.btn-outline {
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 450px;
+    }
+}

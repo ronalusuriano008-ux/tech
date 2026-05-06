@@ -1,4 +1,3 @@
-
 /* ==========================================
    VARIABLES GLOBALES FUTURISTAS
    ========================================== */
@@ -8,10 +7,8 @@
     --bg-dark: #101014;
     --bg-card: #1a1a24;
     --text-main: #e0e0e0;
-}
 
-/* Forzar tema oscuro si Pico no lo detecta */
-[data-theme="dark"] {
+    /* Pico CSS overrides (tema oscuro forzado) */
     --pico-background-color: var(--bg-dark);
     --pico-card-background-color: var(--bg-card);
     --pico-card-border-color: #2a2a3a;
@@ -31,7 +28,7 @@ body {
 }
 
 /* ==========================================
-   COMPONENTES FUTURISTAS BASE
+   COMPONENTES
    ========================================== */
 .container {
     max-width: 400px;
@@ -44,7 +41,8 @@ body {
     border: 1px solid #2a2a3a;
     border-radius: 16px;
     padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 243, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+                0 0 15px rgba(0, 243, 255, 0.05);
     backdrop-filter: blur(10px);
 }
 
@@ -64,7 +62,7 @@ h5, p {
     margin-bottom: 1.5rem;
 }
 
-/* Input group con iconos */
+/* Input con icono */
 .input-group {
     position: relative;
     margin-bottom: 1.5rem;
@@ -97,8 +95,8 @@ h5, p {
     outline: none;
 }
 
-.input-group input:focus + i,
-.input-group input:focus ~ i {
+/* Ícono se ilumina al hacer foco en el input */
+.input-group:focus-within i {
     color: var(--neon-blue);
 }
 
@@ -131,7 +129,7 @@ h5, p {
     transform: translateY(0);
 }
 
-/* Mensajes de error */
+/* Mensaje de error */
 .error-msg {
     background: rgba(255, 0, 80, 0.1);
     color: #ff0050;
@@ -142,14 +140,93 @@ h5, p {
     font-size: 0.9rem;
 }
 
-/* Scrollbar personalizado para Android */
+/* Scrollbar */
 ::-webkit-scrollbar {
     width: 6px;
 }
+
 ::-webkit-scrollbar-track {
     background: var(--bg-dark);
 }
+
 ::-webkit-scrollbar-thumb {
     background: #2a2a3a;
     border-radius: 3px;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 480px) {
+    .container {
+        max-width: 100%;
+        padding: 1.5rem;
+    }
+    
+    .card-futurist {
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+        margin-bottom: 0.3rem;
+    }
+    
+    h5, p {
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .input-group {
+        margin-bottom: 1rem;
+    }
+    
+    .input-group input {
+        padding: 12px 12px 12px 40px;
+        font-size: 16px;
+    }
+    
+    .input-group i {
+        font-size: 1rem;
+        left: 12px;
+    }
+    
+    .btn-futurist {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    
+    .error-msg {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .container {
+        max-width: 380px;
+        padding: 1.2rem;
+    }
+    
+    .card-futurist {
+        padding: 1.8rem;
+    }
+    
+    h1 {
+        font-size: 1.7rem;
+    }
+    
+    .input-group input {
+        font-size: 15px;
+    }
+    
+    .btn-futurist {
+        font-size: 0.95rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 400px;
+    }
 }

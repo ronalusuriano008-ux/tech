@@ -13,19 +13,6 @@
     "fechaRegistro": "2023-01-01T00:00:00.000Z"
   },
   {
-    "id": "tech-001",
-    "nombre": "Carlos Méndez",
-    "usuario": "carlos",
-    "password": "1234",
-    "role": "TECNICO",
-    "horarioEntrada": "10:00",
-    "horarioSalida": "19:00",
-    "diasDescanso": [
-      1
-    ],
-    "fechaRegistro": "2023-01-01T00:00:00.000Z"
-  },
-  {
     "id": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
     "nombre": "rony",
     "usuario": "rony",
@@ -37,14 +24,14 @@
     "fechaRegistro": "2026-04-28T16:24:47.615Z"
   },
   {
-    "id": "5559db78-468c-4c75-8f3f-6e3aeb588149",
-    "nombre": "raul",
-    "usuario": "raul",
-    "password": "475587",
+    "id": "72e9fcab-1b62-475e-9170-6d9266107053",
+    "nombre": "Wilmer",
+    "usuario": "wilmer",
+    "password": "60007190",
     "role": "TECNICO",
     "horarioEntrada": "07:30",
     "horarioSalida": "20:30",
     "diasDescanso": [],
-    "fechaRegistro": "2026-04-28T17:32:17.809Z"
+    "fechaRegistro": "2026-05-05T14:40:53.412Z"
   }
 ]

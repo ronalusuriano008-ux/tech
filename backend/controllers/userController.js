@@ -11,6 +11,21 @@ const getUsers = async (req, res) => {
     }
 };
 
+const getAdminInfo = async (req, res) => {
+    try {
+        const users = await userService.getUsers();
+        const admin = users.find(u => u.role === 'ADMIN');
+
+        if (!admin) {
+            return res.status(404).json({ error: 'Administrador no encontrado' });
+        }
+
+        res.json({ id: admin.id, nombre: admin.nombre });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener administrador' });
+    }
+};
+
 const createUser = async (req, res) => {
     try {
         const user = await userService.createUser(req.body);
@@ -40,4 +55,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-module.exports = { getUsers, createUser, updateUser, deleteUser };
+module.exports = { getUsers, getAdminInfo, createUser, updateUser, deleteUser };

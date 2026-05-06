@@ -1,1 +1,81 @@
-[]
+[
+  {
+    "id": "e5fb5354-dac2-4b1a-9a1c-6b7176367ebf",
+    "contenido": "hola",
+    "de": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "leido": true,
+    "fechaRegistro": "2026-04-29T15:09:41.620Z"
+  },
+  {
+    "id": "09943f04-aae1-4bdc-980e-9f21ccab1b07",
+    "de": "admin-001",
+    "para": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "contenido": "hashvcas",
+    "leido": true,
+    "fechaRegistro": "2026-05-06T07:45:42.931Z"
+  },
+  {
+    "id": "5f5081fb-17b3-4fee-aefc-e189eea1f6a9",
+    "de": "admin-001",
+    "para": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "contenido": "ajshvasgcasvhacsjv",
+    "leido": true,
+    "fechaRegistro": "2026-05-06T07:45:46.819Z"
+  },
+  {
+    "id": "8c4b2f55-ce09-494d-b1c7-1d5b656550b7",
+    "de": "admin-001",
+    "para": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "contenido": "ascjhgashjvca",
+    "leido": true,
+    "fechaRegistro": "2026-05-06T07:45:48.713Z"
+  },
+  {
+    "id": "008b5600-38ca-4019-8809-a33c19d5dfe0",
+    "de": "admin-001",
+    "para": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "contenido": "asjhgachjbvac",
+    "leido": true,
+    "fechaRegistro": "2026-05-06T07:45:51.150Z"
+  },
+  {
+    "id": "41695ae9-e134-4f08-8cb5-6f6de8eb5461",
+    "de": "admin-001",
+    "para": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "contenido": "jahgchjavchv",
+    "leido": true,
+    "fechaRegistro": "2026-05-06T07:45:53.054Z"
+  },
+  {
+    "id": "68c29177-b202-490f-951f-6d4702b03f33",
+    "de": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "para": "admin-001",
+    "contenido": "hola como esta",
+    "leido": true,
+    "fechaRegistro": "2026-05-06T07:46:17.473Z"
+  },
+  {
+    "id": "df7cd9bf-e1ef-4240-8b82-880d1163e993",
+    "de": "admin-001",
+    "para": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "contenido": "estoy biem",
+    "leido": true,
+    "fechaRegistro": "2026-05-06T07:46:35.242Z"
+  },
+  {
+    "id": "15dd8027-025a-406f-a559-830e9d05e11a",
+    "de": "admin-001",
+    "para": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "contenido": "pk",
+    "leido": true,
+    "fechaRegistro": "2026-05-06T07:46:43.337Z"
+  },
+  {
+    "id": "e755e3b3-674b-46e1-91c1-1a0c29254d39",
+    "de": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "para": "admin-001",
+    "contenido": "que bueno",
+    "leido": true,
+    "fechaRegistro": "2026-05-06T07:46:50.336Z"
+  }
+]

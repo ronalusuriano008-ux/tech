@@ -207,26 +207,13 @@ label { color: #8a8a9a; font-size: 0.85rem; font-weight: 600; }
 .metric-card h4 { margin: 0 0 0.5rem 0; color: #8a8a9a; font-size: 0.8rem; text-transform: uppercase; }
 .metric-card p { margin: 0; font-size: 1.8rem; font-weight: bold; color: var(--neon-blue); }
 
-.tech-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.tech-list li {
-    background: #12121a;
-    margin-bottom: 0.5rem;
-    padding: 1rem;
-    border-radius: 8px;
-    border-left: 3px solid var(--neon-purple);
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-}
-
 /* Forms */
 .grid-form-admin { display: flex; flex-direction: column; }
-.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
 
 .config-grid {
     display: grid;
@@ -234,32 +221,77 @@ label { color: #8a8a9a; font-size: 0.85rem; font-weight: 600; }
     gap: 1rem;
 }
 
+/* Responsive Forms Mobile */
+@media (max-width: 480px) {
+    .form-row-2 {
+        grid-template-columns: 1fr;
+    }
+    
+    .config-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .grid-form-admin input {
+        font-size: 16px !important;
+    }
+}
+
 .input-icon-group.span-2, .span-2 { grid-column: span 2; }
 .input-icon-group label { display: block; margin-bottom: 0.5rem; }
 
-/* Tablas */
-.table-container { padding: 0 !important; overflow: hidden; }
-table { margin: 0 !important; width: 100%; border-collapse: collapse; }
+/* Tablas - Responsive */
+.table-container {
+    padding: 0 !important;
+    overflow-x: auto;
+    overflow-y: visible;
+    border-radius: 8px;
+    border: 1px solid #2a2a3a;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    margin: 0 !important;
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
 
 th {
     background: #12121a !important;
     color: var(--neon-blue) !important;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 12px !important;
-    border-bottom: 1px solid #2a2a3a !important;
+    padding: 10px 8px !important;
+    border-bottom: 2px solid #2a2a3a !important;
+    white-space: nowrap;
 }
 
 td {
     background: transparent !important;
     border-bottom: 1px solid #1f1f2e !important;
     color: #c0c0c0;
-    font-size: 0.9rem;
-    padding: 12px !important;
+    font-size: 0.85rem;
+    padding: 10px 8px !important;
 }
 
-tbody tr:hover td { background: #1f1f2e !important; }
+tbody tr:hover td { background: rgba(0, 243, 255, 0.05) !important; }
+
+/* Scrollbar personalizado para tablas */
+.table-container::-webkit-scrollbar {
+    height: 6px;
+}
+.table-container::-webkit-scrollbar-track {
+    background: #12121a;
+    border-radius: 3px;
+}
+.table-container::-webkit-scrollbar-thumb {
+    background: #2a2a3a;
+    border-radius: 3px;
+}
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--neon-blue);
+}
 
 /* Botones de tabla */
 .btn-table {
@@ -311,8 +343,64 @@ tbody tr:hover td { background: #1f1f2e !important; }
 ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 2px; }
 
 /* Media queries para Tablets/Desktop */
+@media (max-width: 480px) {
+    .header-top h1 {
+        font-size: 1rem;
+    }
+    
+    .nav-item {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.8rem;
+        gap: 0.2rem;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .metric-card {
+        padding: 0.8rem;
+    }
+    
+    .metric-card h4 {
+        font-size: 0.75rem;
+    }
+    
+    .metric-card p {
+        font-size: 1.4rem;
+    }
+    
+    .top-bar-filter {
+        flex-direction: column;
+        padding: 0.8rem;
+    }
+    
+    .filter-date {
+        width: 100%;
+    }
+    
+    .btn-futurist {
+        font-size: 0.85rem;
+        padding: 10px !important;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .table-container {
+        font-size: 0.8rem;
+    }
+}
+
 @media (min-width: 768px) {
     .metrics-grid { grid-template-columns: repeat(4, 1fr); }
+    
+    table {
+        min-width: auto;
+    }
 }
 
 /* ===============================
@@ -379,5 +467,138 @@ tbody tr:hover td { background: #1f1f2e !important; }
     .backup-actions label.btn-futurist {
         width: 100%;
         min-width: unset;
+    }
+}
+/* ==========================================
+   TECH METRICS - FUTURISTIC PRO UI
+   ========================================== */
+
+#techMetrics {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Card base */
+.tech-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-card);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border: 1px solid #2a2a3a;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glow + elevación */
+.tech-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 18px rgba(0, 243, 255, 0.18);
+}
+
+/* Barra lateral visual (indicador rápido) */
+.tech-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple));
+}
+
+/* Ranking */
+.tech-rank {
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: var(--neon-purple);
+    width: 35px;
+    text-align: center;
+}
+
+/* Info central */
+.tech-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Nombre */
+.tech-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    letter-spacing: 0.3px;
+}
+
+/* Servicios */
+.tech-services {
+    font-size: 0.75rem;
+    color: #8a8a9a;
+}
+
+/* Utilidad (protagonista) */
+.tech-profit {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--neon-blue);
+    text-shadow: 0 0 6px rgba(0, 243, 255, 0.4);
+}
+
+/* ==========================================
+   TOP 3 DESTACADOS
+   ========================================== */
+
+/* 🥇 */
+.tech-card.top-1 {
+    border-color: gold;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.25);
+}
+
+.tech-card.top-1 .tech-profit {
+    color: gold;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+/* 🥈 */
+.tech-card.top-2 {
+    border-color: silver;
+}
+
+.tech-card.top-2 .tech-profit {
+    color: #c0c0c0;
+}
+
+/* 🥉 */
+.tech-card.top-3 {
+    border-color: #cd7f32;
+}
+
+.tech-card.top-3 .tech-profit {
+    color: #cd7f32;
+}
+
+/* ==========================================
+   ANIMACIÓN DE ENTRADA
+   ========================================== */
+
+.tech-card {
+    animation: fadeInUp 0.4s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
