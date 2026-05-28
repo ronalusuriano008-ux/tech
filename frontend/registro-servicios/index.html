@@ -72,9 +72,18 @@
             scrollbar-color: #2a2a3a transparent;
         }
 
-        .chat-thread-messages::-webkit-scrollbar { width: 4px; }
-        .chat-thread-messages::-webkit-scrollbar-track { background: transparent; }
-        .chat-thread-messages::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 2px; }
+        .chat-thread-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-thread-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-thread-messages::-webkit-scrollbar-thumb {
+            background: #2a2a3a;
+            border-radius: 2px;
+        }
 
         .chat-thread-empty {
             flex: 1;
@@ -107,8 +116,15 @@
         }
 
         @keyframes techBubbleIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .chat-bubble.received {
@@ -296,17 +312,26 @@
         }
 
         @keyframes pulseFab {
-            0%, 100% { box-shadow: 0 0 8px rgba(255, 0, 80, 0.6); }
-            50% { box-shadow: 0 0 14px rgba(255, 0, 80, 0.9); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 8px rgba(255, 0, 80, 0.6);
+            }
+
+            50% {
+                box-shadow: 0 0 14px rgba(255, 0, 80, 0.9);
+            }
         }
 
         @media (max-width: 480px) {
             .chat-thread {
                 height: 360px;
             }
+
             .chat-bubble {
                 max-width: 88%;
             }
+
             .chat-fab-badge {
                 bottom: 16px;
                 right: 16px;
@@ -325,11 +350,18 @@
             <h1><i class="bi bi-phone"></i> <span id="userName">Técnico</span></h1>
         </div>
         <nav class="nav-grid">
-            <a href="/calculadora/index.html" class="btn-nav calc"><i class="bi bi-calculator"></i>Calculadora<br>precios</a>
-            <button onclick="descargarReporte()" class="btn-nav report"><i class="bi bi-download"></i>Descargar</br>Reporte</button>
-            <button onclick="checkIn()" class="btn-nav success"><i class="bi bi-box-arrow-in-right"></i>Registrar</br>Entrada</button>
-            <button onclick="checkOut()" class="btn-nav logout"><i class="bi bi-box-arrow-right"></i>Registrar</br>Salida</button>
-            <button onclick="logout()" class="btn-nav danger"><i class="bi bi-box-arrow-left"></i>Cerrar</br>Sesión</button>
+            <a href="/calculadora/index.html" class="btn-nav calc"><i
+                    class="bi bi-calculator"></i>Calculadora<br>precios</a>
+            <button onclick="descargarReporteImagen()" class="btn-nav report">
+                <i class="bi bi-image"></i>
+                Descargar<br>Imagen
+            </button>
+            <button onclick="checkIn()" class="btn-nav success"><i
+                    class="bi bi-box-arrow-in-right"></i>Registrar</br>Entrada</button>
+            <button onclick="checkOut()" class="btn-nav logout"><i
+                    class="bi bi-box-arrow-right"></i>Registrar</br>Salida</button>
+            <button onclick="logout()" class="btn-nav danger"><i
+                    class="bi bi-box-arrow-left"></i>Cerrar</br>Sesión</button>
         </nav>
     </header>
 
@@ -442,6 +474,52 @@
     <div id="reporte-render-container" style="position: absolute; left: -9999px; top: 0;"></div>
 
     <script src="app.js"></script>
+    <script>
+    async function descargarReporteImagen() {
+            try {
+
+                const user = JSON.parse(localStorage.getItem('user'));
+
+                if (!user) {
+                    throw new Error('Usuario no encontrado en localStorage');
+                }
+
+                const response = await fetch('/api/reportes/imagen', {
+                    method: 'GET',
+                    headers: {
+                        'x-user-id': user.id,
+                        'x-user-role': user.role
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('No se pudo generar el reporte');
+                }
+
+                // Obtener archivo JPG
+                const blob = await response.blob();
+
+                // Crear URL temporal
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `reporte_${Date.now()}.jpg`;
+
+                document.body.appendChild(a);
+                a.click();
+
+                a.remove();
+                window.URL.revokeObjectURL(url);
+
+                alert('Reporte descargado correctamente');
+
+            } catch (error) {
+                console.error(error);
+                alert(error.message || 'Error al descargar reporte');
+            }
+        }
+    </script>
 </body>
 
 </html>

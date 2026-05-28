@@ -61,7 +61,6 @@
 │       ├── app.js
 │       ├── index.html
 │       └── style.css
-├── package.json
-└── package-lock.json
+└── package.json
 
-14 directories, 51 files
+14 directories, 50 files

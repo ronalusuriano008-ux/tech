@@ -454,5 +454,53 @@
     "usuarioId": "72e9fcab-1b62-475e-9170-6d9266107053",
     "hora": "09:45",
     "fechaRegistro": "2026-05-05T14:45:01.507Z"
+  },
+  {
+    "id": "d4d61758-9bfc-4074-9fb5-551b7f587236",
+    "servicio": "puwfpe",
+    "modelo": "ñfweihpuewhf",
+    "precio": 200,
+    "costo": 100,
+    "utilidad": 100,
+    "fecha": "2026-05-27",
+    "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "hora": "19:36",
+    "fechaRegistro": "2026-05-28T00:36:56.934Z"
+  },
+  {
+    "id": "2380a9e3-37b0-4529-9768-804ba3687c2d",
+    "servicio": "Cambio de pantalla ",
+    "modelo": "Honor x5b",
+    "precio": 90,
+    "costo": 50,
+    "utilidad": 40,
+    "fecha": "2026-05-28",
+    "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "hora": "12:01",
+    "fechaRegistro": "2026-05-28T17:01:11.120Z"
+  },
+  {
+    "id": "54177c61-883b-4918-8602-4a69772e0267",
+    "servicio": "Pegado de pantalla ",
+    "modelo": "Motorola g13",
+    "precio": 10,
+    "costo": 0,
+    "utilidad": 10,
+    "fecha": "2026-05-28",
+    "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "hora": "12:01",
+    "fechaRegistro": "2026-05-28T17:01:18.856Z"
+  },
+  {
+    "id": "d244c715-c6eb-40cf-85bd-8ed46389a6cd",
+    "servicio": "Cambio de pantalla ",
+    "modelo": "Samsung a21s",
+    "precio": 70,
+    "costo": 40,
+    "utilidad": 30,
+    "fecha": "2026-05-28",
+    "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "hora": "12:01",
+    "fechaRegistro": "2026-05-28T17:01:32.103Z"
   }
 ]
