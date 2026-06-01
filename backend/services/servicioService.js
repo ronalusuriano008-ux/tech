@@ -1,12 +1,12 @@
 // backend/services/servicioService.js
 const fileDB = require('../db/fileDB');
-const { getLocalDateString } = require('../utils/dateUtils'); // <-- IMPORTAR NUEVA UTILIDAD
+const { getLocalDateString } = require('../utils/dateUtils'); 
 
 // Eliminar la función vieja: const getTodayString = () => new Date().toISOString().split('T')[0];
 
 const getServicios = async (fecha, userId) => {
     let servicios = await fileDB.findAll('servicios');
-    const filterDate = fecha || getLocalDateString(); // <-- CAMBIO AQUÍ
+    const filterDate = fecha || getLocalDateString();
     
     servicios = servicios.filter(s => s.fecha === filterDate);
     
@@ -18,7 +18,7 @@ const getServicios = async (fecha, userId) => {
 };
 
 const createServicio = async (data) => {
-    if (!data.fecha) data.fecha = getLocalDateString(); // <-- CAMBIO AQUÍ
+    if (!data.fecha) data.fecha = getLocalDateString(); 
     return await fileDB.create('servicios', data);
 };
 

@@ -6,7 +6,7 @@ const headers = { 'Content-Type': 'application/json', 'x-user-id': user.id, 'x-u
 if (!user || user.role !== 'ADMIN') window.location.href = '/login/index.html';
 
 document.getElementById('filterFecha').valueAsDate = new Date();
-
+console.log('Fecha filtro admin:', getFecha());
 // ===============================
 // NAVEGACIÓN
 // ===============================

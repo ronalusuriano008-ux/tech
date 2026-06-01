@@ -512,3 +512,15 @@ tbody tr button:hover {
         min-width: auto;
     }
 }
+
+.report-img-wrapper th,
+.report-img-wrapper td {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
+}
+
+.report-img-wrapper {
+    background: #ffffff !important;
+    color: #000000 !important;
+} 

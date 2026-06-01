@@ -1,6 +1,5 @@
 // backend/utils/dateUtils.js
 
-// ---> CAMBIA ESTO POR TU ZONA HORARIA <---
 const WORKSHOP_TIMEZONE = 'America/Lima'; 
 
 const getLocalDateString = () => {

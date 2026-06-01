@@ -1,5 +1,5 @@
 // frontend/registro-servicios/app.js
-const API = '/api';
+const API = 'https://api.vixbox.xyz/api';
 
 const user = JSON.parse(localStorage.getItem('user'));
 
@@ -178,52 +178,55 @@ const descargarReporte = async () => {
 
         container.innerHTML = `
             <div class="report-img-wrapper" style="background:#ffffff; color:#000000; padding:20px; font-family:Arial;">
-                <h2 style="color:#000;">
+                <h2 style="color:#000000;">
                     <i class="bi bi-file-earmark-text"></i> Reporte Diario
                 </h2>
-                <div class="report-img-header" style="display:flex; justify-content:space-between; color:#000;">
-                    <div><span>Técnico:</span><br><strong>${data.tecnico}</strong></div>
+                <div class="report-img-header" style="display:flex; justify-content:space-between; color:#000000;">
+                    <div><span>Técnico:</span><br><strong>${data.tecnico.toUpperCase()}</strong></div>
                     <div style="text-align:right"><span>Fecha:</span><br><strong>${data.fecha}</strong></div>
                 </div>
                 <table class="report-img-table" style="width:100%; border-collapse:collapse; margin-top:10px;">
                     <thead>
-                        <tr style="background:#f0f0f0; color:#000;">
-                            <th style="border:1px solid #ccc; padding:8px;">Hora</th>
-                            <th style="border:1px solid #ccc; padding:8px;">Servicio</th>
-                            <th style="border:1px solid #ccc; padding:8px;">Precio</th>
-                            <th style="border:1px solid #ccc; padding:8px;">Costo</th>
-                            <th style="border:1px solid #ccc; padding:8px;">Utilidad</th>
+                        <tr style="background:#ffffff; color:#000000;">
+                            <th style="border:1px solid #000000; padding:8px;">Hora</th>
+                            <th style="border:1px solid #000000; padding:8px;">Servicio</th>
+                            <th style="border:1px solid #000000; padding:8px;">Precio</th>
+                            <th style="border:1px solid #000000; padding:8px;">Costo</th>
+                            <th style="border:1px solid #000000; padding:8px;">Utilidad</th>
                         </tr>
                     </thead>
                     <tbody>${serviciosHTML}</tbody>
                 </table>
-                <div class="report-img-totals" style="margin-top:15px; color:#000;">
+                <div class="report-img-totals" style="margin-top:15px; color:#000000;">
                     <div class="report-img-row" style="display:flex; justify-content:space-between;">
                         <span>Ingresos (${data.cantidadServicios} srv):</span>
-                        <span style="color:#000; font-weight:bold;">S/.${data.totalIngresos.toFixed(2)}</span>
+                        <span style="color:#000000; font-weight:bold;">S/.${data.totalIngresos.toFixed(2)}</span>
                     </div>
                     <div class="report-img-row" style="display:flex; justify-content:space-between;">
                         <span>Costos:</span>
-                        <span style="color:#000; font-weight:bold;">S/.${data.totalCostos.toFixed(2)}</span>
+                        <span style="color:#000000; font-weight:bold;">S/.${data.totalCostos.toFixed(2)}</span>
                     </div>
                     <div class="report-img-row report-img-total-final" style="display:flex; justify-content:space-between; font-size:18px;">
                         <span>Utilidad:</span>
-                        <span style="color:#000; font-weight:bold;">S/.${data.utilidadTotal.toFixed(2)}</span>
+                        <span style="color:#000000; font-weight:bold;">S/.${data.utilidadTotal.toFixed(2)}</span>
                     </div>
                     <div class="report-img-row" style="display:flex; justify-content:space-between;">
                         <span>Distribucion de utilidad:</span>
-                        <span style="color:#000; font-weight:bold;">S/.${(data.utilidadTotal / 2).toFixed(2)}</span>
+                        <span style="color:#000000; font-weight:bold;">S/.${(data.utilidadTotal / 2).toFixed(2)}</span>
                     </div>
                 </div>
             </div>`;
 
         await new Promise(r => setTimeout(r, 100));
 
-        const canvas = await html2canvas(container.querySelector('.report-img-wrapper'), {
-            backgroundColor: '#0d112e',
-            scale: 3,
-            useCORS: true
-        });
+        const canvas = await html2canvas(
+            container.querySelector('.report-img-wrapper'),
+            {
+                backgroundColor: '#ffffff',
+                scale: 3,
+                useCORS: true
+            }
+        );
 
         const link = document.createElement('a');
         link.download = `reporte_${data.fecha}_${data.tecnico.replace(/\s+/g, '_')}.png`;
@@ -238,6 +241,7 @@ const descargarReporte = async () => {
         alert('Error al generar imagen: ' + error.message);
     }
 };
+
 // ===============================
 // CHAT BILATERAL CON ADMIN
 // ===============================
