@@ -10,15 +10,15 @@ if (!user || user.role !== 'ADMIN') window.location.href = '/login/index.html';
 // ===============================
 const getFechaLima = () => {
     const ahora = new Date();
-    // Obtener fecha en zona horaria de Lima (UTC-5)
-    const opciones = {
-        timeZone: 'America/Lima',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-    };
-    const partes = ahora.toLocaleDateString('en-CA', opciones).split('-');
-    return `${partes[0]}-${partes[1]}-${partes[2]}`;
+
+    const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Lima',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+});
+
+    return formatter.format(ahora);
 };
 
 // Establecer fecha inicial del filtro
