@@ -192,13 +192,16 @@ function renderTableRows() {
 }
 
 function handleInput(day, tech, type, value) {
+    console.log('[handleInput] Día:', day, 'Tech:', tech, 'Type:', type, 'Value:', value);
     let dayObj = monthData.days.find(d => d.day === day);
     if (!dayObj) {
         dayObj = { day, st1: { cash: 0, yape: 0 }, st2: { cash: 0, yape: 0 } };
         monthData.days.push(dayObj);
         monthData.days.sort((a, b) => a.day - b.day);
+        console.log('[handleInput] Nuevo día creado:', dayObj);
     }
     dayObj[tech][type] = parseNumber(value);
+    console.log('[handleInput] Dato actualizado en monthData:', dayObj);
     recalculateAll();
 }
 
@@ -242,28 +245,37 @@ function recalculateAll() {
 }
 
 async function handleSave(day) {
+    console.log('[handleSave] Iniciando guardado para día:', day);
     const dayObj = monthData.days.find(d => d.day === day);
-    if (!dayObj) return;
+    if (!dayObj) {
+        console.log('[handleSave] No hay objeto para el día:', day);
+        return;
+    }
     
     // Limpiar debouncer anterior si existe
     if (saveDebouncers[day]) {
+        console.log('[handleSave] Limpiando debouncer anterior para día:', day);
         clearTimeout(saveDebouncers[day]);
     }
     
     // Crear nuevo debouncer para este día (esperar 1 segundo después del último cambio)
     saveDebouncers[day] = setTimeout(async () => {
         try {
+            console.log('[handleSave] Enviando datos para día:', day, dayObj);
             const response = await saveDayData({
                 year: currentYear, month: currentMonth, day: day,
                 st1: dayObj.st1, st2: dayObj.st2
             });
+            console.log('[handleSave] Respuesta recibida:', response);
             if (response && response.success) {
                 showToast(`Día ${day} guardado correctamente`);
+                console.log('[handleSave] Guardado exitoso para día:', day);
             } else {
                 showToast(`Error: Día ${day} no se guardó`, true);
+                console.log('[handleSave] Error: respuesta sin success flag');
             }
         } catch (err) { 
-            console.error('Error al guardar día:', err);
+            console.error('[handleSave] Error al guardar día:', day, err);
             showToast(`Error al guardar día ${day}: ${err.message || 'Error desconocido'}`, true); 
         }
     }, 1000);
