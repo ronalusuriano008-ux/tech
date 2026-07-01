@@ -63,52 +63,88 @@ window.exportToPNG = async () => {
     finally { hidePageLoader(); }
 };
 
-async function downloadBackupJson() {
+async function downloadDashboardBackupJson() {
     try {
-        const res = await fetch(window.getApiUrl('/backup/export'));
-        if (!res.ok) throw new Error('No se pudo descargar el backup general');
-        const backup = await res.json();
+        const backup = {
+            year: currentYear,
+            month: currentMonth,
+            days: (monthData.days || []).map((day) => ({
+                day: Number(day.day),
+                st1: {
+                    cash: Number(day.st1?.cash) || 0,
+                    yape: Number(day.st1?.yape) || 0
+                },
+                st2: {
+                    cash: Number(day.st2?.cash) || 0,
+                    yape: Number(day.st2?.yape) || 0
+                }
+            }))
+        };
         const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `backup-general-${new Date().toISOString().slice(0,10)}.json`;
+        link.download = `dashboard-${currentYear}-${String(currentMonth).padStart(2, '0')}.json`;
         document.body.appendChild(link);
         link.click();
         link.remove();
         URL.revokeObjectURL(url);
-        showToast('Backup general descargado');
+        showToast('Backup del dashboard descargado');
     } catch (err) {
-        showToast(err.message || 'Error al descargar el backup general', true);
+        showToast(err.message || 'Error al descargar el backup del dashboard', true);
         console.error(err);
     }
 }
 
-async function importBackupJson(file) {
+async function importDashboardBackupJson(file) {
     if (!file) return;
-    const confirmed = confirm('¿Restaurar este backup general en la base de datos?');
+    const confirmed = confirm(`¿Restaurar este backup del dashboard en ${currentMonth}/${currentYear}?`);
     if (!confirmed) return;
 
     try {
+        showPageLoader();
         const text = await file.text();
         const backup = JSON.parse(text);
-        const res = await fetch(window.getApiUrl('/backup/import'), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(backup)
-        });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data.error || 'No se pudo importar el backup');
-        showToast('Backup restaurado correctamente');
-        window.location.reload();
+        const days = Array.isArray(backup?.days) ? backup.days : [];
+        if (!backup || typeof backup !== 'object' || days.length === 0) {
+            throw new Error('El archivo no contiene datos válidos del dashboard');
+        }
+
+        const targetYear = Number(backup.year || currentYear);
+        const targetMonth = Number(backup.month || currentMonth);
+
+        for (const day of days) {
+            const normalizedDay = Number(day.day);
+            if (!Number.isFinite(normalizedDay)) continue;
+            await saveDayData({
+                year: targetYear,
+                month: targetMonth,
+                day: normalizedDay,
+                st1: {
+                    cash: Number(day.st1?.cash) || 0,
+                    yape: Number(day.st1?.yape) || 0
+                },
+                st2: {
+                    cash: Number(day.st2?.cash) || 0,
+                    yape: Number(day.st2?.yape) || 0
+                }
+            });
+        }
+
+        currentYear = targetYear;
+        currentMonth = targetMonth;
+        await loadMonth();
+        showToast('Backup del dashboard restaurado correctamente');
     } catch (err) {
-        showToast(err.message || 'Error al importar el backup', true);
+        showToast(err.message || 'Error al importar el backup del dashboard', true);
         console.error(err);
+    } finally {
+        hidePageLoader();
     }
 }
 
-window.exportJSON = () => downloadBackupJson();
-window.importBackupJSON = (file) => importBackupJson(file);
+window.exportJSON = () => downloadDashboardBackupJson();
+window.importBackupJSON = (file) => importDashboardBackupJson(file);
 window.deleteMonth = async () => {
     if (confirm(`¿Eliminar todos los datos de ${currentMonth}/${currentYear}?`)) {
         await deleteMonthData(currentYear, currentMonth);
@@ -137,12 +173,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.getElementById('downloadPdfBtn').addEventListener('click', () => window.exportToPDF());
-    document.getElementById('downloadBackupBtn').addEventListener('click', downloadBackupJson);
+    document.getElementById('downloadBackupBtn').addEventListener('click', downloadDashboardBackupJson);
     document.getElementById('uploadBackupBtn').addEventListener('click', () => document.getElementById('backupFileInput').click());
     document.getElementById('backupFileInput').addEventListener('change', (e) => {
         const file = e.target.files?.[0];
         if (file) {
-            importBackupJson(file);
+            importDashboardBackupJson(file);
             e.target.value = '';
         }
     });
@@ -226,19 +262,16 @@ function renderTableRows() {
     }
 
     document.querySelectorAll('input[data-day]').forEach(input => {
-        input.addEventListener('input', (e) => {
+        const saveForInput = (e) => {
             const day = parseInt(e.target.dataset.day);
             const tech = e.target.dataset.tech;
             const type = e.target.dataset.type;
             handleInput(day, tech, type, e.target.value);
-        });
-        // Guardar al salir del input (blur) o cuando cambia el valor
-        input.addEventListener('blur', (e) => {
-            handleSave(parseInt(e.target.dataset.day));
-        });
-        input.addEventListener('change', (e) => {
-            handleSave(parseInt(e.target.dataset.day));
-        });
+            handleSave(day);
+        };
+        input.addEventListener('input', saveForInput);
+        input.addEventListener('blur', saveForInput);
+        input.addEventListener('change', saveForInput);
     });
 }
 
