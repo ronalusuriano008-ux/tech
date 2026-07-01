@@ -9,10 +9,59 @@ let currentMonth = new Date().getMonth() + 1;
 let monthData = { year: currentYear, month: currentMonth, days: [] };
 const saveDebouncers = {}; // Controlador de debounce por día
 
-// Exponer para HTML
-window.exportToExcel = () => exportToExcel(currentYear, currentMonth, monthData.days);
-window.exportToPDF = () => exportToPDF(currentYear, currentMonth, monthData.days);
-window.exportToPNG = () => exportToImage(currentYear, currentMonth, monthData.days);
+// Carga de scripts externos bajo demanda para reducir requests iniciales
+const _loadedScripts = new Map();
+function loadScriptOnce(url) {
+    if (_loadedScripts.has(url)) return _loadedScripts.get(url);
+    const p = new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = url;
+        s.async = true;
+        s.onload = () => resolve(url);
+        s.onerror = (e) => reject(new Error('Falló carga ' + url));
+        document.head.appendChild(s);
+    });
+    _loadedScripts.set(url, p);
+    return p;
+}
+
+function showPageLoader() {
+    const l = document.getElementById('pageLoader');
+    if (l) { l.style.display = 'flex'; l.setAttribute('aria-hidden','false'); }
+}
+function hidePageLoader() {
+    const l = document.getElementById('pageLoader');
+    if (l) { l.style.display = 'none'; l.setAttribute('aria-hidden','true'); }
+}
+
+// Wrappers para export: cargan librerías sólo cuando se necesitan
+window.exportToExcel = async () => {
+    try {
+        showPageLoader();
+        await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+        exportToExcel(currentYear, currentMonth, monthData.days);
+    } catch (err) { console.error(err); alert('No se pudo generar Excel: ' + err.message); }
+    finally { hidePageLoader(); }
+};
+
+window.exportToPDF = async () => {
+    try {
+        showPageLoader();
+        await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+        await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js');
+        exportToPDF(currentYear, currentMonth, monthData.days);
+    } catch (err) { console.error(err); alert('No se pudo generar PDF: ' + err.message); }
+    finally { hidePageLoader(); }
+};
+
+window.exportToPNG = async () => {
+    try {
+        showPageLoader();
+        await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+        exportToImage(currentYear, currentMonth, monthData.days);
+    } catch (err) { console.error(err); alert('No se pudo generar la imagen: ' + err.message); }
+    finally { hidePageLoader(); }
+};
 
 async function downloadBackupJson() {
     try {
@@ -111,6 +160,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log('Service Worker registrado');
         } catch (err) { console.warn('Error al registrar Service Worker', err); }
     }
+    // Ocultar loader cuando la app esté lista
+    hidePageLoader();
 });
 
 async function loadMonth() {
@@ -162,10 +213,10 @@ function renderTableRows() {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td style="font-weight:bold; padding:10px;">${i}</td>
-            <td><input type="number" step="0.01" data-day="${i}" data-tech="st1" data-type="cash" value="${st1Cash}" placeholder="0"></td>
-            <td><input type="number" step="0.01" data-day="${i}" data-tech="st1" data-type="yape" value="${st1Yape}" placeholder="0"></td>
-            <td><input type="number" step="0.01" data-day="${i}" data-tech="st2" data-type="cash" value="${st2Cash}" placeholder="0"></td>
-            <td><input type="number" step="0.01" data-day="${i}" data-tech="st2" data-type="yape" value="${st2Yape}" placeholder="0"></td>
+            <td><input id="input-${i}-st1-cash" name="st1_cash_${i}" autocomplete="off" type="number" step="0.01" data-day="${i}" data-tech="st1" data-type="cash" value="${st1Cash}" placeholder="0"></td>
+            <td><input id="input-${i}-st1-yape" name="st1_yape_${i}" autocomplete="off" type="number" step="0.01" data-day="${i}" data-tech="st1" data-type="yape" value="${st1Yape}" placeholder="0"></td>
+            <td><input id="input-${i}-st2-cash" name="st2_cash_${i}" autocomplete="off" type="number" step="0.01" data-day="${i}" data-tech="st2" data-type="cash" value="${st2Cash}" placeholder="0"></td>
+            <td><input id="input-${i}-st2-yape" name="st2_yape_${i}" autocomplete="off" type="number" step="0.01" data-day="${i}" data-tech="st2" data-type="yape" value="${st2Yape}" placeholder="0"></td>
             <td id="total-cash-${i}" class="text-end">S/ 0.00</td>
             <td id="total-yape-${i}" class="text-end">S/ 0.00</td>
             <td id="acum-cash-${i}" class="text-end">S/ 0.00</td>

@@ -7,16 +7,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.4/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Cargas pesadas (XLSX, jsPDF, html2canvas) se cargan on-demand para mejorar la carga inicial -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0f172a">
     <link rel="icon" href="/icons/icon-192.svg">
     <link rel="apple-touch-icon" href="/icons/icon-192.svg">
 </head>
 <body class="app-body">
+    <!-- Page loader (oculto por defecto). Se mostrará hasta que la app esté lista -->
+    <div id="pageLoader" class="page-loader" aria-hidden="false">
+        <div class="loader-box">
+            <div class="spinner" role="status" aria-label="Cargando"></div>
+            <div class="loader-text">Cargando aplicación...</div>
+        </div>
+    </div>
     <div class="app-shell" id="appShell">
         <aside class="app-sidebar">
             <div class="app-sidebar__brand">
