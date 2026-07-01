@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tabla - Diario (solo lectura)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.4/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="app-body">
+  <div class="app-shell">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__brand">
+        <strong>Taller Tech</strong>
+        <span>Gestión operativa</span>
+      </div>
+      <div class="app-sidebar__user" id="shellUserInfo"></div>
+      <nav class="app-sidebar__nav" id="appSidebarNav"></nav>
+      <div class="app-sidebar__footer">
+        <button id="appLogoutBtn" class="app-button app-button-ghost app-button-block">
+          <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+        </button>
+      </div>
+    </aside>
+
+    <div class="app-content">
+      <header class="app-topbar">
+        <div>
+          <p class="app-topbar__eyebrow">Consulta</p>
+          <h1>Tabla del diario</h1>
+        </div>
+        <div class="app-topbar__actions">
+          <span id="userInfo" class="app-badge"></span>
+          <label class="app-picker">
+            <i class="fa-solid fa-calendar-days"></i>
+            <input type="month" id="monthPicker">
+          </label>
+          <button id="backupJsonBtn" class="app-button app-button-fill"><i class="fas fa-download"></i> Backup JSON</button>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <div class="table-responsive shadow-sm">
+          <table id="mainTable" class="table table-bordered table-hover align-middle mb-0">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div id="toast" class="app-toast"></div>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/app-shell.js"></script>
+  <script type="module" src="/js/tableView.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

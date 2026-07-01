@@ -2,6 +2,11 @@ const fileDB = require('../db/fileDB');
 
 const authMiddleware = async (req, res, next) => {
     try {
+        // Si existe sesión válida, usarla (frontend)
+        if (req.session && req.session.user) {
+            req.user = req.session.user;
+            return next();
+        }
         const userId = req.headers['x-user-id'];
         const userRole = req.headers['x-user-role'];
 
@@ -32,7 +37,7 @@ const authMiddleware = async (req, res, next) => {
 };
 
 const adminMiddleware = (req, res, next) => {
-    if (req.user.role !== 'ADMIN') {
+    if (!req.user || req.user.role !== 'ADMIN') {
         return res.status(403).json({
             message: 'Acceso denegado, se requiere rol ADMIN'
         });

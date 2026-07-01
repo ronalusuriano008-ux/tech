@@ -1,9 +1,23 @@
 // frontend/admin-panel/app.js
-const API = '/api';
-const user = JSON.parse(localStorage.getItem('user'));
-const headers = { 'Content-Type': 'application/json', 'x-user-id': user.id, 'x-user-role': user.role };
+const API = window.AppConfig?.apiBaseUrl || '/api';
+const readUser = () => {
+    try {
+        return JSON.parse(localStorage.getItem('user'));
+    } catch (error) {
+        return null;
+    }
+};
+const user = readUser();
 
-if (!user || user.role !== 'ADMIN') window.location.href = '/login/index.html';
+if (!user || user.role !== 'ADMIN') {
+    window.location.href = window.AppConfig?.loginPath || '/login/index.html';
+}
+
+const headers = user ? {
+    'Content-Type': 'application/json',
+    'x-user-id': user.id,
+    'x-user-role': user.role
+} : { 'Content-Type': 'application/json' };
 
 // ===============================
 // FECHA DE LIMA - FUNCIÓN CORREGIDA
@@ -39,14 +53,12 @@ const showSection = (id) => {
     const activeBtn = document.getElementById(`nav-${id}`);
     if (activeBtn) activeBtn.classList.add('active');
 
-    if (id === 'mensajes') loadChatData();
 };
 
 const loadAll = () => {
     loadMetrics();
     loadUsers();
     loadConfig();
-    loadAsistencia();
 };
 
 // ===============================
@@ -142,7 +154,6 @@ const loadUsers = async () => {
     tbody.innerHTML = users.filter(u => u.role === 'TECNICO').map(u => `
         <tr>
             <td>${u.nombre}</td><td>${u.usuario}</td>
-            <td>${u.horarioEntrada} - ${u.horarioSalida}</td>
             <td><button class="btn-table" onclick="deleteUser('${u.id}')"><i class="bi bi-trash3"></i></button></td>
         </tr>
     `).join('');
@@ -155,8 +166,6 @@ document.getElementById('userForm').addEventListener('submit', async (e) => {
         usuario: document.getElementById('u-usuario').value,
         password: document.getElementById('u-password').value,
         role: 'TECNICO',
-        horarioEntrada: document.getElementById('u-entrada').value,
-        horarioSalida: document.getElementById('u-salida').value,
         diasDescanso: []
     };
     await fetch(`${API}/users`, { method: 'POST', headers, body: JSON.stringify(body) });
@@ -195,333 +204,6 @@ document.getElementById('configForm').addEventListener('submit', async (e) => {
     };
     await fetch(`${API}/config`, { method: 'PUT', headers, body: JSON.stringify(body) });
     alert('Configuración guardada');
-});
-
-// ===============================
-// ASISTENCIA
-// ===============================
-const loadAsistencia = async () => {
-    const [asistRes, usersRes] = await Promise.all([
-        fetch(`${API}/asistencia?fecha=${getFecha()}`, { headers }),
-        fetch(`${API}/users`, { headers })
-    ]);
-
-    const asistencias = await asistRes.json();
-    const users = await usersRes.json();
-    const userMap = Object.fromEntries(users.map(u => [u.id, u.nombre]));
-
-    const tbody = document.querySelector('#asistenciaTable tbody');
-    tbody.innerHTML = asistencias.map(a => `
-        <tr>
-            <td>${userMap[a.usuarioId] || a.usuarioId}</td>
-            <td>${a.horaEntrada}</td>
-            <td>${a.horaSalida || '-'}</td>
-            <td style="color:#ff0050; font-size:0.8rem;">${(a.alertas || []).join(', ') || '-'}</td>
-        </tr>
-    `).join('');
-};
-
-// ===============================
-// CHAT BILATERAL
-// ===============================
-let allMessages = [];
-let allUsers = [];
-let userMap = {};
-let activeChatContact = null;
-let chatPollingInterval = null;
-
-const loadChatData = async () => {
-    const [msgsRes, usersRes] = await Promise.all([
-        fetch(`${API}/mensajes`, { headers }),
-        fetch(`${API}/users`, { headers })
-    ]);
-
-    allMessages = await msgsRes.json();
-    allUsers = await usersRes.json();
-    userMap = Object.fromEntries(allUsers.map(u => [u.id, u.nombre]));
-
-    renderChatContacts();
-    updateNavBadge();
-
-    if (chatPollingInterval) clearInterval(chatPollingInterval);
-    chatPollingInterval = setInterval(pollNewMessages, 4000);
-};
-
-const pollNewMessages = async () => {
-    try {
-        const res = await fetch(`${API}/mensajes`, { headers });
-        const fresh = await res.json();
-        const changed = JSON.stringify(fresh) !== JSON.stringify(allMessages);
-
-        if (changed) {
-            allMessages = fresh;
-            renderChatContacts();
-            if (activeChatContact) renderChatMessages(activeChatContact);
-            updateNavBadge();
-        }
-    } catch (_) { }
-};
-
-const getConversations = () => {
-    const map = {};
-
-    allMessages.forEach(msg => {
-        let otherId = null;
-
-        if (msg.para && msg.de === user.id) {
-            otherId = msg.para;
-        } else if (msg.para && msg.de !== user.id && msg.para === user.id) {
-            otherId = msg.de;
-        } else if (!msg.para && msg.de !== user.id) {
-            otherId = msg.de;
-        }
-
-        if (!otherId) return;
-
-        const otherUser = allUsers.find(u => u.id === otherId);
-        if (!otherUser || otherUser.role !== 'TECNICO') return;
-
-        if (!map[otherId]) {
-            map[otherId] = {
-                userId: otherId,
-                nombre: userMap[otherId] || 'Desconocido',
-                messages: [],
-                unread: 0,
-                lastMessage: null
-            };
-        }
-
-        map[otherId].messages.push(msg);
-
-        if (msg.de !== user.id && !msg.leido) {
-            map[otherId].unread++;
-        }
-
-        const last = map[otherId].lastMessage;
-        if (!last || new Date(msg.fechaRegistro) > new Date(last.fechaRegistro)) {
-            map[otherId].lastMessage = msg;
-        }
-    });
-
-    return Object.values(map).sort((a, b) => {
-        if (a.unread > 0 && b.unread === 0) return -1;
-        if (a.unread === 0 && b.unread > 0) return 1;
-        const tA = a.lastMessage ? new Date(a.lastMessage.fechaRegistro).getTime() : 0;
-        const tB = b.lastMessage ? new Date(b.lastMessage.fechaRegistro).getTime() : 0;
-        return tB - tA;
-    });
-};
-
-const renderChatContacts = () => {
-    const conversations = getConversations();
-    const container = document.getElementById('chatContacts');
-
-    if (conversations.length === 0) {
-        container.innerHTML = `
-            <div class="chat-contacts-empty">
-                <i class="bi bi-chat-square"></i>
-                <span>No hay conversaciones aún</span>
-                <small>Los mensajes de los técnicos aparecerán aquí</small>
-            </div>`;
-        return;
-    }
-
-    container.innerHTML = conversations.map(conv => {
-        const isActive = activeChatContact === conv.userId;
-        const last = conv.lastMessage;
-        const senderLabel = last && last.de === user.id ? 'Tú: ' : '';
-        const preview = last ? senderLabel + last.contenido : '';
-        const time = last ? formatTime(last.fechaRegistro) : '';
-
-        return `
-            <div class="chat-contact ${isActive ? 'active' : ''}"
-                 onclick="selectChatContact('${conv.userId}')">
-                <div class="chat-contact-avatar">${getInitials(conv.nombre)}</div>
-                <div class="chat-contact-info">
-                    <div class="chat-contact-name">${escapeHtml(conv.nombre)}</div>
-                    <div class="chat-contact-preview">${escapeHtml(preview)}</div>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-                    <span class="chat-contact-time">${time}</span>
-                    ${conv.unread > 0 ? `<span class="chat-badge">${conv.unread > 9 ? '9+' : conv.unread}</span>` : ''}
-                </div>
-            </div>`;
-    }).join('');
-};
-
-const selectChatContact = async (contactId) => {
-    activeChatContact = contactId;
-    renderChatContacts();
-
-    document.getElementById('chatSidebar').classList.remove('hidden-mobile');
-    document.getElementById('chatMain').classList.remove('hidden-mobile');
-    document.getElementById('chatEmptyState').style.display = 'none';
-    document.getElementById('chatMainHeader').style.display = 'flex';
-    document.getElementById('chatMessages').style.display = 'flex';
-    document.getElementById('chatInputArea').style.display = 'flex';
-
-    if (window.innerWidth <= 768) {
-        document.getElementById('chatSidebar').classList.add('hidden-mobile');
-    }
-
-    const contactName = userMap[contactId] || 'Desconocido';
-    document.getElementById('chatHeaderName').textContent = contactName;
-    document.getElementById('chatHeaderAvatar').textContent = getInitials(contactName);
-    document.getElementById('chatHeaderAvatar').className = 'chat-contact-avatar';
-    document.getElementById('chatHeaderStatus').textContent = 'Técnico';
-
-    renderChatMessages(contactId);
-    await markConversationAsRead(contactId);
-    setTimeout(() => document.getElementById('chatInput').focus(), 100);
-};
-
-const renderChatMessages = (contactId) => {
-    const conversations = getConversations();
-    const conv = conversations.find(c => c.userId === contactId);
-    const container = document.getElementById('chatMessages');
-
-    if (!conv || conv.messages.length === 0) {
-        container.innerHTML = `
-            <div class="chat-messages-empty">
-                <i class="bi bi-chat-left"></i>
-                <span>Sin mensajes aún</span>
-            </div>`;
-        return;
-    }
-
-    const sorted = [...conv.messages].sort((a, b) =>
-        new Date(a.fechaRegistro) - new Date(b.fechaRegistro)
-    );
-
-    let html = '';
-    let lastDate = '';
-
-    sorted.forEach(msg => {
-        const msgDate = new Date(msg.fechaRegistro).toLocaleDateString('en-CA', { timeZone: 'America/Lima' });
-
-        if (msgDate !== lastDate) {
-            lastDate = msgDate;
-            html += `<div class="chat-date-separator"><span>${formatDateSeparator(msg.fechaRegistro)}</span></div>`;
-        }
-
-        const isSent = msg.de === user.id;
-        const senderName = isSent ? 'Tú' : (userMap[msg.de] || 'Desconocido');
-
-        html += `
-            <div class="chat-bubble ${isSent ? 'sent' : 'received'}">
-                <small style="font-weight:600;font-size:0.7rem;
-                    color:${isSent ? 'rgba(0,255,163,0.7)' : 'rgba(255,255,255,0.45)'};
-                    display:block;margin-bottom:3px;">
-                    ${escapeHtml(senderName)}
-                </small>
-                ${escapeHtml(msg.contenido)}
-                <span class="chat-bubble-time">${formatTime(msg.fechaRegistro)}</span>
-            </div>`;
-    });
-
-    container.innerHTML = html;
-    requestAnimationFrame(() => {
-        container.scrollTop = container.scrollHeight;
-    });
-};
-
-const markConversationAsRead = async (contactId) => {
-    const unread = allMessages.filter(m => m.de === contactId && !m.leido);
-
-    if (unread.length === 0) return;
-
-    for (const m of unread) {
-        try {
-            await fetch(`${API}/mensajes/${m.id}/leido`, {
-                method: 'PUT',
-                headers
-            });
-            m.leido = true;
-        } catch (err) {
-            console.error('Error marcando leído:', m.id, err);
-        }
-    }
-
-    allMessages = allMessages.map(m =>
-        (m.de === contactId && m.de !== user.id && !m.leido) ? { ...m, leido: true } : m
-    );
-
-    renderChatContacts();
-    updateNavBadge();
-};
-
-const enviarMensajeChat = async () => {
-    const input = document.getElementById('chatInput');
-    const text = input.value.trim();
-
-    if (!text || !activeChatContact) return;
-
-    const body = {
-        de: user.id,
-        para: activeChatContact,
-        contenido: text
-    };
-
-    try {
-        const res = await fetch(`${API}/mensajes`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(body)
-        });
-
-        if (res.ok) {
-            input.value = '';
-            autoResizeTextarea(input);
-            document.getElementById('chatSendBtn').disabled = true;
-
-            const newMsg = await res.json();
-            allMessages.push(newMsg);
-            renderChatContacts();
-            renderChatMessages(activeChatContact);
-        } else {
-            const err = await res.json().catch(() => ({}));
-            alert(err.error || 'Error al enviar mensaje');
-        }
-    } catch (e) {
-        alert('Error de conexión al enviar');
-        console.error(e);
-    }
-};
-
-const handleChatKeydown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        enviarMensajeChat();
-    }
-};
-
-const closeChatMobile = () => {
-    activeChatContact = null;
-    document.getElementById('chatMain').classList.add('hidden-mobile');
-    document.getElementById('chatSidebar').classList.remove('hidden-mobile');
-    renderChatContacts();
-};
-
-const updateNavBadge = () => {
-    const total = allMessages.filter(m => m.de !== user.id && !m.leido).length;
-    const badge = document.getElementById('navUnreadBadge');
-
-    if (total > 0) {
-        badge.style.display = 'flex';
-        badge.textContent = total > 9 ? '9+' : total;
-    } else {
-        badge.style.display = 'none';
-    }
-};
-
-const autoResizeTextarea = (el) => {
-    el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-};
-
-document.getElementById('chatInput').addEventListener('input', function () {
-    document.getElementById('chatSendBtn').disabled = !this.value.trim();
-    autoResizeTextarea(this);
 });
 
 // ===============================
@@ -582,13 +264,8 @@ const subirBackup = async (event) => {
 // ===============================
 const logout = () => {
     localStorage.removeItem('user');
-    window.location.href = '/login/index.html';
+    window.location.href = window.AppConfig?.loginPath || '/login/index.html';
 };
-
-// Limpiar polling al cerrar
-window.addEventListener('beforeunload', () => {
-    if (chatPollingInterval) clearInterval(chatPollingInterval);
-});
 
 // ===============================
 // INICIO

@@ -5,7 +5,7 @@ const path = require('path');
 
 const generarReporteJPG = async (data) => {
 
-    const url = 'https://api.vixbox.xyz';
+    const url = process.env.PUBLIC_BASE_URL || process.env.API_BASE_URL || 'https://api.vixbox.xyz';
 
     // ===============================
     // TAMAÑO (similar al html2canvas scale=3)

@@ -1,6 +1,7 @@
 // backend/server.js
 const express = require('express');
 const cors = require('cors');
+const session = require('express-session');
 const path = require('path');
 
 const authRoutes = require('./routes/authRoutes');
@@ -8,15 +9,34 @@ const userRoutes = require('./routes/userRoutes');
 const servicioRoutes = require('./routes/servicioRoutes');
 const configRoutes = require('./routes/configRoutes');
 const inventarioRoutes = require('./routes/inventarioRoutes');
-const mensajeRoutes = require('./routes/mensajeRoutes');
-const asistenciaRoutes = require('./routes/asistenciaRoutes');
 const reporteRoutes = require('./routes/reporteRoutes');
 const backupRoutes = require('./routes/backupRoutes');
 
 const app = express();
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'taller-tech-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { httpOnly: true, sameSite: 'lax' }
+}));
 
-app.use(cors());
-app.use(express.json());
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://127.0.0.1:3000,https://panel.vixbox.xyz,https://api.vixbox.xyz')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vixbox.xyz')) {
+      return callback(null, true);
+    }
+    return callback(new Error('Origen no permitido por CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-user-id', 'x-user-role']
+}));
+app.options('*', cors());
+app.use(express.json({ limit: '2mb' }));
 
 // Rutas API
 app.use('/api/auth', authRoutes);
@@ -24,29 +44,104 @@ app.use('/api/users', userRoutes);
 app.use('/api/servicios', servicioRoutes);
 app.use('/api/config', configRoutes);
 app.use('/api/inventario', inventarioRoutes);
-app.use('/api/mensajes', mensajeRoutes);
-app.use('/api/asistencia', asistenciaRoutes);
 app.use('/api/reportes', reporteRoutes);
 app.use('/api/backup', backupRoutes);
 
-// Redirección de la raíz al login
-app.get('/', (req, res) => {
-    res.redirect('/login/index.html');
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', service: 'taller-tech', timestamp: new Date().toISOString() });
 });
 
-// Servir frontend estático
-app.use('/login', express.static(path.join(__dirname, '..', 'frontend', 'login')));
-app.use('/admin', express.static(path.join(__dirname, '..', 'frontend', 'admin-panel')));
-app.use('/calculadora', express.static(path.join(__dirname, '..', 'frontend', 'calculadora')));
-app.use('/registro', express.static(path.join(__dirname, '..', 'frontend', 'registro-servicios')));
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', service: 'taller-tech', timestamp: new Date().toISOString() });
+});
 
-const PORT = process.env.PORT || 3000;
+app.get('/api/config/runtime', (req, res) => {
+  res.json({
+    apiBaseUrl: process.env.API_BASE_URL || '/api',
+    appBaseUrl: process.env.APP_BASE_URL || '',
+    loginPath: '/login/index.html',
+    adminPath: '/admin/index.html',
+    registroPath: '/registro/index.html',
+    calculadoraPath: '/calculadora/index.html'
+  });
+});
+
+const requireAuth = (req, res, next) => {
+  if (req.session?.user) return next();
+  return res.redirect('/login/index.html');
+};
+
+const requireAdmin = (req, res, next) => {
+  if (req.session?.user?.role === 'ADMIN') return next();
+  return res.status(403).send('Acceso denegado. Requiere rol de administrador.');
+};
+
+// Frontend público
+app.get('/', (req, res) => {
+  res.redirect('/login/index.html');
+});
+
+app.get('/index.html', (req, res) => {
+  res.redirect('/login/index.html');
+});
+
+app.get('/login', (req, res) => {
+  res.redirect('/login/index.html');
+});
+
+app.get('/login.html', (req, res) => {
+  res.redirect('/login/index.html');
+});
+
+app.get('/dashboard', (req, res) => {
+  res.redirect('/dashboard.html');
+});
+
+app.get('/dashboard.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'public', 'pages', 'dashboard.html'));
+});
+
+app.get('/fill.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'public', 'pages', 'fill.html'));
+});
+
+app.get('/table.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'public', 'pages', 'table.html'));
+});
+
+app.get('/admin', (req, res) => {
+  res.redirect('/admin/index.html');
+});
+
+app.get('/admin-panel.html', (req, res) => {
+  res.redirect('/admin/index.html');
+});
+
+app.get('/registro', (req, res) => {
+  res.redirect('/registro/index.html');
+});
+
+app.get('/registro-servicios.html', (req, res) => {
+  res.redirect('/registro/index.html');
+});
+
+app.get('/calculadora.html', (req, res) => {
+  res.redirect('/dashboard.html');
+});
+
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));
+app.use('/login', express.static(path.join(__dirname, '..', 'frontend', 'login')));
+app.use('/admin', requireAuth, requireAdmin, express.static(path.join(__dirname, '..', 'frontend', 'admin-panel')));
+app.use('/calculadora', requireAuth, express.static(path.join(__dirname, '..', 'frontend', 'calculadora')));
+app.use('/registro', requireAuth, express.static(path.join(__dirname, '..', 'frontend', 'registro-servicios')));
+
+const PORT = Number(process.env.PORT || 3000);
 
 // Interruptor de estado para apagado seguro
 let isShuttingDown = false;
 
-const server = app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);
 });
 
 // Función de apagado controlado
@@ -78,7 +173,7 @@ process.on('uncaughtException', (err) => {
 });
 
 // Capturar promesas rechazadas sin catch
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason) => {
     console.error('[Error Crítico] Promesa rechazada no manejada:', reason);
     gracefulShutdown('unhandledRejection');
 });

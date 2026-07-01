@@ -1,16 +1,19 @@
 // frontend/login/app.js
+const redirectTo = window.redirectTo || ((path) => { window.location.href = path; });
+const getApiUrl = window.getApiUrl || ((path = '') => `/api${path.startsWith('/') ? path : `/${path}`}`);
+
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const errorEl = document.getElementById('error');
     errorEl.style.display = 'none';
-    
+
     const body = {
         usuario: document.getElementById('usuario').value,
         password: document.getElementById('password').value
     };
 
     try {
-        const res = await fetch('/api/auth/login', {
+        const res = await fetch(getApiUrl('/auth/login'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
@@ -23,11 +26,11 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
         const user = await res.json();
         localStorage.setItem('user', JSON.stringify(user));
-        
+
         if (user.role === 'ADMIN') {
-            window.location.href = '/admin/index.html';
+            redirectTo(window.AppConfig?.adminPath || '/admin/index.html');
         } else {
-            window.location.href = '/registro/index.html';
+            redirectTo(window.AppConfig?.registroPath || '/registro/index.html');
         }
     } catch (error) {
         errorEl.textContent = 'Error de conexión';

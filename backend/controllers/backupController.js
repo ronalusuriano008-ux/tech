@@ -8,8 +8,6 @@ const DB_DIR = path.join(__dirname, '..', 'data');
 const FILES = [
     'users',
     'servicios',
-    'mensajes',
-    'asistencia',
     'inventario',
     'config'
 ];

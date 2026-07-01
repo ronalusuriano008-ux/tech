@@ -33,5 +33,15 @@
     "horarioSalida": "20:30",
     "diasDescanso": [],
     "fechaRegistro": "2026-05-05T14:40:53.412Z"
+  },
+  {
+    "id": "76a99d79-6526-4769-8e9d-c9b31264ce9e",
+    "nombre": "Ronal",
+    "usuario": "Ronal",
+    "role": "ADMIN",
+    "horarioEntrada": "07:30",
+    "horarioSalida": "20:00",
+    "password": "475587",
+    "fechaRegistro": "2026-05-26T03:35:47.891Z"
   }
 ]

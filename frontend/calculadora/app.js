@@ -1,12 +1,19 @@
 // frontend/calculadora/app.js
-const user = JSON.parse(localStorage.getItem('user'));
-const headers = { 'x-user-id': user.id, 'x-user-role': user.role };
+const readUser = () => {
+    try {
+        return JSON.parse(localStorage.getItem('user'));
+    } catch (error) {
+        return null;
+    }
+};
+const user = readUser();
+const headers = user ? { 'x-user-id': user.id, 'x-user-role': user.role } : {};
 let config = {};
 
-if (!user) window.location.href = '/login/index.html';
+if (!user) window.location.href = window.AppConfig?.loginPath || '/login/index.html';
 
 const loadConfig = async () => {
-    const res = await fetch('/api/config', { headers });
+    const res = await fetch(`${window.AppConfig?.apiBaseUrl || '/api'}/config`, { headers });
     config = await res.json();
     document.getElementById('configDisplay').innerHTML =
 `Configuracion:
@@ -41,6 +48,6 @@ const calculate = () => {
     document.getElementById('precioFinal').textContent = `S/.${(Math.round(precio * 10) / 10).toFixed(1)}`;
 };
 
-const logout = () => { localStorage.removeItem('user'); window.location.href = '/login/index.html'; };
+const logout = () => { localStorage.removeItem('user'); window.location.href = window.AppConfig?.loginPath || '/login/index.html'; };
 
 loadConfig().then(calculate);

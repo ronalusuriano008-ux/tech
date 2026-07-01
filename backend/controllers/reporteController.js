@@ -5,8 +5,9 @@ const fs = require('fs');
 const reporteService =
     require('../services/reporteService');
 
-const reporteImageService =
-    require('../services/reportes/reporteImageService');
+// Carga perezosa de la librería que usa `sharp`/`canvas` para evitar consumir
+// memoria al iniciar el proceso. Se require solo cuando se solicita la imagen.
+let reporteImageService;
 
 
 // ==========================================
@@ -73,9 +74,12 @@ const descargarReporteImagen = async (req, res) => {
         const reporte =
             await reporteService.generarReporteDiario(userId);
 
-        // Generar imagen
-        const imageResult =
-            await reporteImageService.generarReporteJPG(reporte);
+        // Generar imagen (carga perezosa)
+        if (!reporteImageService) {
+            reporteImageService = require('../services/reportes/reporteImageService');
+        }
+
+        const imageResult = await reporteImageService.generarReporteJPG(reporte);
 
         // Headers descarga
         res.setHeader(

@@ -5,6 +5,10 @@
     "cf": 5,
     "margen": 30,
     "riesgo": 10,
-    "garantia": 5
+    "garantia": 5,
+    "nombreTaller": "Tecmovil",
+    "direccion": "JR huallayco",
+    "telefono": "955025525",
+    "precioMinimo": 10
   }
 ]

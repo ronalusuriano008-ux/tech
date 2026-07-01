@@ -1,20 +1,29 @@
 // frontend/registro-servicios/app.js
-const API = 'https://api.vixbox.xyz/api';
+const API = window.AppConfig?.apiBaseUrl || '/api';
+const reportOrigin = new URL(window.AppConfig?.apiBaseUrl || 'https://api.vixbox.xyz/api', window.location.href).origin;
 
-const user = JSON.parse(localStorage.getItem('user'));
+const readUser = () => {
+    try {
+        return JSON.parse(localStorage.getItem('user'));
+    } catch (error) {
+        return null;
+    }
+};
+
+const user = readUser();
 
 if (!user) {
-    window.location.href = '/login/index.html';
+    window.location.href = window.AppConfig?.loginPath || '/login/index.html';
 }
 
-const headers = {
+const headers = user ? {
     'Content-Type': 'application/json',
     'x-user-id': user.id,
     'x-user-role': user.role
-};
+} : { 'Content-Type': 'application/json' };
 
 document.getElementById('userName').textContent =
-    `BIENVENIDO, ${user.nombre}.`;
+    `BIENVENIDO, ${user?.nombre || 'USUARIO'}.`;
 
 document.getElementById('filterFecha').value = new Date()
     .toLocaleDateString('en-CA', {
@@ -112,45 +121,6 @@ const deleteServicio = async (id) => {
 };
 
 // ===============================
-// ASISTENCIA
-// ===============================
-const loadAsistenciaStatus = async () => {
-    const res = await fetch(`${API}/asistencia?fecha=${getFecha()}`, { headers });
-    const asist = await res.json();
-    const el = document.getElementById('asistenciaStatus');
-    const hoy = asist.find(a => a.usuarioId === user.id);
-
-    if (hoy) {
-        el.innerHTML = `<span style="color:green"><i class="bi bi-clock-history"></i> ${hoy.horaEntrada} - ${hoy.horaSalida || 'Pendiente'}</span>`;
-        if (hoy.alertas) el.innerHTML += ` <span style="color:red">(!) ${hoy.alertas.join(', ')}</span>`;
-    } else {
-        el.innerHTML = `<span style="color:gray"><i class="bi bi-dash-circle"></i> Sin registrar</span>`;
-    }
-};
-
-const checkIn = async () => {
-    try {
-        const res = await fetch(`${API}/asistencia/check-in`, { method: 'POST', headers });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Error en check-in');
-        loadAsistenciaStatus();
-    } catch (error) {
-        alert(error.message);
-    }
-};
-
-const checkOut = async () => {
-    try {
-        const res = await fetch(`${API}/asistencia/check-out`, { method: 'POST', headers });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Error en check-out');
-        loadAsistenciaStatus();
-    } catch (e) {
-        alert('Error: ' + e.message);
-    }
-};
-
-// ===============================
 // REPORTE
 // ===============================
 const descargarReporte = async () => {
@@ -215,11 +185,15 @@ const descargarReporte = async () => {
                         <span style="color:#000000; font-weight:bold;">S/.${(data.utilidadTotal / 2).toFixed(2)}</span>
                     </div>
                 </div>
+                <footer style="margin-top:2px; font-size:8px; color:#000000; text-align:center;">
+                    <span>Reporte autogenerado desde <a style="color: #5f0692; text-decoration:underline;" href="${reportOrigin}" target="_blank">${reportOrigin}</a> - ${new Date().toLocaleString()}</span>
+                </footer>
             </div>`;
 
         await new Promise(r => setTimeout(r, 100));
 
         const canvas = await html2canvas(
+            
             container.querySelector('.report-img-wrapper'),
             {
                 backgroundColor: '#ffffff',
@@ -243,233 +217,14 @@ const descargarReporte = async () => {
 };
 
 // ===============================
-// CHAT BILATERAL CON ADMIN
-// ===============================
-let chatMessages = [];
-let adminId = null;
-let chatPollingInterval = null;
-
-const initChat = async () => {
-    try {
-        const res = await fetch(`${API}/users/admin-info`, { headers });
-
-        if (res.ok) {
-            const adminData = await res.json();
-            adminId = adminData.id;
-            document.getElementById('chatAdminName').textContent = adminData.nombre;
-            document.getElementById('chatAdminAvatar').textContent =
-                adminData.nombre.split(/\s+/).map(w => w[0]).join('').substring(0, 2).toUpperCase();
-        }
-
-        await loadChatMessages();
-
-        if (chatPollingInterval) clearInterval(chatPollingInterval);
-        chatPollingInterval = setInterval(pollChatMessages, 5000);
-
-    } catch (e) {
-        console.error('Error iniciando chat:', e);
-        document.getElementById('chatMessages').innerHTML = `
-            <div class="chat-thread-empty">
-                <i class="bi bi-wifi-off"></i>
-                <span>Error de conexión</span>
-            </div>`;
-    }
-};
-
-const loadChatMessages = async () => {
-    try {
-        const res = await fetch(`${API}/mensajes`, { headers });
-        chatMessages = await res.json();
-        renderChatBubbles();
-        markAdminMessagesAsRead();
-        updateChatFab();
-    } catch (e) {
-        console.error('Error cargando mensajes:', e);
-    }
-};
-
-const pollChatMessages = async () => {
-    try {
-        const res = await fetch(`${API}/mensajes`, { headers });
-        const fresh = await res.json();
-        const changed = JSON.stringify(fresh) !== JSON.stringify(chatMessages);
-
-        if (changed) {
-            const prevUnread = chatMessages.filter(m => m.de !== user.id && !m.leido).length;
-            chatMessages = fresh;
-            renderChatBubbles();
-            markAdminMessagesAsRead();
-            updateChatFab();
-
-            if (chatMessages.filter(m => m.de !== user.id && !m.leido).length > prevUnread) {
-                flashChatHeader();
-            }
-        }
-    } catch (_) {}
-};
-
-const renderChatBubbles = () => {
-    const container = document.getElementById('chatMessages');
-
-    if (chatMessages.length === 0) {
-        container.innerHTML = `
-            <div class="chat-thread-empty">
-                <i class="bi bi-chat-dots"></i>
-                <span>Aún no hay mensajes</span>
-            </div>`;
-        return;
-    }
-
-    const sorted = [...chatMessages].sort((a, b) =>
-        new Date(a.fechaRegistro) - new Date(b.fechaRegistro)
-    );
-
-    let html = '';
-    let lastDate = '';
-
-    sorted.forEach(msg => {
-        const msgDate = new Date(msg.fechaRegistro).toDateString();
-
-        if (msgDate !== lastDate) {
-            lastDate = msgDate;
-            html += `<div class="chat-date-sep"><span>${formatDateSeparator(msg.fechaRegistro)}</span></div>`;
-        }
-
-        const isSent = msg.de === user.id;
-        const senderName = isSent ? 'Tú' : 'Administrador';
-
-        html += `
-            <div class="chat-bubble ${isSent ? 'sent' : 'received'}">
-                <span class="chat-bubble-sender">${escapeHtml(senderName)}</span>
-                ${escapeHtml(msg.contenido)}
-                <span class="chat-bubble-time">${formatTime(msg.fechaRegistro)}</span>
-            </div>`;
-    });
-
-    container.innerHTML = html;
-
-    requestAnimationFrame(() => {
-        container.scrollTop = container.scrollHeight;
-    });
-};
-
-const markAdminMessagesAsRead = async () => {
-    const unread = chatMessages.filter(m => m.de !== user.id && !m.leido);
-    if (unread.length === 0) return;
-
-    chatMessages = chatMessages.map(m =>
-        (m.de !== user.id && !m.leido) ? { ...m, leido: true } : m
-    );
-    updateChatFab();
-
-    await Promise.all(
-        unread.map(m =>
-            fetch(`${API}/mensajes/${m.id}/leido`, { method: 'PUT', headers }).catch(() => {})
-        )
-    );
-};
-
-const enviarMensajeChat = async () => {
-    const input = document.getElementById('chatInput');
-    const text = input.value.trim();
-
-    if (!text) return;
-
-    if (!adminId) {
-        alert('No se encontró al administrador');
-        return;
-    }
-
-    const body = {
-        de: user.id,
-        para: adminId,
-        contenido: text
-    };
-
-    try {
-        const res = await fetch(`${API}/mensajes`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(body)
-        });
-
-        if (res.ok) {
-            const newMsg = await res.json();
-            chatMessages.push(newMsg);
-
-            input.value = '';
-            autoResizeTextarea(input);
-            document.getElementById('chatSendBtn').disabled = true;
-
-            renderChatBubbles();
-            updateChatFab();
-        } else {
-            const err = await res.json().catch(() => ({}));
-            alert(err.error || 'Error al enviar mensaje');
-        }
-    } catch (e) {
-        alert('Error de conexión');
-        console.error(e);
-    }
-};
-
-const handleChatKeydown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        enviarMensajeChat();
-    }
-};
-
-const updateChatFab = () => {
-    const unread = chatMessages.filter(m => m.de !== user.id && !m.leido).length;
-    const fab = document.getElementById('chatFab');
-    const count = document.getElementById('chatFabCount');
-
-    if (unread > 0) {
-        fab.classList.add('visible');
-        count.style.display = 'flex';
-        count.textContent = unread > 9 ? '9+' : unread;
-    } else {
-        fab.classList.remove('visible');
-        count.style.display = 'none';
-    }
-};
-
-const scrollToChat = () => {
-    const chatEl = document.getElementById('chatMessages');
-    chatEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    updateChatFab();
-};
-
-const flashChatHeader = () => {
-    const header = document.querySelector('.chat-thread-header');
-    header.style.background = 'rgba(188, 19, 254, 0.15)';
-    header.style.transition = 'background 0.3s ease';
-    setTimeout(() => {
-        header.style.background = 'rgba(0, 243, 255, 0.04)';
-    }, 1200);
-};
-
-document.getElementById('chatInput').addEventListener('input', function () {
-    document.getElementById('chatSendBtn').disabled = !this.value.trim();
-    autoResizeTextarea(this);
-});
-
-// ===============================
 // LOGOUT
 // ===============================
 const logout = () => {
     localStorage.removeItem('user');
-    window.location.href = '/login/index.html';
+    window.location.href = window.AppConfig?.loginPath || '/login/index.html';
 };
-
-window.addEventListener('beforeunload', () => {
-    if (chatPollingInterval) clearInterval(chatPollingInterval);
-});
 
 // ===============================
 // INICIO
 // ===============================
 loadServicios();
-loadAsistenciaStatus();
-initChat();

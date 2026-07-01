@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Ingresos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.4/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" href="/icons/icon-192.svg">
+    <link rel="apple-touch-icon" href="/icons/icon-192.svg">
+</head>
+<body class="app-body">
+    <div class="app-shell" id="appShell">
+        <aside class="app-sidebar">
+            <div class="app-sidebar__brand">
+                <strong>Taller Tech</strong>
+                <span>Gestión operativa</span>
+            </div>
+            <div class="app-sidebar__user" id="shellUserInfo"></div>
+            <nav class="app-sidebar__nav" id="appSidebarNav"></nav>
+            <div class="app-sidebar__footer">
+                <button id="appLogoutBtn" class="app-button app-button-ghost app-button-block">
+                    <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+                </button>
+            </div>
+        </aside>
+
+        <div class="app-content">
+            <header class="app-topbar">
+                <div>
+                    <p class="app-topbar__eyebrow">Operación</p>
+                    <h1>Dashboard de ingresos</h1>
+                </div>
+                <div class="app-topbar__actions">
+                    <span id="userInfo" class="app-badge"></span>
+                    <label class="app-picker">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <input type="month" id="monthPicker">
+                    </label>
+                    <button id="downloadPdfBtn" class="app-button app-button-fill" type="button">
+                        <i class="fa-solid fa-file-pdf"></i> PDF
+                    </button>
+                    <button id="downloadBackupBtn" class="app-button app-button-ghost" type="button">
+                        <i class="fa-solid fa-download"></i> Backup JSON
+                    </button>
+                    <button id="uploadBackupBtn" class="app-button app-button-ghost" type="button">
+                        <i class="fa-solid fa-upload"></i> Subir backup
+                    </button>
+                    <input id="backupFileInput" type="file" accept="application/json" class="d-none">
+                </div>
+            </header>
+
+            <main class="app-main">
+                <section class="dashboard-section no-print">
+                    <div class="card-metric green">
+                        <h5>Producción ST1</h5>
+                        <h2 id="dash-prod-st1">S/ 0.00</h2>
+                    </div>
+                    <div class="card-metric blue">
+                        <h5>Producción ST2</h5>
+                        <h2 id="dash-prod-st2">S/ 0.00</h2>
+                    </div>
+                    <div class="card-metric orange">
+                        <h5>Total Efectivo</h5>
+                        <h2 id="dash-total-cash">S/ 0.00</h2>
+                    </div>
+                    <div class="card-metric orange">
+                        <h5>Total Yape</h5>
+                        <h2 id="dash-total-yape">S/ 0.00</h2>
+                    </div>
+                    <div class="card-metric purple">
+                        <h5>Total General Mes</h5>
+                        <h2 id="dash-total-general">S/ 0.00</h2>
+                    </div>
+                </section>
+
+                <div class="table-container" style="display:none;">
+                    <table id="mainTable">
+                        <thead id="tableHead"></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="toast" class="app-toast"></div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/app-shell.js"></script>
+    <script type="module" src="/js/app.js"></script>
+</body>
+</html>
