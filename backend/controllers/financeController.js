@@ -23,23 +23,32 @@ exports.saveDay = async (req, res) => {
     try {
         console.log('[saveDay] Body recibido:', req.body);
         const { year, month, day, st1, st2 } = req.body;
+        const normalizedYear = parseInt(year, 10);
+        const normalizedMonth = parseInt(month, 10);
+        const normalizedDay = parseInt(day, 10);
         
-        if (!year || !month || !day) {
+        if (Number.isNaN(normalizedYear) || Number.isNaN(normalizedMonth) || Number.isNaN(normalizedDay)) {
             console.log('[saveDay] Parámetros faltantes:', { year, month, day });
             return res.status(400).json({ error: 'Parámetros faltantes (year, month, day)' });
         }
         
-        const monthData = await storage.readMonth(year, month);
-        console.log('[saveDay] Datos del mes leídos:', { year, month, daysCount: monthData.days?.length || 0 });
+        const monthData = await storage.readMonth(normalizedYear, normalizedMonth);
+        console.log('[saveDay] Datos del mes leídos:', { year: normalizedYear, month: normalizedMonth, daysCount: monthData.days?.length || 0 });
         
-        monthData.year = year; 
-        monthData.month = month;
+        monthData.year = normalizedYear; 
+        monthData.month = normalizedMonth;
         
-        const dayIndex = monthData.days.findIndex(d => d.day === day);
+        const dayIndex = monthData.days.findIndex(d => Number(d.day) === normalizedDay);
         const newDayData = {
-            day,
-            st1: { cash: parseFloat(st1.cash) || 0, yape: parseFloat(st1.yape) || 0 },
-            st2: { cash: parseFloat(st2.cash) || 0, yape: parseFloat(st2.yape) || 0 }
+            day: normalizedDay,
+            st1: {
+                cash: Number.isFinite(parseFloat(st1?.cash)) ? parseFloat(st1.cash) : 0,
+                yape: Number.isFinite(parseFloat(st1?.yape)) ? parseFloat(st1.yape) : 0
+            },
+            st2: {
+                cash: Number.isFinite(parseFloat(st2?.cash)) ? parseFloat(st2.cash) : 0,
+                yape: Number.isFinite(parseFloat(st2?.yape)) ? parseFloat(st2.yape) : 0
+            }
         };
         
         console.log('[saveDay] Guardando día:', newDayData);
