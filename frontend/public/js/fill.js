@@ -97,7 +97,8 @@ async function deleteCurrentDay() {
 
 async function fetchRawJson() {
   try {
-    const res = await fetch('/data/diario.json');
+    const diaryUrl = window.getApiUrl ? window.getApiUrl('/diary') : '/api/diary';
+    const res = await fetch(diaryUrl);
     if (!res.ok) { rawJson.textContent = `Error: ${res.status}`; return; }
     const data = await res.json();
     rawJson.textContent = JSON.stringify(data, null, 2);
@@ -108,7 +109,8 @@ async function fetchRawJson() {
 
 async function downloadBackupJson() {
   try {
-    const res = await fetch('/data/diario.json');
+    const diaryUrl = window.getApiUrl ? window.getApiUrl('/diary') : '/api/diary';
+    const res = await fetch(diaryUrl);
     if (!res.ok) { showToast('No se pudo descargar backup', true); return; }
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
