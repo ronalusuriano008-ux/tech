@@ -5,6 +5,7 @@ const session = require('express-session');
 const path = require('path');
 
 const authRoutes = require('./routes/authRoutes');
+const apiRoutes = require('./routes/api');
 const userRoutes = require('./routes/userRoutes');
 const servicioRoutes = require('./routes/servicioRoutes');
 const configRoutes = require('./routes/configRoutes');
@@ -39,6 +40,7 @@ app.options('*', cors());
 app.use(express.json({ limit: '2mb' }));
 
 // Rutas API
+app.use('/api', apiRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/servicios', servicioRoutes);
