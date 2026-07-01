@@ -7,6 +7,7 @@ import { exportToImage } from './exportToImage.js';
 let currentYear = new Date().getFullYear();
 let currentMonth = new Date().getMonth() + 1;
 let monthData = { year: currentYear, month: currentMonth, days: [] };
+const saveDebouncers = {}; // Controlador de debounce por día
 
 // Exponer para HTML
 window.exportToExcel = () => exportToExcel(currentYear, currentMonth, monthData.days);
@@ -180,6 +181,10 @@ function renderTableRows() {
             const type = e.target.dataset.type;
             handleInput(day, tech, type, e.target.value);
         });
+        // Guardar al salir del input (blur) o cuando cambia el valor
+        input.addEventListener('blur', (e) => {
+            handleSave(parseInt(e.target.dataset.day));
+        });
         input.addEventListener('change', (e) => {
             handleSave(parseInt(e.target.dataset.day));
         });
@@ -239,13 +244,29 @@ function recalculateAll() {
 async function handleSave(day) {
     const dayObj = monthData.days.find(d => d.day === day);
     if (!dayObj) return;
-    try {
-        await saveDayData({
-            year: currentYear, month: currentMonth, day: day,
-            st1: dayObj.st1, st2: dayObj.st2
-        });
-        showToast(`Día ${day} guardado`);
-    } catch (err) { showToast('Error al guardar', true); }
+    
+    // Limpiar debouncer anterior si existe
+    if (saveDebouncers[day]) {
+        clearTimeout(saveDebouncers[day]);
+    }
+    
+    // Crear nuevo debouncer para este día (esperar 1 segundo después del último cambio)
+    saveDebouncers[day] = setTimeout(async () => {
+        try {
+            const response = await saveDayData({
+                year: currentYear, month: currentMonth, day: day,
+                st1: dayObj.st1, st2: dayObj.st2
+            });
+            if (response && response.success) {
+                showToast(`Día ${day} guardado correctamente`);
+            } else {
+                showToast(`Error: Día ${day} no se guardó`, true);
+            }
+        } catch (err) { 
+            console.error('Error al guardar día:', err);
+            showToast(`Error al guardar día ${day}: ${err.message || 'Error desconocido'}`, true); 
+        }
+    }, 1000);
 }
 
 function renderQuickAccess(user = {}) {
