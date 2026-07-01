@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+const fs = require('fs');
 const path = require('path');
 
 const authRoutes = require('./routes/authRoutes');
@@ -14,6 +15,7 @@ const reporteRoutes = require('./routes/reporteRoutes');
 const backupRoutes = require('./routes/backupRoutes');
 
 const app = express();
+const diaryDataPath = path.join(__dirname, 'data', 'diario.json');
 app.use(session({
   secret: process.env.SESSION_SECRET || 'taller-tech-secret',
   resave: false,
@@ -48,6 +50,21 @@ app.use('/api/config', configRoutes);
 app.use('/api/inventario', inventarioRoutes);
 app.use('/api/reportes', reporteRoutes);
 app.use('/api/backup', backupRoutes);
+
+app.get('/data/diario.json', (req, res) => {
+  if (fs.existsSync(diaryDataPath)) {
+    return res.sendFile(diaryDataPath);
+  }
+  return res.status(404).json({ error: 'diario.json no encontrado' });
+});
+
+app.get('/favicon.ico', (req, res) => {
+  const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <rect width="64" height="64" rx="12" fill="#0f172a"/>
+    <path d="M18 16h28v10H28v8h14v10H18z" fill="#f8fafc"/>
+  </svg>`;
+  res.type('image/svg+xml').send(svgIcon);
+});
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'taller-tech', timestamp: new Date().toISOString() });
