@@ -30,8 +30,12 @@ document.getElementById('filterFecha').value = new Date()
         timeZone: 'America/Lima'
     });
 
-const getFecha = () =>
-    document.getElementById('filterFecha').value;
+const getFecha = () => {
+    const value = document.getElementById('filterFecha').value;
+    return value || new Date().toLocaleDateString('en-CA', {
+        timeZone: 'America/Lima'
+    });
+};
 
 // ===============================
 // UTILIDADES
@@ -67,31 +71,60 @@ const autoResizeTextarea = (el) => {
 // SERVICIOS
 // ===============================
 const loadServicios = async () => {
-    const res = await fetch(`${API}/servicios?fecha=${getFecha()}`, { headers });
-    const servicios = await res.json();
+    try {
+        const fecha = getFecha();
+        const res = await fetch(`${API}/servicios?fecha=${encodeURIComponent(fecha)}`, { headers });
+        if (!res.ok) throw new Error('No se pudieron obtener los servicios');
 
-    const tbody = document.querySelector('#serviciosTable tbody');
-    tbody.innerHTML = servicios.map(s => `
-        <tr>
-            <td>${s.hora || new Date(s.fechaRegistro).toLocaleTimeString()}</td>
-            <td>${s.servicio}</td>
-            <td>${s.modelo}</td>
-            <td>S/.${s.precio.toFixed(2)}</td>
-            <td>S/.${s.costo.toFixed(2)}</td>
-            <td>S/.${s.utilidad.toFixed(2)}</td>
-            <td>
-                <button class="btn-table" onclick="deleteServicio('${s.id}')">
-                    <i class="bi bi-trash3"></i>
-                </button>
-            </td>
-        </tr>
-    `).join('');
+        const payload = await res.json().catch(() => []);
+        const servicios = Array.isArray(payload) ? payload : (payload.servicios || []);
 
-    const ing = servicios.reduce((s, i) => s + i.precio, 0);
-    const cos = servicios.reduce((s, i) => s + i.costo, 0);
-    document.getElementById('resIngresos').textContent = `S/.${ing.toFixed(2)}`;
-    document.getElementById('resCostos').textContent = `S/.${cos.toFixed(2)}`;
-    document.getElementById('resUtilidad').textContent = `S/.${(ing - cos).toFixed(2)}`;
+        const tbody = document.querySelector('#serviciosTable tbody');
+        if (!servicios.length) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align:center; color:#9ca3af; padding:1rem;">
+                        No hay servicios registrados para esta fecha.
+                    </td>
+                </tr>
+            `;
+        } else {
+            tbody.innerHTML = servicios.map(s => `
+                <tr>
+                    <td>${s.hora || (s.fechaRegistro ? new Date(s.fechaRegistro).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' }) : '--:--')}</td>
+                    <td>${s.servicio || '-'}</td>
+                    <td>${s.modelo || '-'}</td>
+                    <td>S/.${Number(s.precio || 0).toFixed(2)}</td>
+                    <td>S/.${Number(s.costo || 0).toFixed(2)}</td>
+                    <td>S/.${Number(s.utilidad || 0).toFixed(2)}</td>
+                    <td>
+                        <button class="btn-table" onclick="deleteServicio('${s.id}')">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        const ing = servicios.reduce((sum, item) => sum + Number(item.precio || 0), 0);
+        const cos = servicios.reduce((sum, item) => sum + Number(item.costo || 0), 0);
+        document.getElementById('resIngresos').textContent = `S/.${ing.toFixed(2)}`;
+        document.getElementById('resCostos').textContent = `S/.${cos.toFixed(2)}`;
+        document.getElementById('resUtilidad').textContent = `S/.${(ing - cos).toFixed(2)}`;
+    } catch (error) {
+        console.error('[registro-servicios] Error cargando servicios:', error);
+        const tbody = document.querySelector('#serviciosTable tbody');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align:center; color:#f87171; padding:1rem;">
+                    No se pudieron cargar los servicios.
+                </td>
+            </tr>
+        `;
+        document.getElementById('resIngresos').textContent = 'S/.0.00';
+        document.getElementById('resCostos').textContent = 'S/.0.00';
+        document.getElementById('resUtilidad').textContent = 'S/.0.00';
+    }
 };
 
 document.getElementById('servicioForm').addEventListener('submit', async (e) => {
@@ -100,17 +133,26 @@ document.getElementById('servicioForm').addEventListener('submit', async (e) => 
     const costo = parseFloat(document.getElementById('s-costo').value);
 
     const body = {
-        servicio: document.getElementById('s-servicio').value,
-        modelo: document.getElementById('s-modelo').value,
+        servicio: document.getElementById('s-servicio').value.trim(),
+        modelo: document.getElementById('s-modelo').value.trim(),
         precio,
         costo,
         utilidad: Math.round((precio - costo) * 100) / 100,
         fecha: getFecha()
     };
 
-    await fetch(`${API}/servicios`, { method: 'POST', headers, body: JSON.stringify(body) });
-    e.target.reset();
-    loadServicios();
+    try {
+        const res = await fetch(`${API}/servicios`, { method: 'POST', headers, body: JSON.stringify(body) });
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(errorData.message || 'No se pudo registrar el servicio');
+        }
+        e.target.reset();
+        await loadServicios();
+    } catch (error) {
+        console.error('[registro-servicios] Error registrando servicio:', error);
+        alert(error.message || 'No se pudo guardar el servicio');
+    }
 });
 
 const deleteServicio = async (id) => {
@@ -223,6 +265,10 @@ const logout = () => {
     localStorage.removeItem('user');
     window.location.href = window.AppConfig?.loginPath || '/login/index.html';
 };
+
+document.getElementById('filterFecha').addEventListener('change', () => {
+    loadServicios();
+});
 
 // ===============================
 // INICIO

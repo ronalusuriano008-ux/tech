@@ -3826,5 +3826,17 @@
     "usuarioId": "72e9fcab-1b62-475e-9170-6d9266107053",
     "hora": "21:47",
     "fechaRegistro": "2026-07-01T02:47:17.390Z"
+  },
+  {
+    "id": "9b666133-ad2f-41cb-be51-c61e1272b735",
+    "servicio": "Prueba visual",
+    "modelo": "Modelo prueba",
+    "precio": 50,
+    "costo": 20,
+    "utilidad": 30,
+    "fecha": "2026-07-01",
+    "usuarioId": "admin-001",
+    "hora": "19:19",
+    "fechaRegistro": "2026-07-02T00:19:03.248Z"
   }
 ]
