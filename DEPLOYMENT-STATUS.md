@@ -256,4 +256,4 @@ Ejecuta: `./pre-deploy-check.sh` para verificar todo está en orden.
 ---
 
 *Última actualización: Julio 2, 2026*  
-*Versión: 1.0 - Listo para Producción*
+*Versión: 1.0.0 - Listo para Producción*
