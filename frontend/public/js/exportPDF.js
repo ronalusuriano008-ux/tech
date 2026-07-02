@@ -2,7 +2,7 @@ import { formatPEN } from './calculations.js';
 
 export function exportToPDF(year, month, days) {
     if (typeof window.jspdf === 'undefined') {
-        return alert('Librería jsPDF no cargada');
+        throw new Error('La librería jsPDF no está cargada');
     }
 
     const { jsPDF } = window.jspdf;

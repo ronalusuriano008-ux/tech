@@ -1,15 +1,15 @@
 const API_BASE_URL = window.AppConfig?.apiBaseUrl || '/api';
 
 const getUser = async () => {
-  const res = await fetch(`${API_BASE_URL}/auth/check`);
+  const res = await fetch(`${API_BASE_URL}/auth/check`, { credentials: 'include' });
   if (!res.ok) {
-    window.location.href = '/login/index.html';
+    window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
     return null;
   }
 
   const data = await res.json();
   if (!data.logged) {
-    window.location.href = '/login/index.html';
+    window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
     return null;
   }
 
@@ -22,7 +22,7 @@ const getAvailableModules = (user) => {
       title: 'Dashboard',
       description: 'Resumen principal del negocio.',
       icon: 'fa-chart-line',
-      path: '/dashboard.html',
+      path: window.AppConfig?.dashboardPath || '/dashboard.html',
       badge: 'Principal'
     },
     {
@@ -36,14 +36,14 @@ const getAvailableModules = (user) => {
       title: 'Rellenar',
       description: 'Carga rápida de datos del mes.',
       icon: 'fa-pen-to-square',
-      path: '/fill.html',
+      path: window.AppConfig?.fillPath || '/fill.html',
       badge: 'Carga'
     },
     {
       title: 'Tabla',
       description: 'Consulta y revisión de registros.',
       icon: 'fa-table',
-      path: '/table.html',
+      path: window.AppConfig?.tablePath || '/table.html',
       badge: 'Consulta'
     }
   ];
@@ -61,7 +61,7 @@ const getAvailableModules = (user) => {
   return baseModules;
 };
 
-const resolvePath = (path) => `${window.AppConfig?.appBaseUrl || ''}${path}`;
+const resolvePath = (path) => window.resolveAppPath ? window.resolveAppPath(path) : `${window.AppConfig?.appBaseUrl || ''}${path}`;
 
 const renderCards = (user) => {
   const container = document.getElementById('moduleCards');
@@ -126,6 +126,6 @@ const initPortal = async () => {
 document.addEventListener('DOMContentLoaded', initPortal);
 
 window.logoutPortal = async function logoutPortal() {
-  await fetch(`${API_BASE_URL}/auth/logout`, { method: 'POST' });
-  window.location.href = '/login/index.html';
+  await fetch(`${API_BASE_URL}/auth/logout`, { method: 'POST', credentials: 'include' });
+  window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
 };

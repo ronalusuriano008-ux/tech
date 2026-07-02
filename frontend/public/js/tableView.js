@@ -9,11 +9,14 @@ const backupJsonBtn = document.getElementById('backupJsonBtn');
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const res = await fetch(window.getApiUrl('/auth/check'));
+    const res = await fetch(window.getApiUrl('/auth/check'), { credentials: 'include' });
     const data = await res.json();
-    if (!data.logged) return window.location.href = '/login/index.html';
+    if (!data.logged) return window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
     document.getElementById('userInfo').textContent = `👤 ${data.user.username}`;
-  } catch (e) { return window.location.href = '/login/index.html'; }
+  } catch (e) {
+    window.AppMessages?.networkError(e, { title: 'No se pudo validar la sesión' });
+    return window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
+  }
 
   const monthPicker = document.getElementById('monthPicker');
   monthPicker.value = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
@@ -30,6 +33,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function showToast(msg, isError = false) {
+  if (window.AppMessages?.toast) {
+    window.AppMessages.toast(msg, isError);
+    return;
+  }
   toast.textContent = msg;
   toast.className = `app-toast${isError ? ' toast-error' : ' toast-success'}`;
   toast.style.opacity = '1';
@@ -41,7 +48,10 @@ async function loadMonth() {
     const monthData = await getMonthData(currentYear, currentMonth);
     if (!monthData.days) monthData.days = [];
     renderTableRows(monthData.days);
-  } catch (err) { console.error('Error loading month:', err); showToast('No se pudo cargar el mes', true); }
+  } catch (err) {
+    console.error('Error loading month:', err);
+    window.AppMessages?.networkError(err, { title: 'No se pudo cargar el mes' });
+  }
 }
 
 function generateTableStructure() {
@@ -94,7 +104,7 @@ function renderTableRows(days) {
   tbody.querySelectorAll('[data-edit-day]').forEach(button => {
     button.addEventListener('click', () => {
       const day = button.getAttribute('data-edit-day');
-      window.location.href = `/fill.html?year=${currentYear}&month=${currentMonth}&day=${day}`;
+      window.redirectTo?.(`${window.AppConfig?.fillPath || '/fill.html'}?year=${currentYear}&month=${currentMonth}&day=${day}`);
     });
   });
 
@@ -112,7 +122,7 @@ function renderTableRows(days) {
           showToast('No se pudo eliminar el día', true);
         }
       } catch (err) {
-        showToast('Error al eliminar el día', true);
+        window.AppMessages?.networkError(err, { title: 'Error al eliminar el día' });
         console.error(err);
       }
     });
@@ -135,7 +145,7 @@ async function downloadBackupJson() {
     URL.revokeObjectURL(url);
     showToast('Backup JSON descargado');
   } catch (err) {
-    showToast('Error al descargar backup', true);
+    window.AppMessages?.networkError(err, { title: 'Error al descargar backup' });
     console.error(err);
   }
 }

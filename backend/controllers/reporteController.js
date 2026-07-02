@@ -28,7 +28,7 @@ const descargarReporteDiario = async (req, res) => {
         }
 
         const reporte =
-            await reporteService.generarReporteDiario(userId);
+            await reporteService.generarReporteDiario(userId, req.query.fecha);
 
         res.setHeader(
             'Content-Disposition',
@@ -46,7 +46,7 @@ const descargarReporteDiario = async (req, res) => {
 
         console.error('[Reporte JSON]', error);
 
-        res.status(500).json({
+        res.status(error.statusCode || 500).json({
             message: 'Error al generar reporte JSON'
         });
     }
@@ -72,7 +72,7 @@ const descargarReporteImagen = async (req, res) => {
 
         // Generar datos
         const reporte =
-            await reporteService.generarReporteDiario(userId);
+            await reporteService.generarReporteDiario(userId, req.query.fecha);
 
         // Generar imagen (carga perezosa)
         if (!reporteImageService) {
@@ -121,7 +121,7 @@ const descargarReporteImagen = async (req, res) => {
 
         console.error('[Reporte JPG]', error);
 
-        res.status(500).json({
+        res.status(error.statusCode || 500).json({
             message: 'Error al generar reporte JPG'
         });
     }

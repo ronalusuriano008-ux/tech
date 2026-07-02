@@ -5,7 +5,9 @@ console.log('[api.js] window.AppConfig:', window.AppConfig);
 
 async function handleResponse(res) {
     if (res.status === 401) {
-        window.location.href = '/login/index.html';
+        const loginPath = window.AppConfig?.loginPath || '/login/index.html';
+        if (window.redirectTo) window.redirectTo(loginPath, { replace: true });
+        else window.location.href = loginPath;
         return;
     }
     if (!res.ok) {
@@ -17,7 +19,9 @@ async function handleResponse(res) {
         } catch (err) {
             // keep raw text when it is not JSON
         }
-        throw new Error(errorMessage || `HTTP error ${res.status}`);
+        const error = new Error(errorMessage || `HTTP error ${res.status}`);
+        error.status = res.status;
+        throw error;
     }
     return res.json();
 }

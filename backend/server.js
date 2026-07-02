@@ -79,9 +79,12 @@ app.get('/api/config/runtime', (req, res) => {
     apiBaseUrl: process.env.API_BASE_URL || '/api',
     appBaseUrl: process.env.APP_BASE_URL || '',
     loginPath: '/login/index.html',
+    dashboardPath: '/dashboard.html',
     adminPath: '/admin/index.html',
     registroPath: '/registro/index.html',
-    calculadoraPath: '/calculadora/index.html'
+    calculadoraPath: '/calculadora/index.html',
+    fillPath: '/fill.html',
+    tablePath: '/table.html'
   });
 });
 
@@ -145,7 +148,11 @@ app.get('/registro-servicios.html', (req, res) => {
 });
 
 app.get('/calculadora.html', (req, res) => {
-  res.redirect('/dashboard.html');
+  res.redirect('/calculadora/index.html');
+});
+
+app.get('/calculadora', (req, res) => {
+  res.redirect('/calculadora/index.html');
 });
 
 app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));

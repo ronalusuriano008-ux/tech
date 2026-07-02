@@ -7,6 +7,10 @@ const deleteDayButton = document.getElementById('deleteDayButton');
 const backupJsonBtn = document.getElementById('backupJsonBtn');
 
 function showToast(msg, isError = false) {
+  if (window.AppMessages?.toast) {
+    window.AppMessages.toast(msg, isError);
+    return;
+  }
   toast.textContent = msg;
   toast.className = `app-toast${isError ? ' toast-error' : ' toast-success'}`;
   toast.style.opacity = '1';
@@ -36,6 +40,7 @@ async function loadDayFromQuery() {
     }
   } catch (err) {
     console.error('No se pudo cargar el día desde query:', err);
+    window.AppMessages?.networkError(err, { title: 'No se pudo cargar el día' });
   }
 }
 
@@ -67,7 +72,7 @@ form.addEventListener('submit', async (e) => {
       showToast('Error al guardar', true);
     }
   } catch (err) {
-    showToast('Error de conexión', true);
+    window.AppMessages?.networkError(err, { title: 'No se pudo guardar' });
     console.error(err);
   }
 });
@@ -90,7 +95,7 @@ async function deleteCurrentDay() {
       showToast('No se pudo eliminar', true);
     }
   } catch (err) {
-    showToast('Error de conexión', true);
+    window.AppMessages?.networkError(err, { title: 'No se pudo eliminar' });
     console.error(err);
   }
 }
@@ -104,6 +109,7 @@ async function fetchRawJson() {
     rawJson.textContent = JSON.stringify(data, null, 2);
   } catch (err) {
     rawJson.textContent = 'No se pudo obtener JSON crudo';
+    window.AppMessages?.networkError(err, { title: 'JSON no disponible' });
   }
 }
 
@@ -123,7 +129,7 @@ async function downloadBackupJson() {
     URL.revokeObjectURL(url);
     showToast('Backup JSON descargado');
   } catch (err) {
-    showToast('Error al descargar backup', true);
+    window.AppMessages?.networkError(err, { title: 'Error al descargar backup' });
     console.error(err);
   }
 }

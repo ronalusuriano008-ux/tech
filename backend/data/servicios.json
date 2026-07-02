@@ -3838,5 +3838,41 @@
     "usuarioId": "admin-001",
     "hora": "19:19",
     "fechaRegistro": "2026-07-02T00:19:03.248Z"
+  },
+  {
+    "id": "52f80d6c-3a7b-49ac-9577-192f490d27a6",
+    "servicio": "cambio de pantalla",
+    "modelo": "samsung a15",
+    "precio": 10,
+    "costo": 5,
+    "utilidad": 5,
+    "fecha": "2026-07-02",
+    "usuarioId": "76a99d79-6526-4769-8e9d-c9b31264ce9e",
+    "hora": "11:48",
+    "fechaRegistro": "2026-07-02T16:48:20.656Z"
+  },
+  {
+    "id": "1c5e97d0-5d2b-49d9-859a-30a81113072b",
+    "servicio": "cambio de pantalla",
+    "modelo": "samsung a15",
+    "precio": 90,
+    "costo": 115,
+    "utilidad": -25,
+    "fecha": "2026-07-02",
+    "usuarioId": "admin-001",
+    "hora": "12:53",
+    "fechaRegistro": "2026-07-02T17:53:26.307Z"
+  },
+  {
+    "id": "8bd9f933-1203-4079-9064-affa4b153dfe",
+    "servicio": "cambio de pantalla",
+    "modelo": "samsung a04",
+    "precio": 90,
+    "costo": 23,
+    "utilidad": 67,
+    "fecha": "2026-07-02",
+    "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "hora": "15:24",
+    "fechaRegistro": "2026-07-02T20:24:55.032Z"
   }
 ]
