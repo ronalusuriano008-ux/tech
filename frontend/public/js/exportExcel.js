@@ -1,7 +1,7 @@
 import { formatPEN } from './calculations.js';
 
 export function exportToExcel(year, month, days) {
-    if (typeof XLSX === 'undefined') return alert('Librería XLSX no cargada');
+    if (typeof XLSX === 'undefined') throw new Error('La librería XLSX no está cargada');
     
     const daysInMonth = new Date(year, month, 0).getDate();
     let acumCash = 0, acumYape = 0;

@@ -1,6 +1,6 @@
 export async function exportToImage(year, month, days) {
     if (typeof html2canvas === 'undefined') {
-        return alert('Librería html2canvas no cargada. Añádela al HTML.');
+        throw new Error('La librería html2canvas no está cargada');
     }
 
     // 1. Crear un contenedor HTML oculto para diseñar la imagen
@@ -196,7 +196,7 @@ export async function exportToImage(year, month, days) {
 
     } catch (error) {
         console.error('Error al generar la imagen:', error);
-        alert('Hubo un error al generar la imagen.');
+        throw error;
     } finally {
         document.body.removeChild(container);
     }

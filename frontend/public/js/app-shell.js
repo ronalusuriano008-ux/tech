@@ -8,7 +8,7 @@
   ];
 
   function resolvePath(path) {
-    return `${window.AppConfig?.appBaseUrl || ''}${path}`;
+    return window.resolveAppPath ? window.resolveAppPath(path) : `${window.AppConfig?.appBaseUrl || ''}${path}`;
   }
 
   function normalizePath(pathname) {
@@ -23,18 +23,18 @@
 
   async function loadUser() {
     try {
-      const res = await fetch(window.getApiUrl('/auth/check'));
+      const res = await fetch(window.getApiUrl('/auth/check'), { credentials: 'include' });
       const data = await res.json();
       if (!data.logged) {
         if (!window.location.pathname.includes('/login/')) {
-          window.location.href = '/login/index.html';
+          window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
         }
         return null;
       }
       return data.user;
     } catch (error) {
       if (!window.location.pathname.includes('/login/')) {
-        window.location.href = '/login/index.html';
+        window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
       }
       return null;
     }
@@ -75,11 +75,11 @@
     if (logoutButton) {
       logoutButton.addEventListener('click', async () => {
         try {
-          await fetch(`${window.AppConfig?.apiBaseUrl || '/api'}/auth/logout`, { method: 'POST' });
+          await fetch(`${window.AppConfig?.apiBaseUrl || '/api'}/auth/logout`, { method: 'POST', credentials: 'include' });
         } catch (error) {
           console.warn('No se pudo cerrar la sesión de forma completa', error);
         }
-        window.location.href = '/login/index.html';
+        window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
       });
     }
   }
@@ -101,11 +101,11 @@
 
   window.logoutApp = async function logoutApp() {
     try {
-      await fetch(`${window.AppConfig?.apiBaseUrl || '/api'}/auth/logout`, { method: 'POST' });
+      await fetch(`${window.AppConfig?.apiBaseUrl || '/api'}/auth/logout`, { method: 'POST', credentials: 'include' });
     } catch (error) {
       console.warn('No se pudo cerrar la sesión de forma completa', error);
     }
-    window.location.href = '/login/index.html';
+    window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
   };
 
   window.logout = window.logoutApp;

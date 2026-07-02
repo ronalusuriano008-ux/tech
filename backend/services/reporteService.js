@@ -3,16 +3,22 @@ const servicioService = require('./servicioService');
 const userService = require('./userService');
 const { getLocalDateString } = require('../utils/dateUtils'); // <-- IMPORTAR
 
-const generarReporteDiario = async (userId) => {
-    const servicios = await servicioService.getServicios(null, userId);
+const generarReporteDiario = async (userId, fecha) => {
+    const servicios = await servicioService.getServicios(fecha, userId);
     const user = await userService.getUserById(userId);
+
+    if (!user) {
+        const error = new Error('Tecnico no encontrado');
+        error.statusCode = 404;
+        throw error;
+    }
 
     const totalIngresos = servicios.reduce((sum, s) => sum + (s.precio || 0), 0);
     const totalCostos = servicios.reduce((sum, s) => sum + (s.costo || 0), 0);
     const utilidadTotal = servicios.reduce((sum, s) => sum + (s.utilidad || 0), 0);
 
     return {
-        fecha: getLocalDateString(), // <-- CAMBIO AQUÍ
+        fecha: fecha || getLocalDateString(),
         tecnico: user.nombre,
         servicios: servicios,
         totalIngresos: Math.round(totalIngresos * 100) / 100,

@@ -602,3 +602,54 @@ tbody tr:hover td { background: rgba(0, 243, 255, 0.05) !important; }
         transform: translateY(0);
     }
 }
+
+/* ==========================================
+   ESTILOS PARA FORMULARIOS CON SELECTORES
+   ========================================== */
+
+.grid-form-admin select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #2a2a3a;
+    border-radius: 6px;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grid-form-admin select:focus {
+    outline: none;
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 8px rgba(0, 243, 255, 0.3);
+}
+
+.grid-form-admin select option {
+    background: var(--bg-dark);
+    color: var(--text-main);
+}
+
+/* ==========================================
+   ESTILOS PARA GRUPOS DE BOTONES
+   ========================================== */
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.button-group .btn-futurist {
+    flex: 1;
+    min-width: 150px;
+}
+
+@media (max-width: 768px) {
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .button-group .btn-futurist {
+        width: 100%;
+    }
+}

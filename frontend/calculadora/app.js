@@ -10,21 +10,35 @@ const user = readUser();
 const headers = user ? { 'x-user-id': user.id, 'x-user-role': user.role } : {};
 let config = {};
 
-if (!user) window.location.href = window.AppConfig?.loginPath || '/login/index.html';
+if (!user) window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
 
 const loadConfig = async () => {
-    const res = await fetch(`${window.AppConfig?.apiBaseUrl || '/api'}/config`, { headers });
-    config = await res.json();
-    document.getElementById('configDisplay').innerHTML =
+    try {
+        const res = await fetch(`${window.AppConfig?.apiBaseUrl || '/api'}/config`, { headers });
+        if (!res.ok) {
+            const payload = await res.json().catch(() => ({}));
+            const error = new Error(payload.message || payload.error || 'No se pudo cargar la configuración');
+            error.status = res.status;
+            throw error;
+        }
+        config = await res.json();
+        document.getElementById('configDisplay').innerHTML =
 `Configuracion:
 Valor hora = ${config.vh} |
 Costo fijo = ${config.cf} |
 Margen = ${config.margen}% |
 Riesgo = ${config.riesgo}% |
 Garantía = ${config.garantia}%`;
+    } catch (error) {
+        console.error('[calculadora] Error cargando configuracion:', error);
+        document.getElementById('configDisplay').textContent = 'No se pudo cargar la configuración.';
+        window.AppMessages?.networkError(error, { title: 'Calculadora sin configuración' });
+        throw error;
+    }
 };
 
 const calculate = () => {
+    if (!config || Object.keys(config).length === 0) return;
     const cr = parseFloat(document.getElementById('cr').value) || 0;
     const tiempo = parseFloat(document.getElementById('tiempo').value) || 0;
     const trabajos = parseInt(document.getElementById('trabajos').value) || 1;
@@ -48,6 +62,15 @@ const calculate = () => {
     document.getElementById('precioFinal').textContent = `S/.${(Math.round(precio * 10) / 10).toFixed(1)}`;
 };
 
-const logout = () => { localStorage.removeItem('user'); window.location.href = window.AppConfig?.loginPath || '/login/index.html'; };
+const logout = async () => {
+    try {
+        await fetch(`${window.AppConfig?.apiBaseUrl || '/api'}/auth/logout`, { method: 'POST', headers, credentials: 'include' });
+    } catch (error) {
+        console.warn('[calculadora] No se pudo cerrar la sesion en servidor:', error);
+    } finally {
+        localStorage.removeItem('user');
+        window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
+    }
+};
 
-loadConfig().then(calculate);
+loadConfig().then(calculate).catch(() => {});

@@ -21,8 +21,20 @@ const getServicios = async (req, res) => {
 const createServicio = async (req, res) => {
     try {
         // Inyectamos la hora del servidor usando la zona horaria del taller
+        const precio = Number(req.body.precio);
+        const costo = Number(req.body.costo);
+
+        if (!req.body.servicio || !req.body.modelo || !Number.isFinite(precio) || !Number.isFinite(costo)) {
+            return res.status(400).json({ message: 'Servicio, modelo, precio y costo son obligatorios' });
+        }
+
         const data = { 
             ...req.body, 
+            servicio: String(req.body.servicio).trim(),
+            modelo: String(req.body.modelo).trim(),
+            precio,
+            costo,
+            utilidad: Math.round((precio - costo) * 100) / 100,
             usuarioId: req.user.id,
             hora: getLocalTimeString() // <--- FORZAR LA HORA AQUÍ
         };
@@ -42,7 +54,15 @@ const updateServicio = async (req, res) => {
             return res.status(403).json({ message: 'No puedes editar este servicio' });
         }
 
-        const updated = await servicioService.updateServicio(req.params.id, req.body);
+        const updates = { ...req.body };
+        if ('precio' in updates) updates.precio = Number(updates.precio);
+        if ('costo' in updates) updates.costo = Number(updates.costo);
+        if (Number.isFinite(updates.precio) && Number.isFinite(updates.costo)) {
+            updates.utilidad = Math.round((updates.precio - updates.costo) * 100) / 100;
+        }
+
+        const updated = await servicioService.updateServicio(req.params.id, updates);
+        if (!updated) return res.status(404).json({ message: 'Servicio no encontrado' });
         res.json(updated);
     } catch (error) {
         res.status(500).json({ message: 'Error al actualizar servicio' });

@@ -3,15 +3,24 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
+const toNumber = (value) => {
+    const number = Number(value);
+    return Number.isFinite(number) ? number : 0;
+};
+
+const money = (value) => `S/. ${toNumber(value).toFixed(2)}`;
+
 const generarReporteJPG = async (data) => {
 
     const url = process.env.PUBLIC_BASE_URL || process.env.API_BASE_URL || 'https://api.vixbox.xyz';
+
+    const servicios = Array.isArray(data.servicios) ? data.servicios : [];
 
     // ===============================
     // TAMAÑO (similar al html2canvas scale=3)
     // ===============================
     const width = 1920;
-    const height = 1080;
+    const height = Math.max(1080, 420 + (servicios.length * 58) + 260);
 
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
@@ -100,8 +109,6 @@ const generarReporteJPG = async (data) => {
     // ===============================
     // BODY (servicios HTML → canvas)
     // ===============================
-    const servicios = data.servicios || [];
-
     servicios.forEach((s) => {
 
         y += rowH;
@@ -111,19 +118,21 @@ const generarReporteJPG = async (data) => {
         ctx.fillText(s.hora || '--:--', c1, y);
 
         ctx.fillStyle = '#111';
-        ctx.fillText(`${s.servicio} (${s.modelo})`, c2, y, 750);
+        const servicio = s.servicio || 'Servicio';
+        const modelo = s.modelo ? ` (${s.modelo})` : '';
+        ctx.fillText(`${servicio}${modelo}`, c2, y, 750);
 
         ctx.textAlign = 'right';
 
         ctx.fillStyle = black;
-        ctx.fillText(`S/. ${(s.precio || 0).toFixed(2)}`, c3, y);
+        ctx.fillText(money(s.precio), c3, y);
 
         ctx.fillStyle = soft;
-        ctx.fillText(`S/. ${(s.costo || 0).toFixed(2)}`, c4, y);
+        ctx.fillText(money(s.costo), c4, y);
 
         ctx.fillStyle = black;
         ctx.font = `bold ${font.bold}px Sans`;
-        ctx.fillText(`S/. ${(s.utilidad || 0).toFixed(2)}`, c5, y);
+        ctx.fillText(money(s.utilidad), c5, y);
 
         ctx.textAlign = 'left';
 
@@ -140,31 +149,31 @@ const generarReporteJPG = async (data) => {
     // ===============================
     // TOTALES (igual flex HTML)
     // ===============================
-   y += 120;
+    y += 120;
 
-const totals = [
-    { label: `Ingresos (${data.cantidadServicios} srv)`, value: data.totalIngresos },
-    { label: 'Costos', value: data.totalCostos },
-    { label: 'Utilidad', value: data.utilidadTotal },
-    { label: 'Distribución de utilidad %', value: data.utilidadTotal / 2 }
-];
+    const totals = [
+        { label: `Ingresos (${servicios.length} srv)`, value: data.totalIngresos },
+        { label: 'Costos', value: data.totalCostos },
+        { label: 'Utilidad', value: data.utilidadTotal },
+        { label: 'Distribución de utilidad', value: toNumber(data.utilidadTotal) / 2 }
+    ];
 
-const startX = 120;
+    const startX = 120;
 
-ctx.textAlign = 'left';
+    ctx.textAlign = 'left';
 
-totals.forEach(t => {
+    totals.forEach(t => {
 
-    ctx.fillStyle = soft;
-    ctx.font = `${font.normal}px Sans`;
-    ctx.fillText(t.label, startX, y);
+        ctx.fillStyle = soft;
+        ctx.font = `${font.normal}px Sans`;
+        ctx.fillText(t.label, startX, y);
 
-    ctx.fillStyle = black;
-    ctx.font = `bold ${font.bold}px Sans`;
-    ctx.fillText(`S/. ${Number(t.value || 0).toFixed(2)}`, startX + 500, y);
+        ctx.fillStyle = black;
+        ctx.font = `bold ${font.bold}px Sans`;
+        ctx.fillText(money(t.value), startX + 500, y);
 
-    y += gap;
-});
+        y += gap;
+    });
 
     // ===============================
     // FOOTER

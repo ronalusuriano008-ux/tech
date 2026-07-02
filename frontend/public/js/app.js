@@ -25,6 +25,14 @@ function loadScriptOnce(url) {
     return p;
 }
 
+const notifyError = (error, title = 'No se pudo completar') => {
+    if (window.AppMessages?.networkError) {
+        window.AppMessages.networkError(error, { title });
+    } else {
+        console.error(error);
+    }
+};
+
 function showPageLoader() {
     const l = document.getElementById('pageLoader');
     if (l) { l.style.display = 'flex'; l.setAttribute('aria-hidden','false'); }
@@ -40,7 +48,7 @@ window.exportToExcel = async () => {
         showPageLoader();
         await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
         exportToExcel(currentYear, currentMonth, monthData.days);
-    } catch (err) { console.error(err); alert('No se pudo generar Excel: ' + err.message); }
+    } catch (err) { console.error(err); notifyError(err, 'No se pudo generar Excel'); }
     finally { hidePageLoader(); }
 };
 
@@ -50,7 +58,7 @@ window.exportToPDF = async () => {
         await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
         await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js');
         exportToPDF(currentYear, currentMonth, monthData.days);
-    } catch (err) { console.error(err); alert('No se pudo generar PDF: ' + err.message); }
+    } catch (err) { console.error(err); notifyError(err, 'No se pudo generar PDF'); }
     finally { hidePageLoader(); }
 };
 
@@ -59,7 +67,7 @@ window.exportToPNG = async () => {
         showPageLoader();
         await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
         exportToImage(currentYear, currentMonth, monthData.days);
-    } catch (err) { console.error(err); alert('No se pudo generar la imagen: ' + err.message); }
+    } catch (err) { console.error(err); notifyError(err, 'No se pudo generar la imagen'); }
     finally { hidePageLoader(); }
 };
 
@@ -156,13 +164,16 @@ window.deleteMonth = async () => {
 document.addEventListener('DOMContentLoaded', async () => {
     // Cargar info de usuario
     try {
-        const res = await fetch(window.getApiUrl('/auth/check'));
+        const res = await fetch(window.getApiUrl('/auth/check'), { credentials: 'include' });
         const data = await res.json();
-        if (!data.logged) return window.location.href = '/login/index.html';
+        if (!data.logged) return window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
         const userName = data.user?.nombre || data.user?.username || 'Usuario';
         document.getElementById('userInfo').textContent = `👤 ${userName}`;
         renderQuickAccess(data.user);
-    } catch(e) { window.location.href = '/login/index.html'; }
+    } catch(e) {
+        notifyError(e, 'No se pudo validar la sesión');
+        window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
+    }
 
     const monthPicker = document.getElementById('monthPicker');
     monthPicker.value = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
@@ -186,16 +197,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     generateTableStructure(); // Generar encabezados estáticos
     await loadMonth();
 
-    // Registrar Service Worker para PWA
-    if ('serviceWorker' in navigator) {
-        try {
-            const registration = await navigator.serviceWorker.register('/sw.js');
-            if (registration.waiting) {
-                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-            }
-            console.log('Service Worker registrado');
-        } catch (err) { console.warn('Error al registrar Service Worker', err); }
-    }
     // Ocultar loader cuando la app esté lista
     hidePageLoader();
 });
@@ -206,7 +207,10 @@ async function loadMonth() {
         if (!monthData.days) monthData.days = [];
         renderTableRows();
         recalculateAll();
-    } catch (err) { console.error('Error loading:', err); }
+    } catch (err) {
+        console.error('Error loading:', err);
+        notifyError(err, 'No se pudo cargar el mes');
+    }
 }
 
 // GENERACIÓN DINÁMICA DE ENCABEZADOS DE LA TABLA
@@ -382,14 +386,14 @@ function renderQuickAccess(user = {}) {
             title: 'Rellenar datos',
             description: 'Editar información del mes en curso',
             icon: 'fa-edit',
-            path: '/fill.html',
+            path: window.AppConfig?.fillPath || '/fill.html',
             available: true
         },
         {
             title: 'Ver tabla',
             description: 'Consultar el registro mensual',
             icon: 'fa-table',
-            path: '/table.html',
+            path: window.AppConfig?.tablePath || '/table.html',
             available: true
         }
     ];
@@ -423,7 +427,12 @@ function renderQuickAccess(user = {}) {
 }
 
 function showToast(msg, isError = false) {
+    if (window.AppMessages?.toast) {
+        window.AppMessages.toast(msg, isError);
+        return;
+    }
     const toast = document.getElementById('toast');
+    if (!toast) return;
     toast.textContent = msg;
     toast.className = `app-toast${isError ? ' toast-error' : ' toast-success'}`;
     toast.style.opacity = '1';
