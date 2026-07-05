@@ -14,15 +14,14 @@ const user = readUser();
 
 if (!user) {
     window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
+    return;
 }
 
 const headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    ...(user ? {
-        'x-user-id': user.id,
-        'x-user-role': user.role
-    } : {})
+    'x-user-id': user.id,
+    'x-user-role': user.role
 };
 
 const parseResponseError = async (res, fallback) => {
@@ -32,13 +31,17 @@ const parseResponseError = async (res, fallback) => {
     throw error;
 };
 
-document.getElementById('userName').textContent =
-    `BIENVENIDO, ${user?.nombre || 'USUARIO'}.`;
+const userNameEl = document.getElementById('userName');
+if (userNameEl) {
+    userNameEl.textContent = `BIENVENIDO, ${user?.nombre || 'USUARIO'}.`;
+}
 
-document.getElementById('filterFecha').value = new Date()
-    .toLocaleDateString('en-CA', {
+const filterFechaElInit = document.getElementById('filterFecha');
+if (filterFechaElInit) {
+    filterFechaElInit.value = new Date().toLocaleDateString('en-CA', {
         timeZone: 'America/Lima'
     });
+}
 
 const normalizeDate = (value) => {
     if (!value) return value;
@@ -148,36 +151,39 @@ const loadServicios = async () => {
     }
 };
 
-document.getElementById('servicioForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const precio = parseFloat(document.getElementById('s-precio').value);
-    const costo = parseFloat(document.getElementById('s-costo').value);
+const servicioForm = document.getElementById('servicioForm');
+if (servicioForm) {
+    servicioForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const precio = parseFloat(document.getElementById('s-precio')?.value || 0);
+        const costo = parseFloat(document.getElementById('s-costo')?.value || 0);
 
-    const body = {
-        servicio: document.getElementById('s-servicio').value.trim(),
-        modelo: document.getElementById('s-modelo').value.trim(),
-        precio,
-        costo,
-        utilidad: Math.round((precio - costo) * 100) / 100,
-        fecha: getFecha()
-    };
+        const body = {
+            servicio: document.getElementById('s-servicio')?.value.trim() || '',
+            modelo: document.getElementById('s-modelo')?.value.trim() || '',
+            precio,
+            costo,
+            utilidad: Math.round((precio - costo) * 100) / 100,
+            fecha: getFecha()
+        };
 
-    try {
-        const res = await fetch(`${API}/servicios`, {
-            method: 'POST',
-            headers,
-            credentials: 'include',
-            body: JSON.stringify(body)
-        });
-        if (!res.ok) await parseResponseError(res, 'No se pudo registrar el servicio');
-        e.target.reset();
-        await loadServicios();
-        window.AppMessages?.success('Servicio registrado correctamente');
-    } catch (error) {
-        console.error('[registro-servicios] Error registrando servicio:', error);
-        window.AppMessages?.networkError(error, { title: 'No se pudo guardar' });
-    }
-});
+        try {
+            const res = await fetch(`${API}/servicios`, {
+                method: 'POST',
+                headers,
+                credentials: 'include',
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) await parseResponseError(res, 'No se pudo registrar el servicio');
+            e.target.reset();
+            await loadServicios();
+            window.AppMessages?.success('Servicio registrado correctamente');
+        } catch (error) {
+            console.error('[registro-servicios] Error registrando servicio:', error);
+            window.AppMessages?.networkError(error, { title: 'No se pudo guardar' });
+        }
+    });
+}
 
 const deleteServicio = async (id) => {
     if (confirm('¿Eliminar este servicio?')) {
@@ -252,9 +258,12 @@ const logout = async () => {
     }
 };
 
-document.getElementById('filterFecha').addEventListener('change', () => {
-    loadServicios();
-});
+const filterFechaEl = document.getElementById('filterFecha');
+if (filterFechaEl) {
+    filterFechaEl.addEventListener('change', () => {
+        loadServicios();
+    });
+}
 
 // ===============================
 // INICIO
