@@ -16,11 +16,14 @@ if (!user) {
     window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
 }
 
-const headers = user ? {
+const headers = {
     'Content-Type': 'application/json',
-    'x-user-id': user.id,
-    'x-user-role': user.role
-} : { 'Content-Type': 'application/json' };
+    'Accept': 'application/json',
+    ...(user ? {
+        'x-user-id': user.id,
+        'x-user-role': user.role
+    } : {})
+};
 
 const parseResponseError = async (res, fallback) => {
     const payload = await res.json().catch(() => ({}));
@@ -37,11 +40,18 @@ document.getElementById('filterFecha').value = new Date()
         timeZone: 'America/Lima'
     });
 
+const normalizeDate = (value) => {
+    if (!value) return value;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? value : parsed.toISOString().slice(0, 10);
+};
+
 const getFecha = () => {
     const value = document.getElementById('filterFecha').value;
-    return value || new Date().toLocaleDateString('en-CA', {
+    return normalizeDate(value || new Date().toLocaleDateString('en-CA', {
         timeZone: 'America/Lima'
-    });
+    }));
 };
 
 // ===============================
@@ -80,7 +90,10 @@ const autoResizeTextarea = (el) => {
 const loadServicios = async () => {
     try {
         const fecha = getFecha();
-        const res = await fetch(`${API}/servicios?fecha=${encodeURIComponent(fecha)}`, { headers });
+        const res = await fetch(`${API}/servicios?fecha=${encodeURIComponent(fecha)}`, {
+            headers,
+            credentials: 'include'
+        });
         if (!res.ok) await parseResponseError(res, 'No se pudieron obtener los servicios');
 
         const payload = await res.json().catch(() => []);
@@ -150,7 +163,12 @@ document.getElementById('servicioForm').addEventListener('submit', async (e) => 
     };
 
     try {
-        const res = await fetch(`${API}/servicios`, { method: 'POST', headers, body: JSON.stringify(body) });
+        const res = await fetch(`${API}/servicios`, {
+            method: 'POST',
+            headers,
+            credentials: 'include',
+            body: JSON.stringify(body)
+        });
         if (!res.ok) await parseResponseError(res, 'No se pudo registrar el servicio');
         e.target.reset();
         await loadServicios();
@@ -164,7 +182,11 @@ document.getElementById('servicioForm').addEventListener('submit', async (e) => 
 const deleteServicio = async (id) => {
     if (confirm('¿Eliminar este servicio?')) {
         try {
-            const res = await fetch(`${API}/servicios/${id}`, { method: 'DELETE', headers });
+            const res = await fetch(`${API}/servicios/${id}`, {
+                method: 'DELETE',
+                headers,
+                credentials: 'include'
+            });
             if (!res.ok) await parseResponseError(res, 'No se pudo eliminar el servicio');
             window.AppMessages?.success('Servicio eliminado');
             loadServicios();
@@ -188,7 +210,10 @@ const descargarReporte = async () => {
             btnReporte.disabled = true;
         }
 
-        const res = await fetch(`${API}/reportes/imagen?fecha=${encodeURIComponent(getFecha())}`, { headers });
+        const res = await fetch(`${API}/reportes/imagen?fecha=${encodeURIComponent(getFecha())}`, {
+            headers,
+            credentials: 'include'
+        });
 
         if (!res.ok) await parseResponseError(res, 'No se pudo generar el reporte');
 

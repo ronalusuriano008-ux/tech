@@ -1,8 +1,8 @@
 (function () {
   const runtimeConfig = window.__APP_CONFIG__ || {};
-  const host = window.location.hostname || '';
 
-  const defaultApiBaseUrl = host === 'api.vixbox.xyz' || host === 'localhost' || host === '127.0.0.1' ? '/api' : 'https://api.vixbox.xyz/api';
+  // Usar rutas relativas por defecto para funcionar en cualquier dominio
+  const defaultApiBaseUrl = '/api';
   const apiBaseUrl = runtimeConfig.apiBaseUrl || defaultApiBaseUrl;
   const appBaseUrl = (runtimeConfig.appBaseUrl || '').replace(/\/+$/, '');
   const paths = {
