@@ -58,10 +58,10 @@ const generarReporteJPG = async (data) => {
     // HEADER (igual HTML)
     // ===============================
     ctx.fillStyle = black;
-    ctx.font = `bold ${font.title}px Sans`;
+    ctx.font = `bold ${font.title}px Arial`;
     ctx.fillText('Reporte Diario', 80, 80);
 
-    ctx.font = `${font.normal}px Sans`;
+    ctx.font = `${font.normal}px Arial`;
     ctx.fillText(`Técnico: ${data.tecnico || ''}`, 80, 120);
 
     ctx.textAlign = 'right';
@@ -81,7 +81,7 @@ const generarReporteJPG = async (data) => {
     let y = 200;
 
     ctx.fillStyle = soft;
-    ctx.font = `bold ${font.bold}px Sans`;
+    ctx.font = `bold ${font.bold}px Arial`;
 
     const c1 = 120;
     const c2 = 350;
@@ -114,7 +114,7 @@ const generarReporteJPG = async (data) => {
         y += rowH;
 
         ctx.fillStyle = black;
-        ctx.font = `${font.normal}px Sans`;
+        ctx.font = `${font.normal}px Arial`;
         ctx.fillText(s.hora || '--:--', c1, y);
 
         ctx.fillStyle = '#111';
@@ -131,7 +131,7 @@ const generarReporteJPG = async (data) => {
         ctx.fillText(money(s.costo), c4, y);
 
         ctx.fillStyle = black;
-        ctx.font = `bold ${font.bold}px Sans`;
+        ctx.font = `bold ${font.bold}px Arial`;
         ctx.fillText(money(s.utilidad), c5, y);
 
         ctx.textAlign = 'left';
@@ -165,11 +165,11 @@ const generarReporteJPG = async (data) => {
     totals.forEach(t => {
 
         ctx.fillStyle = soft;
-        ctx.font = `${font.normal}px Sans`;
+        ctx.font = `${font.normal}px Arial`;
         ctx.fillText(t.label, startX, y);
 
         ctx.fillStyle = black;
-        ctx.font = `bold ${font.bold}px Sans`;
+        ctx.font = `bold ${font.bold}px Arial`;
         ctx.fillText(money(t.value), startX + 500, y);
 
         y += gap;
@@ -185,7 +185,7 @@ const generarReporteJPG = async (data) => {
     ctx.stroke();
 
     ctx.fillStyle = soft;
-    ctx.font = `${font.small}px Sans`;
+    ctx.font = `${font.small}px Arial`;
     ctx.fillText(
         `Documento generado automáticamente desde ${url}.`,
         80,
@@ -194,7 +194,7 @@ const generarReporteJPG = async (data) => {
 
     ctx.textAlign = 'right';
     ctx.fillStyle = black;
-    ctx.font = `bold ${font.small}px Sans`;
+    ctx.font = `bold ${font.small}px Arial`;
     ctx.fillText('2026', width - 80, height - 45);
 
     // ===============================

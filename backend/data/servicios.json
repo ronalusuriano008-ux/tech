@@ -3910,5 +3910,17 @@
     "hora": "15:58",
     "fecha": "2026-07-05",
     "fechaRegistro": "2026-07-05T20:58:44.205Z"
+  },
+  {
+    "id": "8fce6b27-9b50-4a4c-b6ac-39faeb5b9a27",
+    "servicio": "eliminacion de virus",
+    "modelo": "Redmi 9c",
+    "precio": 40,
+    "costo": 30,
+    "utilidad": 10,
+    "fecha": "2026-07-05",
+    "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+    "hora": "17:38",
+    "fechaRegistro": "2026-07-05T22:38:08.952Z"
   }
 ]

@@ -25,7 +25,10 @@ RUN apk add --no-cache \
     cairo-dev \
     jpeg-dev \
     pango-dev \
-    giflib-dev
+    giflib-dev \
+    fontconfig \
+    ttf-liberation \
+    ttf-dejavu
 
 # Copiar package.json y dependencias del backend
 COPY backend/package*.json ./backend/
