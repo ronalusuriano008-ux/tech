@@ -44,9 +44,6 @@ COPY --from=frontend-builder /app/frontend/admin-panel ./frontend/admin-panel
 COPY --from=frontend-builder /app/frontend/calculadora ./frontend/calculadora
 COPY --from=frontend-builder /app/frontend/registro-servicios ./frontend/registro-servicios
 
-# Copiar archivo de configuración
-COPY .env.production .env
-
 # Crear directorios necesarios
 RUN mkdir -p backend/data backend/temp/reportes backend/public/reports
 
