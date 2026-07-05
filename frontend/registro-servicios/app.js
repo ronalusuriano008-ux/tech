@@ -1,11 +1,13 @@
 // frontend/registro-servicios/app.js
 const API = window.AppConfig?.apiBaseUrl || '/api';
-const reportOrigin = new URL(window.AppConfig?.apiBaseUrl || 'https://api.vixbox.xyz/api', window.location.href).origin;
+const reportOrigin = window.location.origin;
 
 const readUser = () => {
     try {
-        return JSON.parse(localStorage.getItem('user'));
+        const stored = typeof localStorage !== 'undefined' ? localStorage.getItem('user') : null;
+        return stored ? JSON.parse(stored) : null;
     } catch (error) {
+        console.error('[registro-servicios] Error leyendo usuario:', error);
         return null;
     }
 };
@@ -17,11 +19,14 @@ if (!user) {
     return;
 }
 
-const headers = {
+const headers = user ? {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     'x-user-id': user.id,
     'x-user-role': user.role
+} : {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
 };
 
 const parseResponseError = async (res, fallback) => {

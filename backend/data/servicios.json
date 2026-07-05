@@ -3874,5 +3874,41 @@
     "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
     "hora": "15:24",
     "fechaRegistro": "2026-07-02T20:24:55.032Z"
+  },
+  {
+    "id": "72ffa79b-1c6c-4268-8e02-3977a8a68aa3",
+    "servicio": "Pantalla Nueva Funcionando",
+    "modelo": "Test_UUID",
+    "precio": 250,
+    "costo": 120,
+    "utilidad": 130,
+    "usuarioId": "admin-001",
+    "hora": "15:51",
+    "fecha": "2026-07-05",
+    "fechaRegistro": "2026-07-05T20:51:55.181Z"
+  },
+  {
+    "id": "e73096df-1d5b-49d9-a9b1-927e072b1934",
+    "servicio": "Test",
+    "modelo": "Model",
+    "precio": 100,
+    "costo": 50,
+    "utilidad": 50,
+    "usuarioId": "admin-001",
+    "hora": "15:52",
+    "fecha": "2026-07-05",
+    "fechaRegistro": "2026-07-05T20:52:17.549Z"
+  },
+  {
+    "id": "d40f3f60-4251-4708-a54c-48b786971904",
+    "servicio": "Test Final",
+    "modelo": "X1",
+    "precio": 200,
+    "costo": 100,
+    "utilidad": 100,
+    "usuarioId": "admin-001",
+    "hora": "15:58",
+    "fecha": "2026-07-05",
+    "fechaRegistro": "2026-07-05T20:58:44.205Z"
   }
 ]

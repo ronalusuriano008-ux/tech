@@ -157,9 +157,9 @@ app.get('/calculadora', (req, res) => {
 
 app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));
 app.use('/login', express.static(path.join(__dirname, '..', 'frontend', 'login')));
-app.use('/admin', requireAuth, requireAdmin, express.static(path.join(__dirname, '..', 'frontend', 'admin-panel')));
-app.use('/calculadora', requireAuth, express.static(path.join(__dirname, '..', 'frontend', 'calculadora')));
-app.use('/registro', requireAuth, express.static(path.join(__dirname, '..', 'frontend', 'registro-servicios')));
+app.use('/admin', express.static(path.join(__dirname, '..', 'frontend', 'admin-panel')));
+app.use('/calculadora', express.static(path.join(__dirname, '..', 'frontend', 'calculadora')));
+app.use('/registro', express.static(path.join(__dirname, '..', 'frontend', 'registro-servicios')));
 
 const PORT = Number(process.env.PORT || 3000);
 
