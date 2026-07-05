@@ -27,15 +27,13 @@ fi
 
 # 2. Instalar dependencias
 echo ""
-echo "📦 Instalando dependencias del backend..."
-cd backend
-npm install --only=production
-cd ..
+echo "📦 Instalando dependencias de raíz y subcarpetas..."
+npm install
 
 echo ""
-echo "📦 Instalando dependencias del frontend..."
-cd frontend
-npm install
+echo "📦 Sincronizando lockfile de backend..."
+cd backend
+npm install --only=production
 cd ..
 
 # 3. Crear directorios necesarios

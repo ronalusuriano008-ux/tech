@@ -30,7 +30,7 @@ RUN apk add --no-cache \
 # Copiar package.json y dependencias del backend
 COPY backend/package*.json ./backend/
 WORKDIR /app/backend
-RUN npm ci --only=production
+RUN npm install --only=production
 
 WORKDIR /app
 
