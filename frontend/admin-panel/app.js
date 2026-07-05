@@ -374,7 +374,7 @@ const descargarReporteJSON = async () => {
     }
     
     try {
-        const url = `${API.replace('/api', '')}/reporte/diario?tecnicoId=${tecnicoId}&fecha=${fecha}`;
+        const url = `${API}/reportes/diario?tecnicoId=${tecnicoId}&fecha=${fecha}`;
         const res = await fetch(url, { headers });
         
         if (!res.ok) await parseResponseError(res, 'No se pudo generar el reporte');
@@ -410,7 +410,7 @@ const descargarReporteImagen = async () => {
     }
     
     try {
-        const url = `${API.replace('/api', '')}/reporte/imagen?tecnicoId=${tecnicoId}&fecha=${fecha}`;
+        const url = `${API}/reportes/imagen?tecnicoId=${tecnicoId}&fecha=${fecha}`;
         const res = await fetch(url, { headers });
         
         if (!res.ok) await parseResponseError(res, 'No se pudo generar la imagen del reporte');
