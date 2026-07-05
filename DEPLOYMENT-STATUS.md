@@ -208,7 +208,7 @@ npm run health
 
 5. **Hacer backup**
    ```bash
-   ./deploy-docker.sh backup
+   ./deploy-docker.sh   backup
    ```
 
 ---
