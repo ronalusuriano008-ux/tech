@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon backend/server.js",
+    "postinstall": "cd backend && npm install --only=production && cd ../frontend && npm install",
     "init": "./init-data.sh",
     "deploy": "./deploy.sh",
     "deploy:docker": "./deploy-docker.sh",
