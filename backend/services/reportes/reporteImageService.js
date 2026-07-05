@@ -187,7 +187,7 @@ const generarReporteJPG = async (data) => {
     ctx.fillStyle = soft;
     ctx.font = `${font.small}px Arial`;
     ctx.fillText(
-        `Documento generado automáticamente desde ${url}.`,
+        `Documento Versión 3.0 ${url}.`,
         80,
         height - 45
     );
