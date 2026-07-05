@@ -15,8 +15,7 @@ const readUser = () => {
 const user = readUser();
 
 if (!user) {
-    window.redirectTo?.(window.AppConfig?.loginPath || '/login/index.html', { replace: true });
-    return;
+    window.location.href = window.AppConfig?.loginPath || '/login/index.html';
 }
 
 const headers = user ? {
@@ -56,7 +55,8 @@ const normalizeDate = (value) => {
 };
 
 const getFecha = () => {
-    const value = document.getElementById('filterFecha').value;
+    const filterEl = document.getElementById('filterFecha');
+    const value = filterEl?.value || '';
     return normalizeDate(value || new Date().toLocaleDateString('en-CA', {
         timeZone: 'America/Lima'
     }));
@@ -97,6 +97,9 @@ const autoResizeTextarea = (el) => {
 // ===============================
 const loadServicios = async () => {
     try {
+        const tbody = document.querySelector('#serviciosTable tbody');
+        if (!tbody) return; // Tabla no lista aún
+        
         const fecha = getFecha();
         const res = await fetch(`${API}/servicios?fecha=${encodeURIComponent(fecha)}`, {
             headers,
@@ -106,8 +109,6 @@ const loadServicios = async () => {
 
         const payload = await res.json().catch(() => []);
         const servicios = Array.isArray(payload) ? payload : (payload.servicios || []);
-
-        const tbody = document.querySelector('#serviciosTable tbody');
         if (!servicios.length) {
             tbody.innerHTML = `
                 <tr>
