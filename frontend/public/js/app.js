@@ -176,23 +176,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const monthPicker = document.getElementById('monthPicker');
-    monthPicker.value = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
-    monthPicker.addEventListener('change', (e) => {
-        const [y, m] = e.target.value.split('-');
-        currentYear = parseInt(y); currentMonth = parseInt(m);
-        loadMonth();
-    });
+    if (monthPicker) {
+        monthPicker.value = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
+        monthPicker.addEventListener('change', (e) => {
+            const [y, m] = e.target.value.split('-');
+            currentYear = parseInt(y); currentMonth = parseInt(m);
+            loadMonth();
+        });
+    }
 
-    document.getElementById('downloadPdfBtn').addEventListener('click', () => window.exportToPDF());
-    document.getElementById('downloadBackupBtn').addEventListener('click', downloadDashboardBackupJson);
-    document.getElementById('uploadBackupBtn').addEventListener('click', () => document.getElementById('backupFileInput').click());
-    document.getElementById('backupFileInput').addEventListener('change', (e) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            importDashboardBackupJson(file);
-            e.target.value = '';
-        }
-    });
+    const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+    if (downloadPdfBtn) {
+        downloadPdfBtn.addEventListener('click', () => window.exportToPDF());
+    }
+
+    const downloadBackupBtn = document.getElementById('downloadBackupBtn');
+    if (downloadBackupBtn) {
+        downloadBackupBtn.addEventListener('click', downloadDashboardBackupJson);
+    }
+
+    const uploadBackupBtn = document.getElementById('uploadBackupBtn');
+    const backupFileInput = document.getElementById('backupFileInput');
+    if (uploadBackupBtn && backupFileInput) {
+        uploadBackupBtn.addEventListener('click', () => backupFileInput.click());
+        backupFileInput.addEventListener('change', (e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+                importDashboardBackupJson(file);
+                e.target.value = '';
+            }
+        });
+    }
 
     generateTableStructure(); // Generar encabezados estáticos
     await loadMonth();
