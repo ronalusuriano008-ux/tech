@@ -112,64 +112,113 @@ const loadServicios = async () => {
         if (!servicios.length) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="7" style="text-align:center; color:#9ca3af; padding:1rem;">
-                        No hay servicios registrados para esta fecha.
+                    <td colspan="8" style="text-align:center; color:#9ca3af; padding:1rem;">
+                        No hay registros para esta fecha.
                     </td>
                 </tr>
             `;
         } else {
-            tbody.innerHTML = servicios.map(s => `
+            tbody.innerHTML = servicios.map(s => {
+                const tipoLabel = s.tipo === 'gasto' ? 'Gasto' : 'Servicio';
+                const precioValue = s.tipo === 'gasto' ? '-' : `S/.${Number(s.precio || 0).toFixed(2)}`;
+                const utilidadValue = `S/.${Number(s.utilidad || 0).toFixed(2)}`;
+                return `
                 <tr>
                     <td>${s.hora || (s.fechaRegistro ? new Date(s.fechaRegistro).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' }) : '--:--')}</td>
+                    <td>${tipoLabel}</td>
                     <td>${escapeHtml(s.servicio || '-')}</td>
                     <td>${escapeHtml(s.modelo || '-')}</td>
-                    <td>S/.${Number(s.precio || 0).toFixed(2)}</td>
+                    <td>${precioValue}</td>
                     <td>S/.${Number(s.costo || 0).toFixed(2)}</td>
-                    <td>S/.${Number(s.utilidad || 0).toFixed(2)}</td>
+                    <td>${utilidadValue}</td>
                     <td>
                         <button class="btn-table" onclick="deleteServicio('${s.id}')">
                             <i class="bi bi-trash3"></i>
                         </button>
                     </td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
         }
 
-        const ing = servicios.reduce((sum, item) => sum + Number(item.precio || 0), 0);
-        const cos = servicios.reduce((sum, item) => sum + Number(item.costo || 0), 0);
-        document.getElementById('resIngresos').textContent = `S/.${ing.toFixed(2)}`;
-        document.getElementById('resCostos').textContent = `S/.${cos.toFixed(2)}`;
-        document.getElementById('resUtilidad').textContent = `S/.${(ing - cos).toFixed(2)}`;
+        const ingresos = servicios
+            .filter(item => item.tipo !== 'gasto')
+            .reduce((sum, item) => sum + Number(item.precio || 0), 0);
+        const costos = servicios
+            .filter(item => item.tipo !== 'gasto')
+            .reduce((sum, item) => sum + Number(item.costo || 0), 0);
+        const gastos = servicios
+            .filter(item => item.tipo === 'gasto')
+            .reduce((sum, item) => sum + Number(item.costo || 0), 0);
+        const utilidadNeta = ingresos - costos - gastos;
+
+        document.getElementById('resIngresos').textContent = `S/.${ingresos.toFixed(2)}`;
+        document.getElementById('resCostos').textContent = `S/.${costos.toFixed(2)}`;
+        document.getElementById('resGastos').textContent = `S/.${gastos.toFixed(2)}`;
+        document.getElementById('resUtilidad').textContent = `S/.${utilidadNeta.toFixed(2)}`;
     } catch (error) {
         console.error('[registro-servicios] Error cargando servicios:', error);
         const tbody = document.querySelector('#serviciosTable tbody');
         tbody.innerHTML = `
             <tr>
-                <td colspan="7" style="text-align:center; color:#f87171; padding:1rem;">
-                    No se pudieron cargar los servicios.
+                <td colspan="8" style="text-align:center; color:#f87171; padding:1rem;">
+                    No se pudieron cargar los registros.
                 </td>
             </tr>
         `;
         document.getElementById('resIngresos').textContent = 'S/.0.00';
         document.getElementById('resCostos').textContent = 'S/.0.00';
+        document.getElementById('resGastos').textContent = 'S/.0.00';
         document.getElementById('resUtilidad').textContent = 'S/.0.00';
         window.AppMessages?.networkError(error, { title: 'Servicios no disponibles' });
     }
 };
 
+const tipoSelect = document.getElementById('s-tipo');
+const precioInput = document.getElementById('s-precio');
+const modeloInput = document.getElementById('s-modelo');
+const submitButton = document.getElementById('submitButton');
+
+const updateFormMode = () => {
+    const tipo = tipoSelect?.value || 'servicio';
+    if (tipo === 'gasto') {
+        modeloInput.placeholder = 'Ej: Herramienta / Suplemento';
+        modeloInput.required = false;
+        precioInput.value = '0';
+        precioInput.disabled = true;
+        precioInput.required = false;
+        submitButton.innerHTML = '<i class="bi bi-save"></i> Registrar Gasto';
+    } else {
+        modeloInput.placeholder = 'Ej: Samsung A54';
+        modeloInput.required = true;
+        precioInput.disabled = false;
+        precioInput.required = true;
+        submitButton.innerHTML = '<i class="bi bi-save"></i> Registrar Servicio';
+    }
+};
+
+if (tipoSelect) {
+    tipoSelect.addEventListener('change', updateFormMode);
+    updateFormMode();
+}
+
 const servicioForm = document.getElementById('servicioForm');
 if (servicioForm) {
     servicioForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const precio = parseFloat(document.getElementById('s-precio')?.value || 0);
+        const tipo = tipoSelect?.value || 'servicio';
+        const precio = tipo === 'gasto' ? 0 : parseFloat(precioInput?.value || 0);
         const costo = parseFloat(document.getElementById('s-costo')?.value || 0);
 
         const body = {
+            tipo,
             servicio: document.getElementById('s-servicio')?.value.trim() || '',
             modelo: document.getElementById('s-modelo')?.value.trim() || '',
             precio,
             costo,
-            utilidad: Math.round((precio - costo) * 100) / 100,
+            utilidad: tipo === 'gasto'
+                ? Math.round(-costo * 100) / 100
+                : Math.round((precio - costo) * 100) / 100,
             fecha: getFecha()
         };
 

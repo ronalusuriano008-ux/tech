@@ -41,6 +41,50 @@ app.use(cors({
 app.options('*', cors());
 app.use(express.json({ limit: '2mb' }));
 
+const configService = require('./services/configService');
+
+// Middleware para inyectar clase glass-theme en HTML servidos desde el servidor
+app.use(async (req, res, next) => {
+  try {
+    if (req.method !== 'GET') return next();
+    // sólo interceptar peticiones a archivos .html o rutas que terminan en '/'
+    const acceptHtml = (req.headers.accept || '').includes('text/html');
+    if (!acceptHtml && !req.path.endsWith('.html')) return next();
+
+    // resolver archivo en carpeta frontend/public, login, admin, calculadora, registro
+    const frontendRoot = path.join(__dirname, '..', 'frontend');
+    const candidatePaths = [
+      path.join(frontendRoot, 'public', req.path),
+      path.join(frontendRoot, req.path),
+      path.join(frontendRoot, req.path.replace(/^\//, ''))
+    ];
+
+    let filePath = null;
+    for (const p of candidatePaths) {
+      if (fs.existsSync(p) && fs.statSync(p).isFile() && p.endsWith('.html')) { filePath = p; break; }
+    }
+    if (!filePath) return next();
+
+    const config = await configService.getConfig();
+    let html = fs.readFileSync(filePath, 'utf-8');
+    if (config && config.glassTheme) {
+      // añadir la clase glass-theme al elemento <html> si no está presente
+      html = html.replace(/<html(.*?)>/i, (m, g1) => {
+        if (/class=["'].*glass-theme.*["']/.test(g1)) return m;
+        if (/class=["'](.*?)"/.test(g1)) {
+          return `<html class="$1 glass-theme"${g1.replace(/class=["'](.*?)"/, '')}>`;
+        }
+        return `<html${g1} class="glass-theme">`;
+      });
+    }
+
+    res.type('html').send(html);
+  } catch (err) {
+    console.error('[theme-middleware] Error procesando HTML:', err.message);
+    next();
+  }
+});
+
 // Rutas API
 app.use('/api', apiRoutes);
 app.use('/api/auth', authRoutes);

@@ -142,7 +142,9 @@ const loadMetrics = async () => {
         document.getElementById('metricsContent').innerHTML = `
             <div class="metric-card"><h4>Ingresos</h4><p>S/.${data.totalIngresos}</p></div>
             <div class="metric-card"><h4>Costos</h4><p>S/.${data.totalCostos}</p></div>
-            <div class="metric-card"><h4>Utilidad</h4><p>S/.${data.utilidad}</p></div>
+            <div class="metric-card"><h4>Gastos</h4><p>S/.${data.totalGastos || 0}</p></div>
+            <div class="metric-card"><h4>Utilidad Bruta</h4><p>S/.${data.utilidadBruta}</p></div>
+            <div class="metric-card"><h4>Utilidad Neta</h4><p>S/.${data.utilidadNeta}</p></div>
             <div class="metric-card"><h4>Servicios</h4><p>${data.totalServicios}</p></div>
         `;
 

@@ -331,45 +331,166 @@
       {
         "day": 1,
         "st1": {
-          "cash": 120,
+          "cash": 35,
           "yape": 0
         },
         "st2": {
-          "cash": 10,
+          "cash": 0,
           "yape": 0
         }
       },
       {
         "day": 2,
         "st1": {
-          "cash": 10,
-          "yape": 0
+          "cash": 23.5,
+          "yape": 20
         },
         "st2": {
-          "cash": 5,
+          "cash": 10,
           "yape": 0
         }
       },
       {
         "day": 3,
         "st1": {
-          "cash": 40,
+          "cash": 0,
           "yape": 0
         },
         "st2": {
-          "cash": 12,
+          "cash": 15.5,
           "yape": 0
         }
       },
       {
         "day": 4,
         "st1": {
-          "cash": 0,
-          "yape": 123
+          "cash": 56,
+          "yape": 0
         },
         "st2": {
           "cash": 0,
-          "yape": 100
+          "yape": 16.3
+        }
+      },
+      {
+        "day": 5,
+        "st1": {
+          "cash": 6,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 17.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 6,
+        "st1": {
+          "cash": 61.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 11,
+          "yape": 0
+        }
+      },
+      {
+        "day": 7,
+        "st1": {
+          "cash": -60,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 2,
+          "yape": 0
+        }
+      },
+      {
+        "day": 8,
+        "st1": {
+          "cash": 37.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 9,
+        "st1": {
+          "cash": 37,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 10,
+        "st1": {
+          "cash": 10,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 18.8
+        }
+      },
+      {
+        "day": 11,
+        "st1": {
+          "cash": 7.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 15.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 12,
+        "st1": {
+          "cash": 32.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 27.5
+        }
+      },
+      {
+        "day": 13,
+        "st1": {
+          "cash": 35,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 22.5
+        }
+      },
+      {
+        "day": 14,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 29.3,
+          "yape": 0
+        }
+      },
+      {
+        "day": 15,
+        "st1": {
+          "cash": 73.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
         }
       }
     ]

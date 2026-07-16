@@ -1,0 +1,65 @@
+:root.glass-theme {
+  --glass-bg: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.12);
+  --glass-accent: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  --glass-frost: rgba(255,255,255,0.06);
+  --glass-text: #e6eef8;
+  --glass-muted: rgba(230,238,248,0.7);
+}
+
+/* Base page background */
+html.glass-theme, body.glass-theme {
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,0.02), transparent),
+              linear-gradient(180deg, rgba(10,16,24,0.7), rgba(3,7,12,0.8));
+  color: var(--glass-text);
+}
+
+/* Cards and panels */
+.glass-theme .card,
+.glass-theme .card-futurist,
+.glass-theme .app-sidebar,
+.glass-theme .app-topbar,
+.glass-theme article,
+.glass-theme .resumen-card,
+.glass-theme .table-container,
+.glass-theme .card-metric {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px) saturate(1.1);
+  -webkit-backdrop-filter: blur(8px) saturate(1.1);
+  box-shadow: 0 6px 18px rgba(2,6,12,0.45);
+  border-radius: 12px;
+}
+
+/* Sidebar subtle gradient */
+.glass-theme .app-sidebar {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+}
+
+/* Inputs and buttons */
+.glass-theme input,
+.glass-theme textarea,
+.glass-theme select {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--glass-text);
+}
+
+.glass-theme .btn-futurist,
+.glass-theme .btn-nav,
+.glass-theme .app-button {
+  background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--glass-text);
+}
+
+/* Table rows */
+.glass-theme table tr:nth-child(even) {
+  background: rgba(255,255,255,0.01);
+}
+
+/* No client-side toggle: tema controlado desde la API/servidor */
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-theme * { transition: none !important; }
+}
