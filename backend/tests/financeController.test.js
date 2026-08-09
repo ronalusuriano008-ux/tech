@@ -4,7 +4,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const { saveDay } = require('../controllers/financeController');
 
-const diaryPath = path.join(__dirname, '..', 'data', 'diario.json');
+const diaryPath = path.join(__dirname, '..', 'data', 'stdiario.json');
 
 test('saveDay normaliza y persiste los datos del día con valores numéricos', async () => {
   const originalDiary = await fs.readFile(diaryPath, 'utf8').catch(() => null);

@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const { authMiddleware } = require('../middleware/auth');
 const financeController = require('../controllers/financeController');
+
+router.use(authMiddleware);
 
 router.get('/month/:year/:month', financeController.getMonth);
 router.get('/diary', financeController.getDiary);

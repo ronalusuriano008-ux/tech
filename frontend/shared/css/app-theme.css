@@ -1,0 +1,142 @@
+/* Shared subpage polish. Loaded after local page styles. */
+:root {
+    --neon-blue: #38bdf8;
+    --neon-purple: #a78bfa;
+    --bg-dark: #0f172a;
+    --bg-card: #172033;
+    --text-main: #e5eefb;
+    --text-muted-app: #9fb0c7;
+    --border-app: rgba(148, 163, 184, 0.18);
+    --success-app: #34d399;
+    --danger-app: #fb7185;
+    --warning-app: #fbbf24;
+    --radius-app: 8px;
+}
+
+body {
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 32rem),
+        linear-gradient(180deg, #0f172a 0%, #111827 100%) !important;
+    color: var(--text-main) !important;
+}
+
+.header-futurist,
+.card-futurist,
+.login-card,
+.metric-card,
+.resumen-item,
+.config-strip,
+.checkbox-wrapper,
+.table-container {
+    border-color: var(--border-app) !important;
+    border-radius: var(--radius-app) !important;
+    box-shadow: 0 14px 34px rgba(2, 6, 23, 0.24) !important;
+}
+
+.card-futurist,
+.metric-card,
+.resumen-item,
+.config-strip,
+.checkbox-wrapper {
+    background: rgba(23, 32, 51, 0.9) !important;
+}
+
+.header-futurist {
+    background: rgba(15, 23, 42, 0.92) !important;
+}
+
+.header-top h1,
+.header-title h1,
+h1 {
+    letter-spacing: 0 !important;
+}
+
+.header-top h1,
+.header-title h1,
+.text-neon,
+.neon-glow-text {
+    color: var(--neon-blue) !important;
+    text-shadow: 0 0 18px rgba(56, 189, 248, 0.22) !important;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+textarea {
+    background: rgba(15, 23, 42, 0.82) !important;
+    border-color: var(--border-app) !important;
+    border-radius: var(--radius-app) !important;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--neon-blue) !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.16) !important;
+}
+
+.btn-futurist,
+.btn-nav.report,
+.chat-send-btn {
+    background: linear-gradient(135deg, #0ea5e9, #7c3aed) !important;
+    border-radius: var(--radius-app) !important;
+}
+
+.btn-nav.report {
+    color: #ffffff !important;
+    border-color: transparent !important;
+}
+
+.btn-nav,
+.nav-item,
+.btn-futurist.btn-outline,
+.btn-nav.danger,
+.btn-table {
+    border-radius: var(--radius-app) !important;
+}
+
+.text-success {
+    color: var(--success-app) !important;
+}
+
+.text-danger,
+.btn-nav.danger,
+.nav-item.danger,
+.btn-table {
+    color: var(--danger-app) !important;
+    border-color: rgba(251, 113, 133, 0.5) !important;
+}
+
+/* Semántica financiera consistente en todos los módulos. */
+.money-positive { color: var(--success-app) !important; font-variant-numeric: tabular-nums; }
+.money-negative { color: var(--danger-app) !important; font-variant-numeric: tabular-nums; }
+.money-neutral { color: var(--text-main) !important; font-variant-numeric: tabular-nums; }
+.expense-label { color: var(--danger-app) !important; }
+
+th {
+    color: var(--neon-blue) !important;
+}
+
+td,
+p,
+small,
+label,
+.status-badge,
+.filter-date label,
+.header-title p,
+.config-strip {
+    color: var(--text-muted-app) !important;
+    word-break: normal !important;
+    overflow-wrap: anywhere !important;
+}
+
+@media (max-width: 520px) {
+    .card-futurist {
+        padding: 1rem !important;
+    }
+
+    .nav-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}

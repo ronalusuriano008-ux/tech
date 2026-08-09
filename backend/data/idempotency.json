@@ -1,0 +1,26 @@
+{
+  "05375033-8d29-4ac1-a0ff-f878eb492d51": {
+    "status": 201,
+    "body": {
+      "id": "dc725db4-6677-4b5e-a6f2-ee5d99c35464",
+      "tipo": "servicio",
+      "servicio": "eliminacion de virus",
+      "modelo": "djdhubc",
+      "precio": 10,
+      "costo": 0,
+      "utilidad": 10,
+      "fecha": "2026-08-08",
+      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+      "hora": "19:50",
+      "fechaRegistro": "2026-08-09T00:50:31.955Z"
+    },
+    "createdAt": 1786236632344
+  },
+  "84e60c9a-5ad4-40c4-a2a0-81803c25d46f": {
+    "status": 200,
+    "body": {
+      "message": "Servicio eliminado"
+    },
+    "createdAt": 1786236639694
+  }
+}

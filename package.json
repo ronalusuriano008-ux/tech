@@ -6,30 +6,24 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon backend/server.js",
-    "postinstall": "cd backend && npm install --only=production && cd ../frontend && npm install",
+    "test": "node --test backend/tests/*.test.js",
+    "postinstall": "npm install --prefix backend --omit=dev",
     "init": "./init-data.sh",
-    "deploy": "./deploy.sh",
-    "deploy:docker": "./deploy-docker.sh",
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
-    "docker:logs": "docker-compose logs -f",
-    "docker:status": "docker-compose ps",
-    "pm2:start": "pm2 start ecosystem.config.js",
-    "pm2:stop": "pm2 stop taller-tech",
-    "pm2:restart": "pm2 restart taller-tech",
-    "pm2:logs": "pm2 logs taller-tech",
-    "pm2:status": "pm2 status",
-    "health": "curl http://localhost:3000/health",
-    "audit": "npm audit && cd backend && npm audit && cd ../frontend && npm audit",
-    "audit:fix": "npm audit fix && cd backend && npm audit fix && cd ../frontend && npm audit fix"
+    "health": "curl http://localhost:3000/health"
+  },
+  "engines": {
+    "node": "18.x"
   },
   "dependencies": {
     "canvas": "^3.2.3",
+    "pdfkit": "^0.13.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "puppeteer": "^24.43.1",
+    "session-file-store": "^1.5.0",
     "sharp": "^0.34.5",
+    "stack": "^0.1.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

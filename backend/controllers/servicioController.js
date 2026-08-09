@@ -1,11 +1,7 @@
 // backend/controllers/servicioController.js
 const servicioService = require('../services/servicioService');
 
-const { getLocalTimeString } = require('../utils/dateUtils'); // <--- IMPORTAR
-
-// ... (getServicios, updateServicio, deleteServicio permanecen igual)
-
-// ... (exportar lo demás)
+const { getLocalTimeString } = require('../utils/dateUtils'); 
 
 const getServicios = async (req, res) => {
     try {

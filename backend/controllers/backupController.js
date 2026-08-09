@@ -5,19 +5,30 @@ const path = require('path');
 
 const DB_DIR = path.join(__dirname, '..', 'data');
 
-const FILES = [
-    'users',
-    'servicios',
-    'inventario',
-    'config'
-];
+const DEFAULT_COLLECTIONS = {
+    users: ['users', 'user', 'usuarios', 'usuario'],
+    servicios: ['servicios', 'servicio', 'services'],
+    inventario: ['inventario', 'inventarioItems', 'items', 'productos'],
+    config: ['config', 'configuration', 'configuracion', 'settings'],
+    stdiario: ['stdiario', 'diarioTecnico', 'tecnicoDiary'],
+    tdiario: ['tdiario', 'diarioTiendas', 'tiendaDiary']
+};
+
+const getDataFiles = async () => {
+    const entries = await fs.readdir(DB_DIR, { withFileTypes: true });
+    return entries
+        .filter((entry) => entry.isFile() && entry.name.endsWith('.json'))
+        .map((entry) => entry.name.replace(/\.json$/, ''))
+        .sort();
+};
 
 // EXPORTAR BACKUP COMPLETO
 const exportBackup = async (req, res) => {
     try {
         const backup = {};
+        const files = await getDataFiles();
 
-        for (const file of FILES) {
+        for (const file of files) {
             const filePath = path.join(DB_DIR, `${file}.json`);
             const content = await fs.readFile(filePath, 'utf-8');
             backup[file] = JSON.parse(content);
@@ -46,12 +57,7 @@ const normalizeBackupData = (backupData = {}) => {
         sources.push(backupData);
     }
 
-    const aliasesByCollection = {
-        users: ['users', 'user', 'usuarios', 'usuario'],
-        servicios: ['servicios', 'servicio', 'services'],
-        inventario: ['inventario', 'inventarioItems', 'items', 'productos'],
-        config: ['config', 'configuration', 'configuracion', 'settings']
-    };
+    const aliasesByCollection = DEFAULT_COLLECTIONS;
 
     const normalized = {};
 
@@ -82,14 +88,21 @@ const importBackup = async (req, res) => {
             });
         }
 
-        for (const file of FILES) {
-            if (!(file in normalizedBackup)) continue;
+        const dataFiles = await getDataFiles();
+
+        for (const file of dataFiles) {
+            const matchingKey = Object.keys(normalizedBackup).find((key) => {
+                const aliases = DEFAULT_COLLECTIONS[file] || [file];
+                return aliases.includes(key);
+            });
+
+            if (!matchingKey) continue;
 
             const filePath = path.join(DB_DIR, `${file}.json`);
 
             await fs.writeFile(
                 filePath,
-                JSON.stringify(normalizedBackup[file], null, 2),
+                JSON.stringify(normalizedBackup[matchingKey], null, 2),
                 'utf-8'
             );
         }

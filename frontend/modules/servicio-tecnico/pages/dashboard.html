@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Ingresos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.4/css/all.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/shared/css/shared-theme.css">
+    <link rel="stylesheet" href="/shared/css/messages.css">
+    <link rel="stylesheet" href="/shared/css/offline-status.css">
+    <link rel="stylesheet" href="/shared/css/glass-theme.css">
+    <style>
+        :root {
+            --bg: #020617;
+            --panel: rgba(15, 23, 42, 0.92);
+            --panel-2: rgba(30, 41, 59, 0.95);
+            --border: rgba(148, 163, 184, 0.25);
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-2: #818cf8;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+
+        body.app-body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at top left, #0f172a 0%, #020617 60%, #01040a 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app-shell {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+}
+
+        .app-content {
+            width: 100%;
+            min-height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            overflow: hidden;
+            background: var(--panel);
+            border: 0;
+            box-shadow: none;
+            backdrop-filter: blur(18px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: clamp(16px, 2.5vw, 28px);
+            background: linear-gradient(90deg, #020617 0%, #0f172a 45%, #1d4ed8 100%);
+            color: #fff;
+        }
+
+        .app-topbar__eyebrow {
+            margin: 0 0 4px;
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #bfdbfe;
+        }
+
+        .app-topbar h1 {
+            margin: 0;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-weight: 700;
+        }
+
+        .app-topbar__actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .app-badge,
+        .app-picker,
+        .app-button {
+            border-radius: 999px;
+        }
+
+        .app-badge {
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.12);
+            color: #e2e8f0;
+            font-size: 0.92rem;
+        }
+
+        .app-picker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .app-picker input {
+            border: 0;
+            background: transparent;
+            color: #fff;
+            font-weight: 600;
+            min-width: 0;
+        }
+
+        .app-picker input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .app-button {
+            border: 0;
+            padding: 9px 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .app-button-fill {
+            background: #fff;
+            color: #1d4ed8;
+        }
+
+        .dashboard-section {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 14px;
+            padding: clamp(16px, 2vw, 24px) clamp(16px, 2vw, 28px) 0;
+        }
+
+        .card-metric {
+            position: relative;
+            overflow: hidden;
+            padding: 16px 18px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: linear-gradient(145deg, rgba(30,41,59,0.98), rgba(15,23,42,0.96));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 12px 24px rgba(2, 6, 23, 0.35);
+        }
+
+        .card-metric::after {
+            content: '';
+            position: absolute;
+            right: -16px;
+            bottom: -16px;
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.10);
+        }
+
+        .card-metric h5 {
+            margin: 0 0 8px;
+            font-size: 0.84rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .card-metric h2 {
+            margin: 0;
+            font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .card-metric.green { border-left: 4px solid var(--success); }
+        .card-metric.blue { border-left: 4px solid var(--accent); }
+        .card-metric.orange { border-left: 4px solid var(--warning); }
+        .card-metric.purple { border-left: 4px solid var(--accent-2); }
+
+        .table-container {
+            margin: clamp(16px, 2vw, 24px) clamp(16px, 2vw, 28px) clamp(20px, 2vw, 28px);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: rgba(15,23,42,0.95);
+            box-shadow: 0 10px 25px rgba(2, 6, 23, 0.3);
+            min-height: 320px;
+        }
+
+        #mainTable {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: clamp(0.78rem, 1vw, 0.9rem);
+        }
+
+        #mainTable thead th {
+            background: rgba(30,41,59,0.95);
+            color: #cbd5e1;
+            font-weight: 700;
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        #mainTable tbody td {
+            padding: 10px;
+            border-top: 1px solid rgba(148,163,184,0.16);
+            background: rgba(15,23,42,0.96);
+            color: #f8fafc;
+        }
+
+        #mainTable input[type="number"] {
+            width: 100%;
+            border: 1px solid rgba(148,163,184,0.28);
+            border-radius: 10px;
+            padding: 8px 10px;
+            background: rgba(15,23,42,0.9);
+            color: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #mainTable input[type="number"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-section {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .app-topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .app-topbar__actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .dashboard-section {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-shell {
+                padding: 8px;
+            }
+
+            .app-content {
+                border-radius: 14px;
+            }
+
+            .app-topbar {
+                padding: 16px;
+            }
+
+            .dashboard-section {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                padding: 14px 14px 0;
+            }
+
+            .table-container {
+                margin: 14px;
+            }
+
+            #mainTable {
+                font-size: 0.78rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .app-shell {
+                padding: 6px;
+            }
+
+            .app-topbar {
+                padding: 14px 12px;
+            }
+
+            .app-topbar__actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .app-picker,
+            .app-button,
+            .app-badge {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .dashboard-section {
+                grid-template-columns: 1fr;
+                padding: 12px 12px 0;
+            }
+
+            .table-container {
+                margin: 12px;
+                overflow-x: auto;
+            }
+
+            #mainTable {
+                min-width: 560px;
+            }
+
+
+        
+        }
+ .app-content > * {
+            align-self: stretch !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+    </style>
+    <!-- Cargas pesadas (XLSX, jsPDF, html2canvas) se cargan on-demand para mejorar la carga inicial -->
+    <link rel="manifest" href="/shared/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="application-name" content="Taller Tech">
+    <meta name="apple-mobile-web-app-title" content="Taller Tech">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" href="/shared/icons/taller-tech-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/shared/icons/taller-tech-icon.svg" type="image/svg+xml">
+</head>
+<body class="app-body">
+    <div id="pageLoader" class="page-loader" aria-hidden="false">
+        <div class="loader-box">
+            <div class="spinner" role="status" aria-label="Cargando"></div>
+            <div class="loader-text">Cargando aplicación...</div>
+        </div>
+    </div>
+
+    <div class="app-shell" id="appShell">
+        <div class="app-content">
+            <header class="app-topbar">
+                <div>
+                    <p class="app-topbar__eyebrow">Operación</p>
+                    <img src="/shared/icons/taller-tech-logo.svg" alt="Taller Tech" style="width:210px;max-width:55vw;height:auto;display:block;margin-bottom:0.5rem;filter:drop-shadow(0 8px 16px rgba(59,130,246,0.2));">
+                    <h1>Ingreso servicio técnico</h1>
+                </div>
+                <div class="app-topbar__actions">
+                    <span id="userInfo" class="app-badge"></span>
+                    <label class="app-picker">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <input type="month" id="monthPicker">
+                    </label>
+                    <button id="downloadPdfBtn" class="app-button app-button-fill" type="button" aria-label="Exportar el resumen del mes en PDF">
+                        <i class="fa-solid fa-file-pdf"></i> Exportar PDF
+                    </button>
+                </div>
+            </header>
+
+            <main class="app-main">
+                <section class="dashboard-section no-print">
+                    <div class="card-metric green">
+                        <h5>Producción ST1</h5>
+                        <h2 id="dash-prod-st1">S/ 0.00</h2>
+                    </div>
+                    <div class="card-metric blue">
+                        <h5>Producción ST2</h5>
+                        <h2 id="dash-prod-st2">S/ 0.00</h2>
+                    </div>
+                    <div class="card-metric orange">
+                        <h5>Total Efectivo</h5>
+                        <h2 id="dash-total-cash">S/ 0.00</h2>
+                    </div>
+                    <div class="card-metric orange">
+                        <h5>Total Yape</h5>
+                        <h2 id="dash-total-yape">S/ 0.00</h2>
+                    </div>
+                    <div class="card-metric purple">
+                        <h5>Total General Mes</h5>
+                        <h2 id="dash-total-general">S/ 0.00</h2>
+                    </div>
+                </section>
+
+                <div class="table-container" style="display:block; margin-top: 2rem; overflow-x: auto;">
+                    <table id="mainTable" style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                        <thead id="tableHead"></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="toast" class="app-toast"></div>
+
+    <script src="/shared/js/config.js"></script>
+    <script src="/shared/js/data/offline-store.js"></script>
+    <script src="/shared/js/data/data-service.js"></script>
+    <script src="/shared/js/request-cache.js"></script>
+    <script src="/shared/js/offline-status.js"></script>
+    <script src="/shared/js/pwa-register.js"></script>
+    <script src="/shared/js/app-shell.js"></script>
+    <script src="/shared/js/messages.js"></script>
+    <script type="module" src="/modules/servicio-tecnico/js/app.js"></script>
+</body>
+</html>

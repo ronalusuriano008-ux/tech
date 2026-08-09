@@ -1,5 +1,6 @@
 // backend/controllers/authController.js
 const userService = require('../services/userService');
+const isProduction = process.env.NODE_ENV === 'production';
 
 const login = async (req, res) => {
     try {
@@ -39,6 +40,14 @@ const logout = (req, res) => {
         if (error) {
             return res.status(500).json({ message: 'No se pudo cerrar la sesión' });
         }
+
+        res.clearCookie('tt.sid', {
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: isProduction ? 'none' : 'lax',
+            path: '/'
+        });
+
         return res.json({ loggedOut: true });
     });
 };

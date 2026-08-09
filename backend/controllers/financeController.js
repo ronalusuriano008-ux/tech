@@ -37,6 +37,7 @@ exports.saveDay = async (req, res) => {
         
         monthData.year = normalizedYear; 
         monthData.month = normalizedMonth;
+        if (!Array.isArray(monthData.days)) monthData.days = [];
         
         const dayIndex = monthData.days.findIndex(d => Number(d.day) === normalizedDay);
         const newDayData = {

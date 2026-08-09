@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Servicios</title>
+    <meta name="theme-color" content="#0f172a">
+    <meta name="application-name" content="Taller Tech">
+    <meta name="apple-mobile-web-app-title" content="Taller Tech">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/shared/manifest.json">
+    <link rel="icon" href="/shared/icons/taller-tech-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/shared/icons/taller-tech-icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="/modules/registro-servicios/style.css">
+    <link rel="stylesheet" href="/shared/css/app-theme.css">
+    <link rel="stylesheet" href="/shared/css/messages.css">
+    <link rel="stylesheet" href="/shared/css/offline-status.css">
+    <link rel="stylesheet" href="/shared/css/glass-theme.css">
+
+    <style>
+        /* ============================================
+           CHAT BILATERAL - TÉCNICO
+           ============================================ */
+
+        .chat-thread {
+            display: flex;
+            flex-direction: column;
+            height: 420px;
+            border: 1px solid #2a2a3a;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #12121a;
+        }
+
+        .chat-thread-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: rgba(0, 243, 255, 0.04);
+            border-bottom: 1px solid #2a2a3a;
+            flex-shrink: 0;
+        }
+
+        .chat-thread-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon-purple), #ff0050);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.75rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .chat-thread-header-info h4 {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .chat-thread-header-info small {
+            font-size: 0.65rem;
+            color: #00ff9d;
+        }
+
+        .chat-thread-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            scrollbar-width: thin;
+            scrollbar-color: #2a2a3a transparent;
+        }
+
+        .chat-thread-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-thread-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-thread-messages::-webkit-scrollbar-thumb {
+            background: #2a2a3a;
+            border-radius: 2px;
+        }
+
+        .chat-thread-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #8a8a9a;
+            gap: 10px;
+        }
+
+        .chat-thread-empty i {
+            font-size: 2.5rem;
+            opacity: 0.15;
+        }
+
+        .chat-thread-empty span {
+            font-size: 0.8rem;
+        }
+
+        /* Burbujas */
+        .chat-bubble {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.84rem;
+            line-height: 1.45;
+            animation: techBubbleIn 0.2s ease-out;
+            word-break: break-word;
+        }
+
+        @keyframes techBubbleIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-bubble.received {
+            align-self: flex-start;
+            background: rgba(188, 19, 254, 0.08);
+            border: 1px solid rgba(188, 19, 254, 0.15);
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-bubble.sent {
+            align-self: flex-end;
+            background: rgba(0, 243, 255, 0.08);
+            border: 1px solid rgba(0, 243, 255, 0.15);
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble-sender {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+            letter-spacing: 0.3px;
+        }
+
+        .chat-bubble.received .chat-bubble-sender {
+            color: var(--neon-purple);
+        }
+
+        .chat-bubble.sent .chat-bubble-sender {
+            color: var(--neon-blue);
+        }
+
+        .chat-bubble-time {
+            display: block;
+            font-size: 0.58rem;
+            color: #8a8a9a;
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        /* Separador de fecha */
+        .chat-date-sep {
+            text-align: center;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .chat-date-sep span {
+            background: #12121a;
+            padding: 0 10px;
+            font-size: 0.6rem;
+            color: #8a8a9a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chat-date-sep::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 8%;
+            right: 8%;
+            height: 1px;
+            background: #2a2a3a;
+        }
+
+        /* Input */
+        .chat-thread-input {
+            padding: 12px;
+            border-top: 1px solid #2a2a3a;
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+            flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-thread-input textarea {
+            flex: 1;
+            resize: none;
+            background: #1a1a24 !important;
+            border: 1px solid #2a2a3a !important;
+            border-radius: 8px !important;
+            padding: 10px 12px !important;
+            font-size: 0.84rem;
+            font-family: inherit;
+            color: #fff !important;
+            min-height: 40px;
+            max-height: 90px;
+            line-height: 1.4;
+            outline: none;
+            transition: border-color 0.2s ease;
+            margin-bottom: 0 !important;
+        }
+
+        .chat-thread-input textarea:focus {
+            border-color: var(--neon-blue) !important;
+            box-shadow: 0 0 0 2px rgba(0, 243, 255, 0.1) !important;
+        }
+
+        .chat-thread-input textarea::placeholder {
+            color: #8a8a9a;
+        }
+
+        .chat-send-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 14px rgba(0, 243, 255, 0.3);
+        }
+
+        .chat-send-btn:active {
+            transform: scale(0.95);
+        }
+
+        .chat-send-btn:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Badge flotante de no leídos */
+        .chat-fab-badge {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            color: #fff;
+            font-size: 1.3rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 200;
+            box-shadow: 0 4px 20px rgba(0, 243, 255, 0.3);
+            border: none;
+            transition: transform 0.2s ease;
+        }
+
+        .chat-fab-badge:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-fab-badge.visible {
+            display: flex;
+        }
+
+        .chat-fab-count {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 10px;
+            background: #ff0050;
+            color: #fff;
+            font-size: 0.6rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            box-shadow: 0 0 8px rgba(255, 0, 80, 0.6);
+            animation: pulseFab 2s infinite;
+        }
+
+        @keyframes pulseFab {
+
+            0%,
+            100% {
+                box-shadow: 0 0 8px rgba(255, 0, 80, 0.6);
+            }
+
+            50% {
+                box-shadow: 0 0 14px rgba(255, 0, 80, 0.9);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chat-thread {
+                height: 360px;
+            }
+
+            .chat-bubble {
+                max-width: 88%;
+            }
+
+            .chat-fab-badge {
+                bottom: 16px;
+                right: 16px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header flotante / sticky -->
+    <header class="header-futurist">
+        <div class="header-top" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+            <img src="/shared/icons/taller-tech-logo.svg" alt="Taller Tech" style="width:min(210px,50vw);height:auto;display:block;filter:drop-shadow(0 8px 16px rgba(59,130,246,0.22));">
+            <h1><i class="bi bi-phone"></i> <span id="userName">Técnico</span></h1>
+        </div>
+        <nav class="nav-grid">
+         <!--   
+                       <button onclick="descargarReporteImagen()" class="btn-nav report">
+                <i class="bi bi-image"></i>
+                Descargar<br>Imagen
+            </button>-->
+<button onclick="descargarReporte()" class="btn-nav report">
+                <i class="bi bi-file-earmark-bar-graph"></i>
+                Descargar<br>Reporte
+            </button>
+
+            <button onclick="logout()" class="btn-nav danger"><i
+                    class="bi bi-box-arrow-left"></i>Cerrar</br>Sesión</button>
+        </nav>
+    </header>
+
+    <main class="container main-content">
+
+        <!-- Filtros y Asistencia -->
+        <div class="card-futurist top-bar">
+            <div class="filter-date">
+                <label for="filterFecha"><i class="bi bi-calendar3"></i> Fecha:</label>
+                <input type="date" id="filterFecha" onchange="loadServicios();">
+            </div>
+        </div>
+
+        <!-- Formulario de Registro -->
+        <article class="card-futurist">
+            <header class="card-header">
+                <h3><i class="bi bi-plus-circle"></i> Nuevo Registro</h3>
+            </header>
+            <form id="servicioForm" class="grid-form">
+                <select id="s-tipo" required>
+                    <option value="servicio">Servicio</option>
+                    <option value="gasto">Gasto</option>
+                </select>
+                <input type="text" id="s-servicio" placeholder="Ej: Cambio de pantalla" required>
+                <input type="text" id="s-modelo" placeholder="Ej: Samsung A54" required>
+                <div class="form-row-2">
+                    <input type="number" step="0.1" id="s-precio" placeholder="Precio" required>
+                    <input type="number" step="0.1" id="s-costo" placeholder="Costo" required>
+                </div>
+                <button type="submit" class="btn-futurist" id="submitButton">
+                    <i class="bi bi-save"></i> Registrar Servicio
+                </button>
+            </form>
+        </article>
+
+        <!-- Resumen -->
+        <article class="card-futurist resumen-card">
+            <header class="card-header">
+                <h3><i class="bi bi-graph-up-arrow"></i> Resumen del Día</h3>
+            </header>
+            <div class="resumen-grid">
+                <div class="resumen-item">
+                    <small>Ingresos</small>
+                    <span id="resIngresos" class="text-success">S/.0</span>
+                </div>
+                <div class="resumen-item">
+                    <small>Costos</small>
+                    <span id="resCostos" class="money-negative">S/.0</span>
+                </div>
+                <div class="resumen-item">
+                    <small>Gastos</small>
+                    <span id="resGastos" class="money-negative">S/.0</span>
+                </div>
+                <div class="resumen-item">
+                    <small>Utilidad Neta</small>
+                    <span id="resUtilidad" class="text-neon">S/.0</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Tabla de Servicios -->
+        <article class="card-futurist table-container">
+            <table id="serviciosTable" role="grid">
+                <thead>
+                    <tr>
+                        <th>Hora</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Modelo / Categoría</th>
+                        <th>Precio</th>
+                        <th>Costo</th>
+                        <th>Utilidad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </article>
+
+    </main>
+
+    <div id="reporte-render-container" style="position: absolute; left: -9999px; top: 0;"></div>
+
+    <script src="/shared/js/config.js"></script>
+    <script src="/shared/js/data/offline-store.js"></script>
+    <script src="/shared/js/data/data-service.js"></script>
+    <script src="/shared/js/request-cache.js"></script>
+    <script src="/shared/js/offline-status.js"></script>
+    <script src="/shared/js/pwa-register.js"></script>
+    <script src="/shared/js/messages.js"></script>
+    <script src="/modules/registro-servicios/app.js"></script>
+    <script>
+    async function descargarReporteImagen() {
+            try {
+
+                const user = JSON.parse(localStorage.getItem('user'));
+
+                if (!user) {
+                    throw new Error('Usuario no encontrado en localStorage');
+                }
+
+                const fecha = document.getElementById('filterFecha')?.value || '';
+                const response = await fetch(`/api/reportes/imagen?fecha=${encodeURIComponent(fecha)}`, {
+                    method: 'GET',
+                    headers: {
+                        'x-user-id': user.id,
+                        'x-user-role': user.role
+                    },
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    const payload = await response.json().catch(() => ({}));
+                    const error = new Error(payload.message || payload.error || 'No se pudo generar el reporte');
+                    error.status = response.status;
+                    throw error;
+                }
+
+                // Obtener archivo JPG
+                const blob = await response.blob();
+
+                // Crear URL temporal
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `reporte_${Date.now()}.jpg`;
+
+                document.body.appendChild(a);
+                a.click();
+
+                a.remove();
+                window.URL.revokeObjectURL(url);
+
+                window.AppMessages?.success('Reporte descargado correctamente');
+
+            } catch (error) {
+                console.error(error);
+                window.AppMessages?.networkError(error, { title: 'Error al descargar reporte' });
+            }
+        }
+    </script>
+</body>
+
+</html>

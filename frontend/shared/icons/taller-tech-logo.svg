@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 80" width="340" height="80">
+  <g transform="translate(8, 8)">
+    <rect x="12" y="6" width="40" height="52" rx="8" fill="none" stroke="#0F172A" stroke-width="4"/>
+    <rect x="29" y="9" width="6" height="3" rx="1.5" fill="#0F172A"/>
+    <rect x="27" y="53" width="10" height="3" rx="1.5" fill="#0F172A"/>
+
+    <g fill="#3B82F6">
+      <circle cx="32" cy="32" r="7"/>
+      <rect x="30" y="19" width="4" height="7" rx="1"/>
+      <rect x="30" y="38" width="4" height="7" rx="1"/>
+      <rect x="19" y="30" width="7" height="4" rx="1"/>
+      <rect x="38" y="30" width="7" height="4" rx="1"/>
+    </g>
+    <g fill="#3B82F6" transform="rotate(45 32 32)">
+      <rect x="30" y="19" width="4" height="7" rx="1"/>
+      <rect x="30" y="38" width="4" height="7" rx="1"/>
+      <rect x="19" y="30" width="7" height="4" rx="1"/>
+      <rect x="38" y="30" width="7" height="4" rx="1"/>
+    </g>
+
+    <g fill="#06B6D4" stroke="#06B6D4" stroke-width="2" stroke-linecap="round">
+      <path d="M16 32 H 18" fill="none"/>
+      <circle cx="17" cy="32" r="1.5" stroke="none"/>
+      <path d="M48 32 H 46" fill="none"/>
+      <circle cx="47" cy="32" r="1.5" stroke="none"/>
+      <path d="M22 47 V 40" fill="none"/>
+      <circle cx="22" cy="49" r="2" stroke="none"/>
+      <path d="M42 47 V 40" fill="none"/>
+      <circle cx="42" cy="49" r="2" stroke="none"/>
+    </g>
+  </g>
+
+  <text x="90" y="40" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="-0.5" dominant-baseline="central">
+    <tspan fill="#0F172A" font-weight="600">Taller</tspan>
+    <tspan fill="#3B82F6" dx="6">Tech</tspan>
+  </text>
+</svg>

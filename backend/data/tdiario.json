@@ -1,0 +1,71 @@
+{
+  "2026-08": {
+    "year": 2026,
+    "month": 8,
+    "days": [
+      {
+        "day": 1,
+        "tienda1": 218.5,
+        "tienda2": 144.5,
+        "tienda3": 35,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 2,
+        "tienda1": 484.5,
+        "tienda2": 36,
+        "tienda3": 1027,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 1345.5
+      },
+      {
+        "day": 3,
+        "tienda1": 499.4,
+        "tienda2": 1030,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 4,
+        "tienda1": 132,
+        "tienda2": 154.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 5,
+        "tienda1": 887.5,
+        "tienda2": 580,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 2383.4
+      },
+      {
+        "day": 6,
+        "tienda1": 205,
+        "tienda2": 654,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 7,
+        "tienda1": 1213,
+        "tienda2": 70,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      }
+    ]
+  }
+}

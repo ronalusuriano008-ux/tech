@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Control Diario de Tiendas</title>
+  <link rel="stylesheet" href="/shared/css/styles.css" />
+  <link rel="stylesheet" href="/shared/css/app-theme.css" />
+  <link rel="stylesheet" href="/shared/css/tienda.css" />
+  <link rel="stylesheet" href="/shared/css/offline-status.css" />
+  <link rel="manifest" href="/shared/manifest.json" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="container" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+      <img src="/shared/icons/taller-tech-logo.svg" alt="Taller Tech" style="width:min(250px,70vw);height:auto;display:block;filter:drop-shadow(0 8px 16px rgba(59,130,246,0.22));">
+      <h1>Control Diario de Tiendas</h1>
+    </div>
+  </header>
+  <main class="container">
+    <section class="panel">
+      <div class="controls-bar">
+        <div class="form-group inline">
+          <label for="year">Año</label>
+          <input type="number" id="year" class="form-control" min="2000" max="2100" />
+        </div>
+        <div class="form-group inline">
+          <label for="month">Mes</label>
+          <select id="month" class="form-control">
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+          </select>
+        </div>
+        <button id="btnLoad" class="btn btn-primary">Cargar</button>
+        <button id="btnNewDay" class="btn btn-success">Nuevo día</button>
+        <button id="btnRecalculate" class="btn btn-warning">Recalcular</button>
+        <button id="btnGeneratePdf" class="btn btn-secondary">Descargar PDF</button>
+      </div>
+      <div id="statusMessage" class="status-message"></div>
+    </section>
+
+    <section class="panel">
+      <div id="summaryContent" class="summary-grid">
+        <div class="summary-card">
+          <span>Total Mes</span>
+          <strong id="summaryTotal">S/. 0.00</strong>
+        </div>
+        <div class="summary-card">
+          <span>Saldo Tienda</span>
+          <strong id="summaryAcumulado">S/. 0.00</strong>
+        </div>
+        <div class="summary-card">
+          <span>Saldo Banco</span>
+          <strong id="summarySaldoBanco">S/. 0.00</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Día</th>
+              <th>Tienda 1</th>
+              <th>Tienda 2</th>
+              <th>Tienda 3</th>
+              <th>Total Diario</th>
+              <th>Banco Depositado</th>
+              <th>Retiro Tienda</th>
+              <th>Retiro Banco</th>
+              <th>Saldo Banco</th>
+              <th>Acumulado Tienda</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tiendaTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="dayModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Registrar Día</h2>
+        <span id="closeModal" class="close-btn">×</span>
+      </div>
+      <div class="modal-body">
+        <form id="dayForm">
+          <div class="form-group">
+            <label for="day">Día</label>
+            <input type="number" id="day" class="form-control" min="1" max="31" required />
+          </div>
+          <div class="form-group">
+            <label for="tienda1">Tienda 1</label>
+            <input type="number" step="0.01" inputmode="decimal" id="tienda1" class="form-control" value="0" min="0" placeholder="0.00" />
+          </div>
+          <div class="form-group">
+            <label for="tienda2">Tienda 2</label>
+            <input type="number" step="0.01" inputmode="decimal" id="tienda2" class="form-control" value="0" min="0" placeholder="0.00" />
+          </div>
+          <div class="form-group">
+            <label for="tienda3">Tienda 3</label>
+            <input type="number" step="0.01" inputmode="decimal" id="tienda3" class="form-control" value="0" min="0" placeholder="0.00" />
+          </div>
+          <div class="form-group">
+            <label for="bancoDepositado">Banco Depositado</label>
+            <input type="number" step="0.01" inputmode="decimal" id="bancoDepositado" class="form-control" value="0" min="0" placeholder="0.00" />
+          </div>
+          <div class="form-group">
+            <label class="expense-label" for="retiroTienda">Retiro Tienda</label>
+            <input type="number" step="0.01" inputmode="decimal" id="retiroTienda" class="form-control" value="0" min="0" placeholder="0.00" />
+          </div>
+          <div class="form-group">
+            <label class="expense-label" for="retiroBanco">Retiro Banco</label>
+            <input type="number" step="0.01" inputmode="decimal" id="retiroBanco" class="form-control" value="0" min="0" placeholder="0.00" />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" id="cancelModal" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/shared/js/config.js"></script>
+  <script src="/shared/js/data/offline-store.js"></script>
+  <script src="/shared/js/data/data-service.js"></script>
+  <script src="/shared/js/request-cache.js"></script>
+  <script src="/shared/js/offline-status.js"></script>
+  <script src="/shared/js/pwa-register.js"></script>
+  <script type="module" src="/modules/tienda/js/tienda.js"></script>
+</body>
+</html>

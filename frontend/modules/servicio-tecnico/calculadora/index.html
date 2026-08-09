@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Precios</title>
+    <meta name="theme-color" content="#0f172a">
+    <meta name="application-name" content="Taller Tech">
+    <meta name="apple-mobile-web-app-title" content="Taller Tech">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/shared/manifest.json">
+    <link rel="icon" href="/shared/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/shared/icons/icon-192.png">
+    <!-- Pico CSS para estructura responsiva automatica -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <!-- Iconos futuristas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/modules/servicio-tecnico/calculadora/style.css">
+    <link rel="stylesheet" href="/shared/css/app-theme.css">
+    <link rel="stylesheet" href="/shared/css/messages.css">
+    <link rel="stylesheet" href="/shared/css/offline-status.css">
+    <link rel="stylesheet" href="/shared/css/glass-theme.css">
+</head>
+<body>
+    <main class="container">
+        <header class="text-center header-title">
+            <img src="/shared/icons/taller-tech-logo.svg" alt="Taller Tech" style="width:min(260px,80%);height:auto;display:block;margin:0 auto 0.75rem;filter:drop-shadow(0 10px 18px rgba(59,130,246,0.22));">
+            <hgroup>
+                <h1><i class="bi bi-calculator"></i> Calculadora</h1>
+                <p>Cálculo dinámico de precios</p>
+            </hgroup>
+        </header>
+
+        <!-- Pantalla de configuración estilo Terminal -->
+        <div class="config-strip" id="configDisplay">
+            Cargando configuración...
+        </div>
+
+        <!-- Formulario de Inputs -->
+        <article class="card-futurist">
+            <form id="calcForm" class="calc-grid">
+                <div class="form-group">
+                    <label for="cr"><i class="bi bi-cash-stack"></i> Costo Repuesto</label>
+                    <input type="number" step="0.1" id="cr" value="" oninput="calculate()">
+                </div>
+                <div class="form-group">
+                    <label for="tiempo"><i class="bi bi-clock-history"></i> Tiempo (Horas)</label>
+                    <input type="number" step="0.1" id="tiempo" value="" oninput="calculate()">
+                </div>
+                <div class="form-group">
+                    <label for="trabajos"><i class="bi bi-list-check"></i> Trabajos del día</label>
+                    <input type="number" id="trabajos" value="1" oninput="calculate()">
+                </div>
+                
+                <div class="checkbox-wrapper">
+                    <label for="stock"><i class="bi bi-box-seam"></i> ¿Hay Stock?</label>
+                    <input type="checkbox" id="stock" role="switch" onchange="calculate()">
+                </div>
+            </form>
+        </article>
+
+        <!-- Pantalla de Resultados -->
+        <article class="card-futurist result-card">
+            <div class="result-details">
+                <small>Costo Base</small>
+                <span id="costoBase" class="text-sub">S/.0</span>
+            </div>
+            <div class="divider"></div>
+            <div class="result-main">
+                <small>Precio Sugerido</small>
+                <h2 id="precioFinal" class="neon-glow-text">S/.0</h2>
+            </div>
+        </article>
+
+        <!-- Navegación Inferior -->
+        <nav class="nav-bottom">
+            <a href="/registro/index.html" class="btn-futurist btn-outline">
+                <i class="bi bi-arrow-left-circle"></i> Ir a Servicios
+            </a>
+            <button onclick="logout()" class="btn-nav danger">
+                <i class="bi bi-box-arrow-left"></i> Salir
+            </button>
+        </nav>
+    </main>
+    <script src="/shared/js/config.js"></script>
+    <script src="/shared/js/data/offline-store.js"></script>
+    <script src="/shared/js/data/data-service.js"></script>
+    <script src="/shared/js/request-cache.js"></script>
+    <script src="/shared/js/offline-status.js"></script>
+    <script src="/shared/js/pwa-register.js"></script>
+    <script src="/shared/js/messages.js"></script>
+    <script src="/modules/servicio-tecnico/calculadora/app.js"></script>
+</body>
+</html>
