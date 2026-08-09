@@ -39,10 +39,10 @@ Thumbs.db
 *.swo
 *~
 
-# Data files (local, not for production
-
-
-
+# Data files (local, not for production)
+backend/data/
+backend/data/sessions/
+        
 
 # Deployment
 .deploy/

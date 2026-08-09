@@ -1,0 +1,169 @@
+.
+├── arbol.txt
+├── backend
+│   ├── config
+│   │   ├── app.js
+│   │   └── runtime.js
+│   ├── controllers
+│   │   ├── asistenciaController.js
+│   │   ├── authController.js
+│   │   ├── backupController.js
+│   │   ├── configController.js
+│   │   ├── financeController.js
+│   │   ├── inventarioController.js
+│   │   ├── mensajeController.js
+│   │   ├── reporteController.js
+│   │   ├── servicioController.js
+│   │   ├── tiendaController.js
+│   │   └── userController.js
+│   ├── data
+│   │   ├── asistencia.json
+│   │   ├── config.json
+│   │   ├── idempotency.json
+│   │   ├── inventario.json
+│   │   ├── mensajes.json
+│   │   ├── servicios.json
+│   │   ├── sessions
+│   │   │   ├── Jygpp0FK51HgDEHnkN8kYS1WRwy8pFlI.json
+│   │   │   ├── MEBGCcjpSoyQ6CQBWZFy4ykKMU03N0EM.json
+│   │   │   └── pQ7EjUeFyL5cbXvkdEIDHK9KpZtpzdGa.json
+│   │   ├── stdiario.json
+│   │   ├── tdiario.json
+│   │   └── users.json
+│   ├── db
+│   │   └── fileDB.js
+│   ├── middleware
+│   │   ├── auth.js
+│   │   └── idempotency.js
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── public
+│   │   └── reports
+│   ├── routes
+│   │   ├── api.js
+│   │   ├── asistenciaRoutes.js
+│   │   ├── authRoutes.js
+│   │   ├── backupRoutes.js
+│   │   ├── configRoutes.js
+│   │   ├── inventarioRoutes.js
+│   │   ├── mensajeRoutes.js
+│   │   ├── reporteRoutes.js
+│   │   ├── servicioRoutes.js
+│   │   ├── tiendaRoutes.js
+│   │   └── userRoutes.js
+│   ├── server.js
+│   ├── services
+│   │   ├── asistenciaService.js
+│   │   ├── authService.js
+│   │   ├── configService.js
+│   │   ├── inventarioService.js
+│   │   ├── jsonStorage.js
+│   │   ├── mensajeService.js
+│   │   ├── reportes
+│   │   │   └── reporteImageService.js
+│   │   ├── reporteService.js
+│   │   ├── servicioService.js
+│   │   ├── tiendaCalculator.js
+│   │   ├── tiendaReportService.js
+│   │   ├── tiendaService.js
+│   │   └── userService.js
+│   ├── storage
+│   │   ├── diaryStorage.js
+│   │   └── fileCollectionStore.js
+│   ├── temp
+│   │   └── reportes
+│   ├── templates
+│   │   └── reporteTemplate.js
+│   ├── tests
+│   │   ├── authController.test.js
+│   │   ├── backupController.test.js
+│   │   ├── financeController.test.js
+│   │   ├── runtimeConfig.test.js
+│   │   ├── tiendaCalculator.test.js
+│   │   ├── tiendaController.test.js
+│   │   ├── tiendaReportService.test.js
+│   │   └── tiendaService.test.js
+│   └── utils
+│       ├── calculadora.js
+│       ├── cleanupReports.js
+│       └── dateUtils.js
+├── config.js
+├── frontend
+│   ├── modules
+│   │   ├── admin-panel
+│   │   │   ├── app.js
+│   │   │   ├── index.html
+│   │   │   └── style.css
+│   │   ├── authentication
+│   │   │   ├── app.js
+│   │   │   ├── index.html
+│   │   │   └── style.css
+│   │   ├── registro-servicios
+│   │   │   ├── app.js
+│   │   │   ├── index.html
+│   │   │   └── style.css
+│   │   ├── servicio-tecnico
+│   │   │   ├── calculadora
+│   │   │   │   ├── app.js
+│   │   │   │   ├── index.html
+│   │   │   │   └── style.css
+│   │   │   ├── js
+│   │   │   │   ├── api.js
+│   │   │   │   ├── app.js
+│   │   │   │   ├── calculations.js
+│   │   │   │   ├── exportExcel.js
+│   │   │   │   ├── exportPDF.js
+│   │   │   │   ├── exportToImage.js
+│   │   │   │   ├── fill.js
+│   │   │   │   └── tableView.js
+│   │   │   └── pages
+│   │   │       ├── dashboard.html
+│   │   │       ├── fill.html
+│   │   │       └── table.html
+│   │   └── tienda
+│   │       ├── js
+│   │       │   ├── calculations.js
+│   │       │   ├── exportExcel.js
+│   │       │   ├── exportPDF.js
+│   │       │   ├── exportToImage.js
+│   │       │   ├── tiendaApi.js
+│   │       │   └── tienda.js
+│   │       └── pages
+│   │           └── tienda.html
+│   ├── package.json
+│   └── shared
+│       ├── css
+│       │   ├── app-theme.css
+│       │   ├── glass-theme.css
+│       │   ├── messages.css
+│       │   ├── offline-status.css
+│       │   ├── shared-theme.css
+│       │   ├── styles.css
+│       │   └── tienda.css
+│       ├── icons
+│       │   ├── icon-192.png
+│       │   ├── icon-192.svg
+│       │   ├── icon-512.png
+│       │   ├── icon-512.svg
+│       │   ├── taller-tech-icon.svg
+│       │   └── taller-tech-logo.svg
+│       ├── js
+│       │   ├── app-shell.js
+│       │   ├── calculations.js
+│       │   ├── config.js
+│       │   ├── data
+│       │   │   ├── data-service.js
+│       │   │   └── offline-store.js
+│       │   ├── messages.js
+│       │   ├── offline-status.js
+│       │   ├── pwa-register.js
+│       │   └── request-cache.js
+│       ├── manifest.json
+│       ├── offline.html
+│       └── sw.js
+├── package.json
+├── package-lock.json
+├── PWA-ARCHITECTURE.md
+└── railway.json
+
+36 directories, 131 files
