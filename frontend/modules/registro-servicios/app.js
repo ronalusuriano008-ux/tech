@@ -220,7 +220,7 @@ const loadServicios = async () => {
     }
 };
 
-// Calcula el avance del mes (utilidad neta del mes hasta hoy / 2)
+// Calcula el monto acumulado del mes (utilidad neta hasta hoy).
 const loadMonthlyAvance = async () => {
     try {
         const today = new Date();
@@ -256,18 +256,16 @@ const loadMonthlyAvance = async () => {
         });
 
         const utilidadNeta = ingresos - costos - gastos;
-        const avance = utilidadNeta / 2;
-
-        const el = document.getElementById('monthAvance');
+        const el = document.getElementById('monthAmount');
         if (el) {
-            el.textContent = `S/.${avance.toFixed(2)}`;
+            el.textContent = `S/.${utilidadNeta.toFixed(2)}`;
             el.classList.toggle('money-negative', utilidadNeta < 0);
             el.classList.toggle('money-positive', utilidadNeta >= 0);
         }
-        return { utilidadNeta, avance };
+        return { utilidadNeta };
     } catch (error) {
         console.error('[registro-servicios] Error calculando avance mensual:', error);
-        const el = document.getElementById('monthAvance');
+        const el = document.getElementById('monthAmount');
         if (el) el.textContent = 'S/.0.00';
         throw error;
     }

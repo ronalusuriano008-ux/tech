@@ -8,7 +8,11 @@
     if (!('serviceWorker' in navigator)) return;
 
     try {
-      const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+      const registration = await navigator.serviceWorker.register('/sw.js', {
+        scope: '/',
+        updateViaCache: 'none'
+      });
+      registration.update().catch(() => {});
       // Una actualización se anuncia y se activa al recargar: no se corta una edición offline.
       registration.addEventListener('updatefound', () => window.dispatchEvent(new CustomEvent('pwa-update-available')));
       window.addEventListener('online', () => registration.sync?.register('taller-tech-sync').catch(() => {}));

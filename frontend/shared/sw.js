@@ -1,4 +1,4 @@
-const VERSION = 'v5-offline-first-20260810';
+const VERSION = 'v6-data-fresh-20260810';
 const STATIC = `taller-tech-${VERSION}-static`;
 const PAGES = `taller-tech-${VERSION}-pages`;
 const RUNTIME = `taller-tech-${VERSION}-runtime`;

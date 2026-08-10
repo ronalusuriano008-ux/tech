@@ -131,6 +131,14 @@ app.use(cors({
 
 app.options('*', cors()); // Preflight para todas las rutas
 app.use(express.json({ limit: appConfig.http.jsonBodyLimit }));
+// Los datos autenticados cambian con frecuencia. Evitar que navegador, CDN o
+// proxy devuelva una respuesta anterior después de un deploy o una mutación.
+app.use('/api', (req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  next();
+});
 app.use('/api', idempotency);
 
 // ... (EL RESTO DEL CÓDIGO PERMANECE IGUAL QUE EN LA RESPUESTA ANTERIOR) ...
@@ -403,7 +411,9 @@ app.get('/calculadora', (req, res) => res.redirect(302, '/calculadora/index.html
 // Servir archivos estáticos con rutas explícitas
 // sin búsqueda por coincidencia ni aliases de compatibilidad
 // ─────────────────────────────────────────────
-const staticCache = { maxAge: isProduction ? '7d' : 0, etag: true, lastModified: true };
+// Los archivos no llevan hash en el nombre. Revalidarlos permite que cada
+// deploy entregue el JS/CSS actual; el service worker conserva el soporte offline.
+const staticCache = { maxAge: 0, etag: true, lastModified: true };
 app.use('/shared', express.static(sharedRoot, staticCache));
 app.use('/modules', express.static(path.join(frontendRoot, 'modules'), staticCache));
 app.use('/login', express.static(authenticationRoot));
@@ -414,7 +424,10 @@ app.use('/servicio-tecnico', express.static(servicioTecnicoPagesRoot));
 app.use('/tienda', express.static(tiendaPagesRoot));
 
 app.get('/manifest.json', (req, res) => res.sendFile(path.join(sharedRoot, 'manifest.json')));
-app.get('/sw.js', (req, res) => res.sendFile(path.join(sharedRoot, 'sw.js')));
+app.get('/sw.js', (req, res) => {
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.sendFile(path.join(sharedRoot, 'sw.js'));
+});
 app.get('/offline.html', (req, res) => res.sendFile(path.join(sharedRoot, 'offline.html')));
 
 // ─────────────────────────────────────────────

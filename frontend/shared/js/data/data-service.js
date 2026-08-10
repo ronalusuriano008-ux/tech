@@ -5,6 +5,26 @@
   const id = () => crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
   const isNetworkFailure = (error) => error instanceof TypeError || /network|fetch|offline/i.test(error?.message || '');
 
+  async function cacheKeyFor(url) {
+    const profile = await window.OfflineStore?.getMeta('session-profile');
+    return `api:${profile?.user?.id || 'anonymous'}:${url}`;
+  }
+
+  async function invalidateResource(path) {
+    if (!window.OfflineStore?.deleteRecordsMatching) return;
+    const resourceUrl = new URL(window.getApiUrl(path), location.origin);
+    const collectionPath = `/${resourceUrl.pathname.split('/').filter(Boolean).slice(0, 2).join('/')}`;
+    await window.OfflineStore.deleteRecordsMatching((key) => {
+      if (typeof key !== 'string' || !key.startsWith('api:')) return false;
+      try {
+        const cachedUrl = key.split(':').slice(2).join(':');
+        return new URL(cachedUrl, location.origin).pathname === collectionPath;
+      } catch (_) {
+        return false;
+      }
+    });
+  }
+
   async function parse(response) {
     const type = response.headers.get('content-type') || '';
     if (!response.ok) {
@@ -19,12 +39,15 @@
   async function request(path, options = {}) {
     const method = (options.method || 'GET').toUpperCase();
     const url = window.getApiUrl ? window.getApiUrl(path) : `/api${path}`;
-    const cacheKey = `api:${url}`;
+    const cacheKey = await cacheKeyFor(url);
     const init = { credentials: 'include', ...options, headers: { Accept: 'application/json', ...(options.headers || {}) } };
 
     if (method === 'GET') {
       try {
-        const data = await networkFetch(url, init).then(parse);
+        const data = await networkFetch(url, {
+          ...init,
+          cache: 'no-store'
+        }).then(parse);
         await window.OfflineStore?.putRecord(cacheKey, data);
         return data;
       } catch (error) {
@@ -38,7 +61,9 @@
     init.headers = { ...init.headers, 'X-Operation-Id': operationId };
     try {
       if (!navigator.onLine) throw new TypeError('offline');
-      return await networkFetch(url, init).then(parse);
+      const result = await networkFetch(url, { ...init, cache: 'no-store' }).then(parse);
+      await invalidateResource(path);
+      return result;
     } catch (error) {
       if (!isNetworkFailure(error) || options.queue === false) throw error;
       const profile = await window.OfflineStore.getMeta('session-profile');
@@ -68,6 +93,7 @@
         const response = await networkFetch(window.getApiUrl(operation.path), { method: operation.method, credentials: 'include', headers, body: operation.body });
         if (response.status === 409) { operation.status = 'conflict'; operation.error = 'El dato cambió en el servidor.'; await window.OfflineStore.addOperation(operation); continue; }
         await parse(response);
+        await invalidateResource(operation.path);
         await window.OfflineStore.removeOperation(operation.id);
       } catch (error) {
         operation.retries += 1; operation.updatedAt = Date.now(); operation.error = error.message;

@@ -1,6 +1,6 @@
 (function () {
   const DB_NAME = 'taller-tech-offline';
-  const DB_VERSION = 2;
+  const DB_VERSION = 3;
   let database;
 
   function open() {
@@ -34,10 +34,33 @@
     });
   }
 
+  async function deleteRecordsMatching(predicate) {
+    const db = await open();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('records', 'readwrite');
+      const store = tx.objectStore('records');
+      const request = store.openCursor();
+      let removed = 0;
+      request.onsuccess = () => {
+        const cursor = request.result;
+        if (!cursor) return;
+        if (predicate(cursor.key, cursor.value)) {
+          cursor.delete();
+          removed += 1;
+        }
+        cursor.continue();
+      };
+      tx.oncomplete = () => resolve(removed);
+      tx.onerror = () => reject(tx.error || request.error);
+      tx.onabort = () => reject(tx.error || request.error);
+    });
+  }
+
   window.OfflineStore = {
     getRecord: (key) => transaction('records', 'readonly', (s) => s.get(key)).then((v) => v?.value),
     putRecord: (key, value) => transaction('records', 'readwrite', (s) => s.put({ key, value, updatedAt: Date.now() })),
     deleteRecord: (key) => transaction('records', 'readwrite', (s) => s.delete(key)),
+    deleteRecordsMatching,
     getMeta: (key) => transaction('meta', 'readonly', (s) => s.get(key)).then((v) => v?.value),
     putMeta: (key, value) => transaction('meta', 'readwrite', (s) => s.put({ key, value, updatedAt: Date.now() })),
     deleteMeta: (key) => transaction('meta', 'readwrite', (s) => s.delete(key)),
