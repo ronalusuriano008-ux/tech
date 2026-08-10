@@ -70,9 +70,12 @@ const parseResponseError = async (res, fallback) => {
 };
 
 const userNameEl = document.getElementById('userName');
-if (userNameEl) {
-    userNameEl.textContent = `BIENVENIDO, ${user?.nombre || 'USUARIO'}.`;
-}
+const setUserName = () => {
+    if (!userNameEl) return;
+    userNameEl.textContent = user?.nombre || user?.name || 'Usuario';
+};
+// inicial (puede actualizarse tras validar sesión)
+setUserName();
 
 const filterFechaElInit = document.getElementById('filterFecha');
 if (filterFechaElInit) {
@@ -179,10 +182,22 @@ const loadServicios = async () => {
             .filter(item => item.tipo === 'gasto')
             .reduce((sum, item) => sum + Number(item.costo || 0), 0);
         const utilidadNeta = ingresos - costos - gastos;
+        const resAvance = utilidadNeta / 2;
 
         document.getElementById('resIngresos').textContent = `S/.${ingresos.toFixed(2)}`;
         document.getElementById('resCostos').textContent = `S/.${costos.toFixed(2)}`;
         document.getElementById('resGastos').textContent = `S/.${gastos.toFixed(2)}`;
+        
+
+        document.getElementById('resAvance').textContent = `S/.${resAvance.toFixed(2)}`;
+
+        // Actualizar avance mensual en el header
+        try {
+            await loadMonthlyAvance();
+        } catch (err) {
+            console.warn('[registro-servicios] No se pudo actualizar avance mensual:', err);
+        }
+
         const utilidadEl = document.getElementById('resUtilidad');
         utilidadEl.textContent = `S/.${utilidadNeta.toFixed(2)}`;
         utilidadEl.classList.toggle('money-negative', utilidadNeta < 0);
@@ -205,6 +220,59 @@ const loadServicios = async () => {
     }
 };
 
+// Calcula el avance del mes (utilidad neta del mes hasta hoy / 2)
+const loadMonthlyAvance = async () => {
+    try {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth(); // 0-based
+        const days = today.getDate(); // hasta hoy
+
+        const pad = (n) => (n < 10 ? '0' + n : '' + n);
+        const dates = [];
+        for (let d = 1; d <= days; d++) {
+            const dateStr = `${year}-${pad(month + 1)}-${pad(d)}`; // YYYY-MM-DD
+            dates.push(dateStr);
+        }
+
+        // Hacer peticiones en paralelo
+        const requests = dates.map(dt => window.DataService.get(`/servicios?fecha=${encodeURIComponent(dt)}`).catch(() => []));
+        const results = await Promise.all(requests);
+
+        let ingresos = 0;
+        let costos = 0;
+        let gastos = 0;
+
+        results.forEach(arr => {
+            const servicios = Array.isArray(arr) ? arr : (arr.servicios || []);
+            servicios.forEach(s => {
+                if (s.tipo === 'gasto') {
+                    gastos += Number(s.costo || 0);
+                } else {
+                    ingresos += Number(s.precio || 0);
+                    costos += Number(s.costo || 0);
+                }
+            });
+        });
+
+        const utilidadNeta = ingresos - costos - gastos;
+        const avance = utilidadNeta / 2;
+
+        const el = document.getElementById('monthAvance');
+        if (el) {
+            el.textContent = `S/.${avance.toFixed(2)}`;
+            el.classList.toggle('money-negative', utilidadNeta < 0);
+            el.classList.toggle('money-positive', utilidadNeta >= 0);
+        }
+        return { utilidadNeta, avance };
+    } catch (error) {
+        console.error('[registro-servicios] Error calculando avance mensual:', error);
+        const el = document.getElementById('monthAvance');
+        if (el) el.textContent = 'S/.0.00';
+        throw error;
+    }
+};
+
 const tipoSelect = document.getElementById('s-tipo');
 const precioInput = document.getElementById('s-precio');
 const modeloInput = document.getElementById('s-modelo');
@@ -220,7 +288,7 @@ const updateFormMode = () => {
         precioInput.required = false;
         submitButton.innerHTML = '<i class="bi bi-save"></i> Registrar Gasto';
     } else {
-        modeloInput.placeholder = 'Ej: Samsung A54';
+        modeloInput.placeholder = 'Ej: Samsung Galaxy S21';
         modeloInput.required = true;
         precioInput.disabled = false;
         precioInput.required = true;
@@ -347,6 +415,7 @@ if (filterFechaEl) {
 (async () => {
     const valid = await validateSession();
     if (valid) {
+        setUserName();
         loadServicios();
     }
 })();

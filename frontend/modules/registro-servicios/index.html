@@ -358,9 +358,15 @@
 <body>
     <!-- Header flotante / sticky -->
     <header class="header-futurist">
-        <div class="header-top" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
-            <img src="/shared/icons/taller-tech-logo.svg" alt="Taller Tech" style="width:min(210px,50vw);height:auto;display:block;filter:drop-shadow(0 8px 16px rgba(59,130,246,0.22));">
-            <h1><i class="bi bi-phone"></i> <span id="userName">Técnico</span></h1>
+        <div class="header-top" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:1rem;">
+                <img src="/shared/icons/taller-tech-logo.svg" alt="Taller Tech" style="width:min(210px,50vw);height:auto;display:block;filter:drop-shadow(0 8px 16px rgba(59,130,246,0.22));">
+              <!--  <h1><i class="bi bi-phone"></i> <span id="userName">Técnico</span></h1>
+                -->
+                <h1 style="margin:0; display:flex; align-items:center; gap:0.6rem;"><i class="bi bi-phone"></i> <span id="userName">Técnico</span> <span id="monthAvance" class="text-neon" style="font-size:0.95rem;">S/.0.00</span></h1>
+            </div>
+
+            
         </div>
         <nav class="nav-grid">
          <!--   
@@ -432,6 +438,13 @@
                     <small>Utilidad Neta</small>
                     <span id="resUtilidad" class="text-neon">S/.0</span>
                 </div>
+                
+                <div class="resumen-item">
+                    <small>Avance Diario</small>
+                    <span id="resAvance" class="text-neon">S/.0</span>
+                </div>
+
+
             </div>
         </article>
 

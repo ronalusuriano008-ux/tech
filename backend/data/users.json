@@ -1,18 +1,5 @@
 [
   {
-    "id": "admin-001",
-    "nombre": "Administrador",
-    "usuario": "admin",
-    "password": "1234",
-    "role": "ADMIN",
-    "horarioEntrada": "09:00",
-    "horarioSalida": "18:00",
-    "diasDescanso": [
-      0
-    ],
-    "fechaRegistro": "2023-01-01T00:00:00.000Z"
-  },
-  {
     "id": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
     "nombre": "rony",
     "usuario": "rony",

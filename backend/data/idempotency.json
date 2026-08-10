@@ -22,5 +22,525 @@
       "message": "Servicio eliminado"
     },
     "createdAt": 1786236639694
+  },
+  "29caec80-f67e-4256-8846-b559bb7f11a0": {
+    "status": 201,
+    "body": {
+      "id": "0376a17f-9882-468c-810a-e676308252ae",
+      "tipo": "servicio",
+      "servicio": "wgdyu",
+      "modelo": "ushdgcuy",
+      "precio": 90,
+      "costo": 20,
+      "utilidad": 70,
+      "fecha": "2026-08-10",
+      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+      "hora": "10:11",
+      "fechaRegistro": "2026-08-10T15:11:45.298Z"
+    },
+    "createdAt": 1786374705428
+  },
+  "c90db341-92ba-4332-b382-63948753b90a": {
+    "status": 200,
+    "body": {
+      "message": "Servicio eliminado"
+    },
+    "createdAt": 1786375156244
+  },
+  "bbca0b85-b57c-421a-9f90-93c09a0ddae9": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 8,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 20,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 13,
+              "yape": 0
+            }
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 0,
+              "yape": 27.5
+            },
+            "st2": {
+              "cash": 78.8,
+              "yape": 0
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 72.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 26.3,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 0,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 23
+            }
+          },
+          {
+            "day": 5,
+            "st1": {
+              "cash": 15,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 6,
+            "st1": {
+              "cash": 52.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 9.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 7,
+            "st1": {
+              "cash": 87.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 19.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 8,
+            "st1": {
+              "cash": 0,
+              "yape": 45
+            },
+            "st2": {
+              "cash": 30.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 9,
+            "st1": {
+              "cash": 67.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1786375572040
+  },
+  "d5a1336e-601e-4d1c-b0e4-1c5328ac08f4": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 8,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 20,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 13,
+              "yape": 0
+            }
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 0,
+              "yape": 27.5
+            },
+            "st2": {
+              "cash": 78.8,
+              "yape": 0
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 72.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 26.3,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 0,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 23
+            }
+          },
+          {
+            "day": 5,
+            "st1": {
+              "cash": 15,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 6,
+            "st1": {
+              "cash": 52.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 9.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 7,
+            "st1": {
+              "cash": 87.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 19.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 8,
+            "st1": {
+              "cash": 0,
+              "yape": 45
+            },
+            "st2": {
+              "cash": 30.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 9,
+            "st1": {
+              "cash": 67.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1786375574416
+  },
+  "83a58324-bc2b-4499-886c-4f2d0d17991a": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 8,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 20,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 13,
+              "yape": 0
+            }
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 0,
+              "yape": 27.5
+            },
+            "st2": {
+              "cash": 78.8,
+              "yape": 0
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 72.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 26.3,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 0,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 23
+            }
+          },
+          {
+            "day": 5,
+            "st1": {
+              "cash": 15,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 6,
+            "st1": {
+              "cash": 52.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 9.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 7,
+            "st1": {
+              "cash": 87.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 19.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 8,
+            "st1": {
+              "cash": 0,
+              "yape": 45
+            },
+            "st2": {
+              "cash": 30.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 9,
+            "st1": {
+              "cash": 67.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 31,
+              "yape": 0
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1786375578249
+  },
+  "26b15230-daa5-45b0-8cfb-19f36103ceca": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 8,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 20,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 13,
+              "yape": 0
+            }
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 0,
+              "yape": 27.5
+            },
+            "st2": {
+              "cash": 78.8,
+              "yape": 0
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 72.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 26.3,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 0,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 23
+            }
+          },
+          {
+            "day": 5,
+            "st1": {
+              "cash": 15,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 6,
+            "st1": {
+              "cash": 52.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 9.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 7,
+            "st1": {
+              "cash": 87.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 19.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 8,
+            "st1": {
+              "cash": 0,
+              "yape": 45
+            },
+            "st2": {
+              "cash": 30.5,
+              "yape": 0
+            }
+          },
+          {
+            "day": 9,
+            "st1": {
+              "cash": 67.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 31,
+              "yape": 0
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1786375580464
+  },
+  "519f44b1-9af7-44ab-aac0-b63e2e1a58e6": {
+    "status": 201,
+    "body": {
+      "id": "47d2752a-b99f-46b2-be51-18e96ad57c21",
+      "tipo": "servicio",
+      "servicio": "pegado de pantalla",
+      "modelo": "100",
+      "precio": 100,
+      "costo": 50,
+      "utilidad": 50,
+      "fecha": "2026-08-10",
+      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+      "hora": "10:49",
+      "fechaRegistro": "2026-08-10T15:49:18.635Z"
+    },
+    "createdAt": 1786376958827
+  },
+  "f072deff-ed30-408f-8652-547c76333c88": {
+    "status": 200,
+    "body": {
+      "message": "Servicio eliminado"
+    },
+    "createdAt": 1786376989364
+  },
+  "0e299e6b-c3b8-4359-bfe6-feda1aa76f8f": {
+    "status": 201,
+    "body": {
+      "id": "6ee81716-515c-49f0-8ea8-47990c311d26",
+      "tipo": "servicio",
+      "servicio": "pegado de pantalla",
+      "modelo": "Honor x6a",
+      "precio": 90,
+      "costo": 45,
+      "utilidad": 45,
+      "fecha": "2026-08-10",
+      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+      "hora": "10:51",
+      "fechaRegistro": "2026-08-10T15:51:16.800Z"
+    },
+    "createdAt": 1786377076815
+  },
+  "812c9918-08e0-4925-95c8-091d5886ea12": {
+    "status": 200,
+    "body": {
+      "message": "Servicio eliminado"
+    },
+    "createdAt": 1786377089009
   }
 }

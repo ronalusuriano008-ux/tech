@@ -65,6 +65,15 @@
         "bancoDepositado": 300,
         "retiroBanco": 0,
         "retiroTienda": 0
+      },
+      {
+        "day": 8,
+        "tienda1": 1212.5,
+        "tienda2": 625,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
       }
     ]
   }
