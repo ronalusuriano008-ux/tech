@@ -1,6 +1,6 @@
 (function () {
   const DB_NAME = 'taller-tech-offline';
-  const DB_VERSION = 1;
+  const DB_VERSION = 2;
   let database;
 
   function open() {

@@ -19,7 +19,7 @@
     tablePath: '/table.html',
     tiendaPath: '/pages/tienda.html'
     ,offline: {
-      version: '2026.08.08',
+      version: '2026.08.10',
       maxRetries: 5,
       retryBaseMs: 1500,
       dataCacheTtlMs: 120000
