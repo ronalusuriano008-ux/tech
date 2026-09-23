@@ -93,7 +93,7 @@ app.use((req, res, next) => {
 // ─────────────────────────────────────────────
 // CORS con credentials para cookies cross-origin
 // ─────────────────────────────────────────────
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://127.0.0.1:3000,https://panel.vixbox.xyz,https://beta.vixbox.xyz,https://api.vixbox.xyz,https://unmended-lacey-nondefinitively.ngrok-free.dev')
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://127.0.0.1:3000,https://tiendas.tumovil.xyz,https://panel.vixbox.xyz,https://beta.vixbox.xyz,https://api.vixbox.xyz,https://unmended-lacey-nondefinitively.ngrok-free.dev')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
@@ -101,7 +101,7 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000,ht
 const isAllowedVixboxSubdomain = (origin) => {
   try {
     const url = new URL(origin);
-    return url.hostname === 'vixbox.xyz' || url.hostname.endsWith('.vixbox.xyz');
+    return url.hostname === 'tumovil.xyz' || url.hostname.endsWith('.tumovil.xyz');
   } catch {
     return false;
   }
