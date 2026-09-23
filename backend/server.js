@@ -199,8 +199,8 @@ const isAllowedTumovilSubdomain = (origin) => {
         const url = new URL(origin);
 
         return (
-            url.hostname === 'vixbox.xyz' ||
-            url.hostname.endsWith('.vixbox.xyz')
+            url.hostname === 'tumovil.xyz' ||
+            url.hostname.endsWith('.tumovil.xyz')
         );
     } catch {
         return false;
