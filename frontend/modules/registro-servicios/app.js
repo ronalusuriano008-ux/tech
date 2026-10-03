@@ -86,9 +86,31 @@ if (filterFechaElInit) {
 
 const normalizeDate = (value) => {
     if (!value) return value;
-    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
-    const parsed = new Date(value);
-    return Number.isNaN(parsed.getTime()) ? value : parsed.toISOString().slice(0, 10);
+
+    const normalized = String(value).trim();
+    if (!normalized) return normalized;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(normalized)) return normalized;
+
+    if (/^\d{2}[/-]\d{2}[/-]\d{4}$/.test(normalized)) {
+        const [day, month, year] = normalized.split(/[/-]/).map(Number);
+        const parsed = new Date(year, month - 1, day);
+        if (!Number.isNaN(parsed.getTime())) {
+            const y = parsed.getFullYear();
+            const m = String(parsed.getMonth() + 1).padStart(2, '0');
+            const d = String(parsed.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+    }
+
+    const parsed = new Date(normalized);
+    if (!Number.isNaN(parsed.getTime())) {
+        const y = parsed.getFullYear();
+        const m = String(parsed.getMonth() + 1).padStart(2, '0');
+        const d = String(parsed.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+
+    return normalized;
 };
 
 const getFecha = () => {

@@ -6,12 +6,11 @@ import {
   getTiendaPdf
 } from './tiendaApi.js';
 import { formatCurrency, parseDecimal } from './calculations.js';
+import { exportToPDF } from './exportPDF.js';
 
 const yearInput = document.getElementById('year');
 const monthInput = document.getElementById('month');
-const btnLoad = document.getElementById('btnLoad');
 const btnNewDay = document.getElementById('btnNewDay');
-const btnRecalculate = document.getElementById('btnRecalculate');
 const btnGeneratePdf = document.getElementById('btnGeneratePdf');
 const statusMessage = document.getElementById('statusMessage');
 const summaryTotalEl = document.getElementById('summaryTotal');
@@ -19,6 +18,7 @@ const summaryAcumuladoEl = document.getElementById('summaryAcumulado');
 const summaryBancoDepositadoEl = document.getElementById('summaryBancoDepositado');
 const summarySaldoBancoEl = document.getElementById('summarySaldoBanco');
 const tableBody = document.getElementById('tiendaTableBody');
+const withdrawalNotesContainer = document.getElementById('withdrawalNotesContainer');
 
 const dayModal = document.getElementById('dayModal');
 const dayForm = document.getElementById('dayForm');
@@ -33,6 +33,10 @@ const tienda3Input = document.getElementById('tienda3');
 const bancoDepositadoInput = document.getElementById('bancoDepositado');
 const retiroTiendaInput = document.getElementById('retiroTienda');
 const retiroBancoInput = document.getElementById('retiroBanco');
+const tipoRetiroInput = document.getElementById('tipoRetiro');
+const motivoRetiroInput = document.getElementById('motivoRetiro');
+const destinoRetiroInput = document.getElementById('destinoRetiro');
+const comentarioRetiroInput = document.getElementById('comentarioRetiro');
 
 let currentDays = [];
 let statusTimeout = null;
@@ -64,12 +68,25 @@ function closeModal() {
 
 function resetDayForm() {
   if (dayInput) dayInput.value = '';
-  if (tienda1Input) tienda1Input.value = '0';
-  if (tienda2Input) tienda2Input.value = '0';
-  if (tienda3Input) tienda3Input.value = '0';
-  if (bancoDepositadoInput) bancoDepositadoInput.value = '0';
-  if (retiroTiendaInput) retiroTiendaInput.value = '0';
-  if (retiroBancoInput) retiroBancoInput.value = '0';
+  if (tienda1Input) tienda1Input.value = '';
+  if (tienda2Input) tienda2Input.value = '';
+  if (tienda3Input) tienda3Input.value = '';
+  if (bancoDepositadoInput) bancoDepositadoInput.value = '';
+  if (retiroTiendaInput) retiroTiendaInput.value = '';
+  if (retiroBancoInput) retiroBancoInput.value = '';
+  if (tipoRetiroInput) tipoRetiroInput.value = 'ninguno';
+  if (motivoRetiroInput) motivoRetiroInput.value = '';
+  if (destinoRetiroInput) destinoRetiroInput.value = '';
+  if (comentarioRetiroInput) comentarioRetiroInput.value = '';
+}
+
+function clearZeroOnFocus(event) {
+  const field = event.currentTarget;
+  if (!field || field.value === undefined || field.value === null) return;
+
+  if (field.value === '0' || field.value === '0.00' || field.value === '0.0' || field.value === 0) {
+    field.value = '';
+  }
 }
 
 function getSelectedYearMonth() {
@@ -111,6 +128,7 @@ function renderTable(days) {
 
   if (!days || days.length === 0) {
     tableBody.innerHTML = '<tr><td colspan="11" class="text-center">No hay datos registrados para este mes.</td></tr>';
+    if (withdrawalNotesContainer) withdrawalNotesContainer.innerHTML = '<div class="withdrawal-item">No hay retiros registrados para este mes.</div>';
     return;
   }
 
@@ -134,17 +152,79 @@ function renderTable(days) {
     `;
     tableBody.appendChild(row);
   });
+
+  renderWithdrawalNotes(days);
+}
+
+function renderWithdrawalNotes(days) {
+  if (!withdrawalNotesContainer) return;
+
+  const withdrawalEntries = [...(days || [])]
+    .filter((dayData) => {
+      const retiroTienda = Number(dayData.retiroTienda || 0);
+      const retiroBanco = Number(dayData.retiroBanco || 0);
+      return retiroTienda > 0 || retiroBanco > 0;
+    })
+    .sort((a, b) => Number(b.day || 0) - Number(a.day || 0));
+
+  if (!withdrawalEntries.length) {
+    withdrawalNotesContainer.innerHTML = '<div class="withdrawal-item">No hay retiros registrados para este mes.</div>';
+    return;
+  }
+
+  withdrawalNotesContainer.innerHTML = withdrawalEntries.flatMap((dayData) => {
+    const retiroTienda = Number(dayData.retiroTienda || 0);
+    const retiroBanco = Number(dayData.retiroBanco || 0);
+    const motivo = (dayData.motivoRetiro || 'retiro programado').trim();
+    const destino = (dayData.destinoRetiro || 'sin destino especificado').trim();
+    const comentario = (dayData.comentarioRetiro || '').trim();
+    const tipo = determineRetiroType(dayData);
+    const tipos = tipo === 'ambos' ? ['tienda', 'banco'] : tipo === 'tienda' ? ['tienda'] : tipo === 'banco' ? ['banco'] : [];
+
+    return tipos.map((kind) => {
+      const isTienda = kind === 'tienda';
+      const amount = isTienda ? retiroTienda : retiroBanco;
+      if (amount <= 0) return null;
+
+      const accountLabel = isTienda ? 'acumulado de tiendas' : 'acumulado del banco';
+      const detail = `por motivo: ${motivo}; dirigido a: ${destino}.`;
+      const extra = comentario ? ` Comentario: ${comentario}.` : '';
+
+      return `
+        <div class="withdrawal-item">
+          <span class="withdrawal-date">Día ${dayData.day}</span>
+          <span>Se retiró ${formatCurrency(amount)} del ${accountLabel}. ${detail}${extra}</span>
+        </div>
+      `;
+    }).filter(Boolean);
+  }).join('');
+}
+
+function determineRetiroType(dayData = {}) {
+  const hasTienda = Number(dayData.retiroTienda || 0) > 0;
+  const hasBanco = Number(dayData.retiroBanco || 0) > 0;
+  const explicitType = String(dayData.tipoRetiro || '').trim().toLowerCase();
+
+  if (explicitType) return explicitType;
+  if (hasTienda && hasBanco) return 'ambos';
+  if (hasTienda) return 'tienda';
+  if (hasBanco) return 'banco';
+  return 'ninguno';
 }
 
 function fillDayForm(dayData) {
   if (!dayData) return;
   dayInput.value = dayData.day || '';
-  tienda1Input.value = dayData.tienda1 ?? 0;
-  tienda2Input.value = dayData.tienda2 ?? 0;
-  tienda3Input.value = dayData.tienda3 ?? 0;
-  bancoDepositadoInput.value = dayData.bancoDepositado ?? 0;
-  retiroTiendaInput.value = dayData.retiroTienda ?? 0;
-  retiroBancoInput.value = dayData.retiroBanco ?? 0;
+  tienda1Input.value = dayData.tienda1 ?? '';
+  tienda2Input.value = dayData.tienda2 ?? '';
+  tienda3Input.value = dayData.tienda3 ?? '';
+  bancoDepositadoInput.value = dayData.bancoDepositado ?? '';
+  retiroTiendaInput.value = dayData.retiroTienda ?? '';
+  retiroBancoInput.value = dayData.retiroBanco ?? '';
+  tipoRetiroInput.value = determineRetiroType(dayData);
+  motivoRetiroInput.value = dayData.motivoRetiro ?? '';
+  destinoRetiroInput.value = dayData.destinoRetiro ?? '';
+  comentarioRetiroInput.value = dayData.comentarioRetiro ?? '';
 }
 
 async function handleSaveDay(event) {
@@ -163,7 +243,11 @@ async function handleSaveDay(event) {
     tienda3: parseDecimal(tienda3Input.value),
     bancoDepositado: parseDecimal(bancoDepositadoInput.value),
     retiroTienda: parseDecimal(retiroTiendaInput.value),
-    retiroBanco: parseDecimal(retiroBancoInput.value)
+    retiroBanco: parseDecimal(retiroBancoInput.value),
+    tipoRetiro: (tipoRetiroInput?.value || 'ninguno').trim().toLowerCase(),
+    motivoRetiro: (motivoRetiroInput?.value || '').trim(),
+    destinoRetiro: (destinoRetiroInput?.value || '').trim(),
+    comentarioRetiro: (comentarioRetiroInput?.value || '').trim()
   };
 
   try {
@@ -204,6 +288,24 @@ async function handleTableAction(event) {
   }
 }
 
+const _loadedScripts = new Map();
+
+function loadScriptOnce(url) {
+  if (_loadedScripts.has(url)) return _loadedScripts.get(url);
+
+  const promise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = url;
+    script.async = true;
+    script.onload = () => resolve(url);
+    script.onerror = () => reject(new Error(`Falló la carga de ${url}`));
+    document.head.appendChild(script);
+  });
+
+  _loadedScripts.set(url, promise);
+  return promise;
+}
+
 async function handleGeneratePdf() {
   const { year, month } = getSelectedYearMonth();
   if (!year || !month) {
@@ -212,36 +314,14 @@ async function handleGeneratePdf() {
   }
 
   try {
-    showStatus('Descargando PDF...');
-    const blob = await getTiendaPdf(year, month);
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `tienda-${year}-${String(month).padStart(2, '0')}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
+    showStatus('Generando PDF...');
+    await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js');
+    exportToPDF(year, month, currentDays);
     showStatus('PDF descargado correctamente');
   } catch (error) {
-    showStatus(error.message || 'Error al descargar el PDF', 'error');
-  }
-}
-
-async function handleRecalculate() {
-  const { year, month } = getSelectedYearMonth();
-  if (!year || !month) {
-    showStatus('Seleccione año y mes válidos', 'error');
-    return;
-  }
-
-  try {
-    showStatus('Recalculando...');
-    await recalculateTienda(year, month);
-    await loadTable();
-    showStatus('Mes recalculado correctamente');
-  } catch (error) {
-    showStatus(error.message || 'Error al recalcular el mes', 'error');
+    console.error(error);
+    showStatus(error.message || 'Error al generar el PDF', 'error');
   }
 }
 
@@ -261,7 +341,40 @@ function initializePage() {
 }
 
 function attachEventListeners() {
-  if (btnLoad) btnLoad.addEventListener('click', loadTable);
+  const numberFields = [
+    dayInput,
+    tienda1Input,
+    tienda2Input,
+    tienda3Input,
+    bancoDepositadoInput,
+    retiroTiendaInput,
+    retiroBancoInput
+  ].filter(Boolean);
+
+  if (tipoRetiroInput) {
+    tipoRetiroInput.addEventListener('change', () => {
+      const value = tipoRetiroInput.value;
+      if (value === 'tienda') {
+        retiroTiendaInput.value = retiroTiendaInput.value || '';
+        retiroBancoInput.value = '';
+      }
+      if (value === 'banco') {
+        retiroBancoInput.value = retiroBancoInput.value || '';
+        retiroTiendaInput.value = '';
+      }
+      if (value === 'ninguno') {
+        retiroTiendaInput.value = '';
+        retiroBancoInput.value = '';
+      }
+    });
+  }
+
+  numberFields.forEach((field) => {
+    field.addEventListener('focus', clearZeroOnFocus);
+  });
+
+  if (yearInput) yearInput.addEventListener('change', loadTable);
+  if (monthInput) monthInput.addEventListener('change', loadTable);
   if (btnNewDay) {
     btnNewDay.addEventListener('click', () => {
       modalTitle.textContent = 'Registrar Día';
@@ -274,7 +387,6 @@ function attachEventListeners() {
       openModal();
     });
   }
-  if (btnRecalculate) btnRecalculate.addEventListener('click', handleRecalculate);
   if (btnGeneratePdf) btnGeneratePdf.addEventListener('click', handleGeneratePdf);
   if (dayForm) dayForm.addEventListener('submit', handleSaveDay);
   if (tableBody) tableBody.addEventListener('click', handleTableAction);

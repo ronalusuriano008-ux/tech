@@ -1,546 +1,1373 @@
 {
-  "05375033-8d29-4ac1-a0ff-f878eb492d51": {
+  "bce2fe89-8755-4b77-87b9-a7cd156117c7": {
     "status": 201,
     "body": {
-      "id": "dc725db4-6677-4b5e-a6f2-ee5d99c35464",
+      "id": "8b64deea-2ae2-4d64-a6b0-e2ab0cdcbb44",
+      "tipo": "servicio",
+      "servicio": "cambio de pantalla",
+      "modelo": "redmi a2",
+      "precio": 80,
+      "costo": 40,
+      "utilidad": 40,
+      "fecha": "2026-10-02",
+      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+      "hora": "09:15",
+      "fechaRegistro": "2026-10-02T14:15:32.051Z"
+    },
+    "createdAt": 1790950532196
+  },
+  "6e39711f-0937-4047-a2ab-c571769cae0b": {
+    "status": 201,
+    "body": {
+      "id": "57b7928e-10d9-4b42-a454-8e4c298e9a93",
       "tipo": "servicio",
       "servicio": "eliminacion de virus",
-      "modelo": "djdhubc",
+      "modelo": "samsun j6 plus",
       "precio": 10,
       "costo": 0,
       "utilidad": 10,
-      "fecha": "2026-08-08",
+      "fecha": "2026-10-02",
       "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
-      "hora": "19:50",
-      "fechaRegistro": "2026-08-09T00:50:31.955Z"
+      "hora": "09:15",
+      "fechaRegistro": "2026-10-02T14:15:47.235Z"
     },
-    "createdAt": 1786236632344
+    "createdAt": 1790950547302
   },
-  "84e60c9a-5ad4-40c4-a2a0-81803c25d46f": {
-    "status": 200,
-    "body": {
-      "message": "Servicio eliminado"
-    },
-    "createdAt": 1786236639694
-  },
-  "29caec80-f67e-4256-8846-b559bb7f11a0": {
+  "c4111012-255b-4f04-b7de-b66e710e984b": {
     "status": 201,
     "body": {
-      "id": "0376a17f-9882-468c-810a-e676308252ae",
+      "id": "278b5444-8471-4715-b3ff-997a2768f84f",
       "tipo": "servicio",
-      "servicio": "wgdyu",
-      "modelo": "ushdgcuy",
+      "servicio": "PEGADO DE PANTALLA",
+      "modelo": "samsung s24 ultra",
+      "precio": 10,
+      "costo": 0,
+      "utilidad": 10,
+      "fecha": "2026-10-02",
+      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+      "hora": "09:16",
+      "fechaRegistro": "2026-10-02T14:16:00.130Z"
+    },
+    "createdAt": 1790950560137
+  },
+  "ac76b8fc-8e62-4826-8a18-34a05f782699": {
+    "status": 201,
+    "body": {
+      "id": "b56b1750-1cc8-4317-a9eb-352f7ef02f57",
+      "tipo": "servicio",
+      "servicio": "actualizacion de playstore",
+      "modelo": "honor x6a",
+      "precio": 15,
+      "costo": 0,
+      "utilidad": 15,
+      "fecha": "2026-10-02",
+      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+      "hora": "09:16",
+      "fechaRegistro": "2026-10-02T14:16:37.381Z"
+    },
+    "createdAt": 1790950597388
+  },
+  "c6434b5a-2081-448e-80f2-b9c0ae5ab72f": {
+    "status": 201,
+    "body": {
+      "id": "ffdb8b86-2b1c-4c2c-8d35-c60a22a39518",
+      "tipo": "servicio",
+      "servicio": "eliminacion de virus",
+      "modelo": "redmi 9a",
+      "precio": 5,
+      "costo": 0,
+      "utilidad": 5,
+      "fecha": "2026-10-02",
+      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+      "hora": "09:16",
+      "fechaRegistro": "2026-10-02T14:16:49.114Z"
+    },
+    "createdAt": 1790950609122
+  },
+  "532d2a7a-9676-4bbf-8b6a-b21b5dc1826f": {
+    "status": 201,
+    "body": {
+      "id": "d84c4518-037f-4a03-87a3-ed112d1f803c",
+      "tipo": "gasto",
+      "servicio": "compra de pegamento",
+      "modelo": "suplemento",
+      "precio": 0,
+      "costo": 10,
+      "utilidad": -10,
+      "fecha": "2026-10-02",
+      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
+      "hora": "09:17",
+      "fechaRegistro": "2026-10-02T14:17:17.213Z"
+    },
+    "createdAt": 1790950637220
+  },
+  "6a7d338f-a929-45d6-afba-8c348ff81f64": {
+    "status": 201,
+    "body": {
+      "id": "b53cda58-15a6-4ede-b887-7fd9f85a1090",
+      "tipo": "servicio",
+      "servicio": "eliminacion de virus",
+      "modelo": "redmi note 13",
       "precio": 90,
-      "costo": 20,
+      "costo": 0,
+      "utilidad": 90,
+      "fecha": "2026-10-02",
+      "usuarioId": "72e9fcab-1b62-475e-9170-6d9266107053",
+      "hora": "10:44",
+      "fechaRegistro": "2026-10-02T15:44:22.794Z"
+    },
+    "createdAt": 1790955862916
+  },
+  "33f8a73d-4f9e-469e-a819-ee29d4ba204b": {
+    "status": 201,
+    "body": {
+      "id": "1924028c-4322-4158-8b89-b70b965679da",
+      "tipo": "servicio",
+      "servicio": "eliminacion de virus",
+      "modelo": "mtorola g23",
+      "precio": 80,
+      "costo": 10,
       "utilidad": 70,
-      "fecha": "2026-08-10",
-      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
-      "hora": "10:11",
-      "fechaRegistro": "2026-08-10T15:11:45.298Z"
+      "fecha": "2026-10-02",
+      "usuarioId": "72e9fcab-1b62-475e-9170-6d9266107053",
+      "hora": "10:44",
+      "fechaRegistro": "2026-10-02T15:44:32.868Z"
     },
-    "createdAt": 1786374705428
+    "createdAt": 1790955872877
   },
-  "c90db341-92ba-4332-b382-63948753b90a": {
-    "status": 200,
-    "body": {
-      "message": "Servicio eliminado"
-    },
-    "createdAt": 1786375156244
-  },
-  "bbca0b85-b57c-421a-9f90-93c09a0ddae9": {
-    "status": 200,
-    "body": {
-      "success": true,
-      "data": {
-        "year": 2026,
-        "month": 8,
-        "days": [
-          {
-            "day": 1,
-            "st1": {
-              "cash": 20,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 13,
-              "yape": 0
-            }
-          },
-          {
-            "day": 2,
-            "st1": {
-              "cash": 0,
-              "yape": 27.5
-            },
-            "st2": {
-              "cash": 78.8,
-              "yape": 0
-            }
-          },
-          {
-            "day": 3,
-            "st1": {
-              "cash": 72.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 26.3,
-              "yape": 0
-            }
-          },
-          {
-            "day": 4,
-            "st1": {
-              "cash": 0,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 0,
-              "yape": 23
-            }
-          },
-          {
-            "day": 5,
-            "st1": {
-              "cash": 15,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 0,
-              "yape": 0
-            }
-          },
-          {
-            "day": 6,
-            "st1": {
-              "cash": 52.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 9.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 7,
-            "st1": {
-              "cash": 87.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 19.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 8,
-            "st1": {
-              "cash": 0,
-              "yape": 45
-            },
-            "st2": {
-              "cash": 30.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 9,
-            "st1": {
-              "cash": 67.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 0,
-              "yape": 0
-            }
-          }
-        ]
-      }
-    },
-    "createdAt": 1786375572040
-  },
-  "d5a1336e-601e-4d1c-b0e4-1c5328ac08f4": {
-    "status": 200,
-    "body": {
-      "success": true,
-      "data": {
-        "year": 2026,
-        "month": 8,
-        "days": [
-          {
-            "day": 1,
-            "st1": {
-              "cash": 20,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 13,
-              "yape": 0
-            }
-          },
-          {
-            "day": 2,
-            "st1": {
-              "cash": 0,
-              "yape": 27.5
-            },
-            "st2": {
-              "cash": 78.8,
-              "yape": 0
-            }
-          },
-          {
-            "day": 3,
-            "st1": {
-              "cash": 72.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 26.3,
-              "yape": 0
-            }
-          },
-          {
-            "day": 4,
-            "st1": {
-              "cash": 0,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 0,
-              "yape": 23
-            }
-          },
-          {
-            "day": 5,
-            "st1": {
-              "cash": 15,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 0,
-              "yape": 0
-            }
-          },
-          {
-            "day": 6,
-            "st1": {
-              "cash": 52.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 9.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 7,
-            "st1": {
-              "cash": 87.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 19.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 8,
-            "st1": {
-              "cash": 0,
-              "yape": 45
-            },
-            "st2": {
-              "cash": 30.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 9,
-            "st1": {
-              "cash": 67.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 0,
-              "yape": 0
-            }
-          }
-        ]
-      }
-    },
-    "createdAt": 1786375574416
-  },
-  "83a58324-bc2b-4499-886c-4f2d0d17991a": {
-    "status": 200,
-    "body": {
-      "success": true,
-      "data": {
-        "year": 2026,
-        "month": 8,
-        "days": [
-          {
-            "day": 1,
-            "st1": {
-              "cash": 20,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 13,
-              "yape": 0
-            }
-          },
-          {
-            "day": 2,
-            "st1": {
-              "cash": 0,
-              "yape": 27.5
-            },
-            "st2": {
-              "cash": 78.8,
-              "yape": 0
-            }
-          },
-          {
-            "day": 3,
-            "st1": {
-              "cash": 72.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 26.3,
-              "yape": 0
-            }
-          },
-          {
-            "day": 4,
-            "st1": {
-              "cash": 0,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 0,
-              "yape": 23
-            }
-          },
-          {
-            "day": 5,
-            "st1": {
-              "cash": 15,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 0,
-              "yape": 0
-            }
-          },
-          {
-            "day": 6,
-            "st1": {
-              "cash": 52.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 9.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 7,
-            "st1": {
-              "cash": 87.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 19.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 8,
-            "st1": {
-              "cash": 0,
-              "yape": 45
-            },
-            "st2": {
-              "cash": 30.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 9,
-            "st1": {
-              "cash": 67.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 31,
-              "yape": 0
-            }
-          }
-        ]
-      }
-    },
-    "createdAt": 1786375578249
-  },
-  "26b15230-daa5-45b0-8cfb-19f36103ceca": {
-    "status": 200,
-    "body": {
-      "success": true,
-      "data": {
-        "year": 2026,
-        "month": 8,
-        "days": [
-          {
-            "day": 1,
-            "st1": {
-              "cash": 20,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 13,
-              "yape": 0
-            }
-          },
-          {
-            "day": 2,
-            "st1": {
-              "cash": 0,
-              "yape": 27.5
-            },
-            "st2": {
-              "cash": 78.8,
-              "yape": 0
-            }
-          },
-          {
-            "day": 3,
-            "st1": {
-              "cash": 72.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 26.3,
-              "yape": 0
-            }
-          },
-          {
-            "day": 4,
-            "st1": {
-              "cash": 0,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 0,
-              "yape": 23
-            }
-          },
-          {
-            "day": 5,
-            "st1": {
-              "cash": 15,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 0,
-              "yape": 0
-            }
-          },
-          {
-            "day": 6,
-            "st1": {
-              "cash": 52.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 9.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 7,
-            "st1": {
-              "cash": 87.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 19.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 8,
-            "st1": {
-              "cash": 0,
-              "yape": 45
-            },
-            "st2": {
-              "cash": 30.5,
-              "yape": 0
-            }
-          },
-          {
-            "day": 9,
-            "st1": {
-              "cash": 67.5,
-              "yape": 0
-            },
-            "st2": {
-              "cash": 31,
-              "yape": 0
-            }
-          }
-        ]
-      }
-    },
-    "createdAt": 1786375580464
-  },
-  "519f44b1-9af7-44ab-aac0-b63e2e1a58e6": {
+  "c5a6e37f-be7b-493f-95df-587fa2591be2": {
     "status": 201,
     "body": {
-      "id": "47d2752a-b99f-46b2-be51-18e96ad57c21",
-      "tipo": "servicio",
-      "servicio": "pegado de pantalla",
-      "modelo": "100",
-      "precio": 100,
-      "costo": 50,
-      "utilidad": 50,
-      "fecha": "2026-08-10",
-      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
-      "hora": "10:49",
-      "fechaRegistro": "2026-08-10T15:49:18.635Z"
+      "id": "19d0ac3b-f833-4bfb-852e-1048edd0558a",
+      "tipo": "gasto",
+      "servicio": "limpia vidrios",
+      "modelo": "suplemento",
+      "precio": 0,
+      "costo": 20,
+      "utilidad": -20,
+      "fecha": "2026-10-02",
+      "usuarioId": "72e9fcab-1b62-475e-9170-6d9266107053",
+      "hora": "10:45",
+      "fechaRegistro": "2026-10-02T15:45:01.235Z"
     },
-    "createdAt": 1786376958827
+    "createdAt": 1790955901243
   },
-  "f072deff-ed30-408f-8652-547c76333c88": {
+  "48ce77d2-3a24-4b7f-b5bc-97fcbf31e11b": {
     "status": 200,
     "body": {
-      "message": "Servicio eliminado"
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          }
+        ]
+      }
     },
-    "createdAt": 1786376989364
+    "createdAt": 1790966942715
   },
-  "0e299e6b-c3b8-4359-bfe6-feda1aa76f8f": {
-    "status": 201,
-    "body": {
-      "id": "6ee81716-515c-49f0-8ea8-47990c311d26",
-      "tipo": "servicio",
-      "servicio": "pegado de pantalla",
-      "modelo": "Honor x6a",
-      "precio": 90,
-      "costo": 45,
-      "utilidad": 45,
-      "fecha": "2026-08-10",
-      "usuarioId": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
-      "hora": "10:51",
-      "fechaRegistro": "2026-08-10T15:51:16.800Z"
-    },
-    "createdAt": 1786377076815
-  },
-  "812c9918-08e0-4925-95c8-091d5886ea12": {
+  "fd5d9a56-0c8b-42b8-8bdf-42357b0b2e0e": {
     "status": 200,
     "body": {
-      "message": "Servicio eliminado"
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          }
+        ]
+      }
     },
-    "createdAt": 1786377089009
+    "createdAt": 1790966943146
+  },
+  "30be1e87-833a-45de-b991-68fe3ac51341": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790966944567
+  },
+  "4a001972-f19c-468c-a63b-ce945f8f5fd4": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 1000
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790968999532
+  },
+  "03f38a78-b37b-462b-8554-caeecb2b5d72": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 1000
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790969014727
+  },
+  "1735fc41-5937-4128-8a24-98f5037babb3": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 1000
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790969154431
+  },
+  "8c30f245-b034-44ec-82d0-047448ee3874": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790969381078
+  },
+  "d85e5eb8-1dfa-4b72-8c96-08e1ec982ad9": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            },
+            "comment": "descanso"
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790974447850
+  },
+  "8c0f86ae-daf3-479c-9e39-89916d5e51bd": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            },
+            "comment": "descanso de ronal"
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790980175614
+  },
+  "ee0bae1e-0c9d-44dd-9a99-af5547792bcf": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            },
+            "comment": "descanso de ronal"
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 80,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790982582857
+  },
+  "d32c022d-ef4e-425b-867a-6eff640ef4d0": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            },
+            "comment": "descanso de ronal"
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 80,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 90,
+              "yape": 120
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790982598035
+  },
+  "791e785c-c8df-43dd-bc32-c5a9e504374e": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            },
+            "comment": "descanso de ronal"
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 80,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 90,
+              "yape": 120
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 5,
+            "st1": {
+              "cash": 210,
+              "yape": 500
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790982607190
+  },
+  "30c9ca0a-ba9b-4b8d-acb1-41c8b9b3fbf2": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            },
+            "comment": "descanso de ronal"
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 80,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 90,
+              "yape": 120
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 5,
+            "st1": {
+              "cash": 210,
+              "yape": 500
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 6,
+            "st1": {
+              "cash": 10,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790982617930
+  },
+  "85680ba6-f83b-470c-ba22-b0ee8a0cea1b": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            },
+            "comment": "descanso de ronal"
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 80,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 90,
+              "yape": 120
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 5,
+            "st1": {
+              "cash": 210,
+              "yape": 500
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 6,
+            "st1": {
+              "cash": 10,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 7,
+            "st1": {
+              "cash": 30,
+              "yape": 25
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790982697446
+  },
+  "1a9f073e-fb71-4a0b-a840-d5e39fbab1ef": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            },
+            "comment": "descanso de ronal"
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 80,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 90,
+              "yape": 120
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 5,
+            "st1": {
+              "cash": 210,
+              "yape": 500
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 6,
+            "st1": {
+              "cash": 10,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 7,
+            "st1": {
+              "cash": 30,
+              "yape": 25
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 8,
+            "st1": {
+              "cash": 0,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 20,
+              "yape": 0
+            },
+            "comment": "descanso del st1 RONAL"
+          }
+        ]
+      }
+    },
+    "createdAt": 1790982722341
+  },
+  "4b80c76a-f162-4bfc-a0f2-c20ebf2fa607": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            },
+            "comment": "descanso de ronal"
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 80,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 90,
+              "yape": 120
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 5,
+            "st1": {
+              "cash": 210,
+              "yape": 500
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 6,
+            "st1": {
+              "cash": 10,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 7,
+            "st1": {
+              "cash": 30,
+              "yape": 25
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 8,
+            "st1": {
+              "cash": 0,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 20,
+              "yape": 0
+            },
+            "comment": "descanso del st1 RONAL"
+          },
+          {
+            "day": 9,
+            "st1": {
+              "cash": 230,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            },
+            "comment": "descanso del st2 WILMER"
+          }
+        ]
+      }
+    },
+    "createdAt": 1790982744437
+  },
+  "b871c9e7-9b2d-4ae2-8f77-288733fd5af6": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            },
+            "comment": "descanso de ronal"
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 80,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 90,
+              "yape": 120
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 5,
+            "st1": {
+              "cash": 210,
+              "yape": 500
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 6,
+            "st1": {
+              "cash": 10,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 7,
+            "st1": {
+              "cash": 30,
+              "yape": 25
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 8,
+            "st1": {
+              "cash": 0,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 20,
+              "yape": 0
+            },
+            "comment": "descanso del st1 RONAL"
+          },
+          {
+            "day": 9,
+            "st1": {
+              "cash": 230,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            },
+            "comment": "descanso del st2 WILMER"
+          },
+          {
+            "day": 10,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 100,
+              "yape": 0
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790982754998
+  },
+  "240d1f02-4cce-441b-acce-eebae86c49a0": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "year": 2026,
+        "month": 10,
+        "days": [
+          {
+            "day": 1,
+            "st1": {
+              "cash": 27.5,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            },
+            "comment": "descanso de ronal"
+          },
+          {
+            "day": 2,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 10
+            }
+          },
+          {
+            "day": 3,
+            "st1": {
+              "cash": 80,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 4,
+            "st1": {
+              "cash": 90,
+              "yape": 120
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 5,
+            "st1": {
+              "cash": 210,
+              "yape": 500
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 6,
+            "st1": {
+              "cash": 10,
+              "yape": 40
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 7,
+            "st1": {
+              "cash": 30,
+              "yape": 25
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            }
+          },
+          {
+            "day": 8,
+            "st1": {
+              "cash": 0,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 20,
+              "yape": 0
+            },
+            "comment": "descanso del st1 RONAL"
+          },
+          {
+            "day": 9,
+            "st1": {
+              "cash": 230,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 0,
+              "yape": 0
+            },
+            "comment": "descanso del st2 WILMER"
+          },
+          {
+            "day": 10,
+            "st1": {
+              "cash": 40,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 100,
+              "yape": 0
+            }
+          },
+          {
+            "day": 11,
+            "st1": {
+              "cash": 900,
+              "yape": 0
+            },
+            "st2": {
+              "cash": 123,
+              "yape": 0
+            }
+          }
+        ]
+      }
+    },
+    "createdAt": 1790982768971
+  },
+  "a7fd0f90-9566-4c03-befc-10e54b3483c6": {
+    "status": 200,
+    "body": {
+      "resumen": {
+        "saldoTienda": 3449.5,
+        "saldoBanco": 2700,
+        "totalMes": 670,
+        "bancoDepositado": 300
+      },
+      "dias": [
+        {
+          "day": 1,
+          "tienda1": 220,
+          "tienda2": 450,
+          "tienda3": 0,
+          "totalDiario": 670,
+          "bancoDepositado": 300,
+          "retiroTienda": 0,
+          "retiroBanco": 0,
+          "acumuladoTienda": 3449.5,
+          "saldoBanco": 2700,
+          "disponible": 3449.5
+        }
+      ]
+    },
+    "createdAt": 1790987129117
+  },
+  "561227d9-1625-4511-bf20-8641c6cb676e": {
+    "status": 200,
+    "body": {
+      "resumen": {
+        "saldoTienda": 3049.5,
+        "saldoBanco": 2700,
+        "totalMes": 670,
+        "bancoDepositado": 300
+      },
+      "dias": [
+        {
+          "day": 1,
+          "tienda1": 220,
+          "tienda2": 450,
+          "tienda3": 0,
+          "totalDiario": 670,
+          "bancoDepositado": 300,
+          "retiroTienda": 400,
+          "retiroBanco": 0,
+          "acumuladoTienda": 3049.5,
+          "saldoBanco": 2700,
+          "disponible": 3049.5
+        }
+      ]
+    },
+    "createdAt": 1790987336742
+  },
+  "450759c2-fc46-4d5e-b247-dd3ca6be9032": {
+    "status": 200,
+    "body": {
+      "resumen": {
+        "saldoTienda": 3049.5,
+        "saldoBanco": 2200,
+        "totalMes": 670,
+        "bancoDepositado": 300
+      },
+      "dias": [
+        {
+          "day": 1,
+          "tienda1": 220,
+          "tienda2": 450,
+          "tienda3": 0,
+          "totalDiario": 670,
+          "bancoDepositado": 300,
+          "retiroTienda": 400,
+          "retiroBanco": 500,
+          "acumuladoTienda": 3049.5,
+          "saldoBanco": 2200,
+          "disponible": 3049.5
+        }
+      ]
+    },
+    "createdAt": 1790987866136
+  },
+  "81fa00ee-abe8-4010-8c66-abda91a72239": {
+    "status": 200,
+    "body": {
+      "resumen": {
+        "saldoTienda": 3049.5,
+        "saldoBanco": 2700,
+        "totalMes": 670,
+        "bancoDepositado": 300
+      },
+      "dias": [
+        {
+          "day": 1,
+          "tienda1": 220,
+          "tienda2": 450,
+          "tienda3": 0,
+          "totalDiario": 670,
+          "bancoDepositado": 300,
+          "retiroTienda": 400,
+          "retiroBanco": 0,
+          "acumuladoTienda": 3049.5,
+          "saldoBanco": 2700,
+          "disponible": 3049.5
+        }
+      ]
+    },
+    "createdAt": 1790987897113
   }
 }

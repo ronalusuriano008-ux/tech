@@ -22,10 +22,11 @@ exports.getDiary = async (req, res) => {
 exports.saveDay = async (req, res) => {
     try {
         console.log('[saveDay] Body recibido:', req.body);
-        const { year, month, day, st1, st2 } = req.body;
+        const { year, month, day, st1, st2, comment } = req.body;
         const normalizedYear = parseInt(year, 10);
         const normalizedMonth = parseInt(month, 10);
         const normalizedDay = parseInt(day, 10);
+        const safeComment = typeof comment === 'string' ? comment.trim() : '';
         
         if (Number.isNaN(normalizedYear) || Number.isNaN(normalizedMonth) || Number.isNaN(normalizedDay)) {
             console.log('[saveDay] Parámetros faltantes:', { year, month, day });
@@ -51,6 +52,10 @@ exports.saveDay = async (req, res) => {
                 yape: Number.isFinite(parseFloat(st2?.yape)) ? parseFloat(st2.yape) : 0
             }
         };
+
+        if (safeComment) {
+            newDayData.comment = safeComment;
+        }
         
         console.log('[saveDay] Guardando día:', newDayData);
 

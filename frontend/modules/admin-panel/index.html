@@ -587,76 +587,85 @@
 </head>
 
 <body>
-    <!-- Header fijo -->
-    <header class="header-futurist">
-        <div class="header-top">
-            <img src="/shared/icons/taller-tech-logo.svg" alt="Taller Tech" style="width:min(220px,58vw);height:auto;display:block;filter:drop-shadow(0 8px 16px rgba(59,130,246,0.22));">
-            <h1><i class="bi bi-shield-lock-fill"></i> ADMIN PANEL</h1>
-        </div>
-        <nav class="nav-scroll">
-            <button onclick="showSection('metrics')" class="nav-item active" id="nav-metrics"><i
-                    class="bi bi-speedometer2"></i> Métricas</button>
-            <button onclick="showSection('users')" class="nav-item" id="nav-users"><i class="bi bi-people-fill"></i>
-                Usuarios</button>
-            <button onclick="showSection('reportes')" class="nav-item" id="nav-reportes"><i
-                    class="bi bi-file-earmark-pdf"></i>
-                Reportes</button>
-            <button onclick="showSection('config')" class="nav-item" id="nav-config"><i class="bi bi-gear-fill"></i>
-                Config</button>
-            <button onclick="showSection('backup')" class="nav-item" id="nav-backup"><i class="bi bi-database"></i>
-                Backup</button>
-            <button onclick="redirectTo(AppConfig.dashboardPath)" class="nav-item">
-                <i class="bi bi-graph-up"></i> Servicio T.
-            </button>
-            <button onclick="redirectTo(AppConfig.tiendaPath)" class="nav-item">
-                <i class="bi bi-shop-window"></i> Tiendas
-            </button>
+ <!-- Header fijo -->
+<header class="header-futurist">
+    <div class="header-top">
+        <img src="/shared/icons/taller-tech-logo.svg"
+             alt="Taller Tech"
+             style="width:min(220px,58vw);height:auto;display:block;filter:drop-shadow(0 8px 16px rgba(59,130,246,0.22));">
 
-            <button onclick="logout()" class="nav-item danger"><i class="bi bi-box-arrow-left"></i> Salir</button>
-        </nav>
-    </header>
+        <h1><i class="bi bi-shield-lock-fill"></i> ADMIN PANEL</h1>
+    </div>
+
+    <nav class="nav-scroll">
+
+        <button onclick="showSection('metrics')" class="nav-item active" id="nav-metrics">
+            <i class="bi bi-speedometer2"></i> Métricas
+        </button>
+
+        <button onclick="redirectTo(AppConfig.tiendaPath)" class="nav-item">
+            <i class="bi bi-shop-window"></i> Tiendas
+        </button>
+
+        <button onclick="redirectTo(AppConfig.dashboardPath)" class="nav-item">
+            <i class="bi bi-graph-up"></i> Servicio T.
+        </button>
+
+        <button onclick="showSection('reportes')" class="nav-item" id="nav-reportes">
+            <i class="bi bi-file-earmark-pdf"></i> Reportes
+        </button>
+
+        <button onclick="showSection('users')" class="nav-item" id="nav-users">
+            <i class="bi bi-people-fill"></i> Usuarios
+        </button>
+
+        <button onclick="showSection('backup')" class="nav-item" id="nav-backup">
+            <i class="bi bi-database"></i> Backup
+        </button>
+
+        <button onclick="logout()" class="nav-item danger">
+            <i class="bi bi-box-arrow-left"></i> Salir
+        </button>
+
+    </nav>
+</header>
 
     <main class="container main-content">
-        <!-- Filtro Global -->
-        <div class="card-futurist top-bar-filter">
-            <div class="filter-date">
-                <label for="filterFecha"><i class="bi bi-funnel"></i> Filtrar por Fecha:</label>
-                <input type="date" id="filterFecha" onchange="loadAll()">
-            </div>
+
+       <!-- SECCIÓN: MÉTRICAS -->
+<section id="sec-metrics" class="section">
+
+    <!-- Filtro exclusivo de Métricas -->
+    <div class="card-futurist top-bar-filter">
+        <div class="filter-date">
+            <label for="filterFecha">
+                <i class="bi bi-funnel"></i> Filtrar por Fecha:
+            </label>
+            <input type="date" id="filterFecha" onchange="loadAll()">
         </div>
+    </div>
 
-        <!-- SECCIÓN: MÉTRICAS -->
-        <section id="sec-metrics" class="section">
-            <article class="card-futurist">
-                <header class="card-header">
-                    <h3><i class="bi bi-lightning-fill"></i> Acceso Rápido</h3>
-                </header>
-                <div class="backup-actions">
-                    <a href="/fill.html" class="btn-futurist">
-                        <i class="bi bi-pencil-square"></i>
-                        Rellenar Registro Diario
-                    </a>
-                    <a href="/registro/index.html" class="btn-futurist">
-                        <i class="bi bi-clipboard-check"></i>
-                        Registrar Servicios
-                    </a>
-                </div>
-            </article>
+    <article class="card-futurist">
+        <header class="card-header">
+            <h3>
+                <i class="bi bi-graph-up"></i> Métricas del Día
+            </h3>
+        </header>
 
-            <article class="card-futurist">
-                <header class="card-header">
-                    <h3><i class="bi bi-graph-up"></i> Métricas del Día</h3>
-                </header>
-                <div id="metricsContent" class="metrics-grid"></div>
-            </article>
+        <div id="metricsContent" class="metrics-grid"></div>
+    </article>
 
-            <article class="card-futurist">
-                <header class="card-header">
-                    <h3><i class="bi bi-person-workspace"></i> Servicios por Técnico</h3>
-                </header>
-                <ul id="techMetrics" class="tech-list"></ul>
-            </article>
-        </section>
+    <article class="card-futurist">
+        <header class="card-header">
+            <h3>
+                <i class="bi bi-person-workspace"></i> Servicios por Técnico
+            </h3>
+        </header>
+
+        <ul id="techMetrics" class="tech-list"></ul>
+    </article>
+
+</section>
 
         <!-- SECCIÓN: USUARIOS -->
         <section id="sec-users" class="section" style="display:none;">

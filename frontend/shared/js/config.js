@@ -4,6 +4,7 @@
   const defaultAppConfig = {
     appName: 'Taller Tech',
     appShortName: 'TallerTech',
+    appVersion: '1.4.0',
     apiBaseUrl: '/api',
     appBaseUrl: '',
     timezone: 'America/Lima',
@@ -19,7 +20,7 @@
     tablePath: '/table.html',
     tiendaPath: '/pages/tienda.html'
     ,offline: {
-      version: '2026.08.10',
+      version: '2026.10.02',
       maxRetries: 5,
       retryBaseMs: 1500,
       dataCacheTtlMs: 120000

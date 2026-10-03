@@ -7,7 +7,7 @@ const config = {
     name: 'Taller Tech',
     shortName: 'TallerTech',
     serviceName: 'taller-tech',
-    version: process.env.APP_VERSION || backendPackage.version || '1.2.0',
+    version: process.env.APP_VERSION || backendPackage.version || '1.4.0',
     environment: process.env.NODE_ENV || 'development',
     timezone: 'America/Lima',
     locale: 'es-PE',

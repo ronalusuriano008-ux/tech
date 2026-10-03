@@ -1,4 +1,4 @@
-import { getMonthData, saveDayData, deleteMonthData } from './api.js';
+import { getMonthData, saveDayData, deleteDayData, deleteMonthData } from './api.js';
 import { formatPEN, parseNumber } from './calculations.js';
 import { exportToExcel } from './exportExcel.js';
 import { exportToPDF } from './exportPDF.js';
@@ -117,6 +117,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         downloadPdfBtn.addEventListener('click', () => window.exportToPDF());
     }
 
+    const addDayBtn = document.getElementById('addDayBtn');
+    if (addDayBtn) {
+        addDayBtn.addEventListener('click', () => openDayModal(new Date().getDate()));
+    }
+
+    const dayModalClose = document.getElementById('dayModalClose');
+    if (dayModalClose) {
+        dayModalClose.addEventListener('click', closeDayModal);
+    }
+
+    const dayModalCancel = document.getElementById('dayModalCancel');
+    if (dayModalCancel) {
+        dayModalCancel.addEventListener('click', closeDayModal);
+    }
+
+    const dayModalForm = document.getElementById('dayModalForm');
+    if (dayModalForm) {
+        dayModalForm.addEventListener('submit', submitDayModal);
+    }
+
     generateTableStructure(); // Generar encabezados estáticos
     await loadMonth();
 
@@ -141,11 +161,12 @@ function generateTableStructure() {
     const thead = document.getElementById('tableHead');
     thead.innerHTML = `
         <tr>
-            <th rowspan="2">Fecha</th>
+            <th rowspan="2">Dia</th>
             <th colspan="2">ST1</th>
             <th colspan="2">ST2</th>
             <th colspan="2" class="col-total">Total Día</th>
             <th colspan="2" class="col-acum">Acumulado</th>
+            <th rowspan="2" class="no-print">Acciones</th>
         </tr>
         <tr>
             <th class="col-cash">Efectivo</th>
@@ -160,6 +181,122 @@ function generateTableStructure() {
     `;
 }
 
+function openDayModal(day = null) {
+    const modal = document.getElementById('dayModal');
+    const dayInput = document.getElementById('dayModalDay');
+    const st1Cash = document.getElementById('dayModalSt1Cash');
+    const st1Yape = document.getElementById('dayModalSt1Yape');
+    const st2Cash = document.getElementById('dayModalSt2Cash');
+    const st2Yape = document.getElementById('dayModalSt2Yape');
+    const commentInput = document.getElementById('dayModalComment');
+    const title = document.getElementById('dayModalTitle');
+
+    if (!modal || !dayInput || !st1Cash || !st1Yape || !st2Cash || !st2Yape || !commentInput) return;
+
+    const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+    const selectedDay = Math.min(Math.max(Number(day || 1), 1), daysInMonth);
+    const dayObj = monthData.days.find(d => d.day === selectedDay) || { st1: { cash: 0, yape: 0 }, st2: { cash: 0, yape: 0 }, comment: '' };
+    const isEdit = Boolean(day);
+
+    title.textContent = isEdit ? 'Editar día' : 'Agregar día';
+    dayInput.value = selectedDay;
+    dayInput.max = String(daysInMonth);
+    dayInput.readOnly = isEdit;
+    dayInput.style.opacity = isEdit ? '0.9' : '1';
+    st1Cash.value = dayObj.st1.cash ?? 0;
+    st1Yape.value = dayObj.st1.yape ?? 0;
+    st2Cash.value = dayObj.st2.cash ?? 0;
+    st2Yape.value = dayObj.st2.yape ?? 0;
+    commentInput.value = dayObj.comment || '';
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeDayModal() {
+    const modal = document.getElementById('dayModal');
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    const form = document.getElementById('dayModalForm');
+    if (form) form.reset();
+}
+
+function sanitizeText(value) {
+    return String(value ?? '').replace(/[<>"'&]/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[char]));
+}
+
+function getDynamicValueClass(value, tech = 'st1', type = 'cash') {
+    const numericValue = Number(value || 0);
+    if (numericValue === 0) return 'day-readonly-box--zero';
+    if (type === 'cash') return 'day-readonly-box--cash';
+    if (type === 'yape') return 'day-readonly-box--yape';
+    if (tech === 'st1') return 'day-readonly-box--st1';
+    return 'day-readonly-box--st2';
+}
+
+async function submitDayModal(event) {
+    event.preventDefault();
+    const day = Number(document.getElementById('dayModalDay')?.value || 0);
+    const comment = String(document.getElementById('dayModalComment')?.value || '').trim();
+    if (!day) {
+        showToast('Selecciona un día válido', true);
+        return;
+    }
+
+    const payload = {
+        year: currentYear,
+        month: currentMonth,
+        day,
+        comment: comment || undefined,
+        st1: {
+            cash: Number(document.getElementById('dayModalSt1Cash')?.value || 0),
+            yape: Number(document.getElementById('dayModalSt1Yape')?.value || 0)
+        },
+        st2: {
+            cash: Number(document.getElementById('dayModalSt2Cash')?.value || 0),
+            yape: Number(document.getElementById('dayModalSt2Yape')?.value || 0)
+        }
+    };
+
+    try {
+        const response = await saveDayData(payload);
+        if (response && (response.success || response.queued)) {
+            showToast(response.queued ? `Día ${day} guardado localmente` : `Día ${day} guardado correctamente`);
+            closeDayModal();
+            await loadMonth();
+        } else {
+            showToast('No se pudo guardar el día', true);
+        }
+    } catch (error) {
+        console.error('Error guardando desde modal:', error);
+        showToast('No se pudo guardar el día', true);
+    }
+}
+
+async function deleteDayByNumber(day) {
+    if (!day) return;
+    if (!confirm(`¿Eliminar los datos del día ${day}/${currentMonth}/${currentYear}?`)) return;
+
+    try {
+        const response = await deleteDayData(currentYear, currentMonth, day);
+        if (response && (response.success || response.queued)) {
+            showToast(response.queued ? 'Eliminación pendiente de sincronización' : 'Día eliminado');
+            await loadMonth();
+        } else {
+            showToast('No se pudo eliminar el día', true);
+        }
+    } catch (error) {
+        console.error('Error eliminando día:', error);
+        showToast('No se pudo eliminar el día', true);
+    }
+}
+
 // GENERACIÓN DINÁMICA DE FILAS DE LA TABLA SEGÚN EL MES
 function renderTableRows() {
     const tbody = document.getElementById('tableBody');
@@ -168,37 +305,50 @@ function renderTableRows() {
 
     for (let i = 1; i <= daysInMonth; i++) {
         const dayObj = monthData.days.find(d => d.day === i);
-        const st1Cash = dayObj?.st1?.cash || '';
-        const st1Yape = dayObj?.st1?.yape || '';
-        const st2Cash = dayObj?.st2?.cash || '';
-        const st2Yape = dayObj?.st2?.yape || '';
+        const st1Cash = dayObj?.st1?.cash ?? 0;
+        const st1Yape = dayObj?.st1?.yape ?? 0;
+        const st2Cash = dayObj?.st2?.cash ?? 0;
+        const st2Yape = dayObj?.st2?.yape ?? 0;
 
         const tr = document.createElement('tr');
+        const commentLabel = (dayObj?.comment || '').trim();
         tr.innerHTML = `
-            <td style="font-weight:bold; padding:10px;">${i}</td>
-            <td><input id="input-${i}-st1-cash" name="st1_cash_${i}" autocomplete="off" type="number" step="0.01" data-day="${i}" data-tech="st1" data-type="cash" value="${st1Cash}" placeholder="0"></td>
-            <td><input id="input-${i}-st1-yape" name="st1_yape_${i}" autocomplete="off" type="number" step="0.01" data-day="${i}" data-tech="st1" data-type="yape" value="${st1Yape}" placeholder="0"></td>
-            <td><input id="input-${i}-st2-cash" name="st2_cash_${i}" autocomplete="off" type="number" step="0.01" data-day="${i}" data-tech="st2" data-type="cash" value="${st2Cash}" placeholder="0"></td>
-            <td><input id="input-${i}-st2-yape" name="st2_yape_${i}" autocomplete="off" type="number" step="0.01" data-day="${i}" data-tech="st2" data-type="yape" value="${st2Yape}" placeholder="0"></td>
-            <td id="total-cash-${i}" class="text-end">S/ 0.00</td>
-            <td id="total-yape-${i}" class="text-end">S/ 0.00</td>
-            <td id="acum-cash-${i}" class="text-end">S/ 0.00</td>
-            <td id="acum-yape-${i}" class="text-end">S/ 0.00</td>
+            <td class="day-cell day-cell--date">
+                <span class="day-cell__number">${i}</span>
+                <span class="day-cell__comment ${commentLabel ? '' : 'day-cell__comment--empty'}">${commentLabel ? sanitizeText(commentLabel) : 'Sin nota'}</span>
+            </td>
+            <td><div class="day-readonly-box day-readonly-box--st1 ${getDynamicValueClass(st1Cash, 'st1', 'cash')}">${Number(st1Cash).toFixed(2)}</div></td>
+            <td><div class="day-readonly-box day-readonly-box--st1 ${getDynamicValueClass(st1Yape, 'st1', 'yape')}">${Number(st1Yape).toFixed(2)}</div></td>
+            <td><div class="day-readonly-box day-readonly-box--st2 ${getDynamicValueClass(st2Cash, 'st2', 'cash')}">${Number(st2Cash).toFixed(2)}</div></td>
+            <td><div class="day-readonly-box day-readonly-box--st2 ${getDynamicValueClass(st2Yape, 'st2', 'yape')}">${Number(st2Yape).toFixed(2)}</div></td>
+            <td id="total-cash-${i}" class="text-end table-metric table-metric--cash">S/ 0.00</td>
+            <td id="total-yape-${i}" class="text-end table-metric table-metric--yape">S/ 0.00</td>
+            <td id="acum-cash-${i}" class="text-end table-metric table-metric--cash">S/ 0.00</td>
+            <td id="acum-yape-${i}" class="text-end table-metric table-metric--yape">S/ 0.00</td>
+            <td class="no-print">
+                <div class="table-actions">
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-day-action="edit" data-day="${i}"><i class="fa-solid fa-pen"></i> Editar</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-day-action="delete" data-day="${i}"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                </div>
+            </td>
         `;
         tbody.appendChild(tr);
     }
 
-    document.querySelectorAll('input[data-day]').forEach(input => {
-        const saveForInput = (e) => {
-            const day = parseInt(e.target.dataset.day);
-            const tech = e.target.dataset.tech;
-            const type = e.target.dataset.type;
-            handleInput(day, tech, type, e.target.value);
-            handleSave(day);
-        };
-        input.addEventListener('input', saveForInput);
-        input.addEventListener('blur', saveForInput);
-        input.addEventListener('change', saveForInput);
+    document.querySelectorAll('[data-day-action]').forEach(button => {
+        button.addEventListener('click', async () => {
+            const day = Number(button.dataset.day);
+            if (!day) return;
+
+            if (button.dataset.dayAction === 'edit') {
+                openDayModal(day);
+                return;
+            }
+
+            if (button.dataset.dayAction === 'delete') {
+                await deleteDayByNumber(day);
+            }
+        });
     });
 }
 

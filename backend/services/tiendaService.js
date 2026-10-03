@@ -57,6 +57,10 @@ async function saveDay(year, month, dayData) {
   const bancoDepositado = Number(dayData.bancoDepositado || 0);
   const retiroBanco = Number(dayData.retiroBanco || 0);
   const retiroTienda = Number(dayData.retiroTienda || 0);
+  const motivoRetiro = String(dayData.motivoRetiro || '').trim();
+  const destinoRetiro = String(dayData.destinoRetiro || '').trim();
+  const comentarioRetiro = String(dayData.comentarioRetiro || '').trim();
+  const tipoRetiro = String(dayData.tipoRetiro || '').trim();
 
   if (bancoDepositado < 0) throw new Error('Banco Depositado no puede ser negativo');
   if (retiroBanco < 0) throw new Error('Retiro Banco no puede ser negativo');
@@ -74,7 +78,11 @@ async function saveDay(year, month, dayData) {
     tienda3: Number(dayData.tienda3) || 0,
     bancoDepositado: bancoDepositado,
     retiroBanco: retiroBanco,
-    retiroTienda: retiroTienda
+    retiroTienda: retiroTienda,
+    motivoRetiro: motivoRetiro || '',
+    destinoRetiro: destinoRetiro || '',
+    comentarioRetiro: comentarioRetiro || '',
+    tipoRetiro: tipoRetiro || (retiroTienda > 0 && retiroBanco > 0 ? 'ambos' : retiroTienda > 0 ? 'tienda' : retiroBanco > 0 ? 'banco' : 'ninguno')
   };
 
   if (existingIndex !== -1) {

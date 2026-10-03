@@ -1,6 +1,6 @@
 {
   "name": "taller-celulares",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "description": "Sistema de gestión para taller de celulares",
   "main": "backend/server.js",
   "scripts": {

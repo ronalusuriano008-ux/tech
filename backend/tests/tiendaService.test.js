@@ -92,3 +92,35 @@ test('saveDay persiste los datos del día y recalcula el saldo con los valores r
     }
   );
 });
+
+test('saveDay guarda motivo y destino del retiro cuando se registran retiros', async () => {
+  await withFixture(
+    {
+      year: 2026,
+      month: 8,
+      days: []
+    },
+    async () => {
+      const result = await saveDay(2026, 8, {
+        day: 4,
+        tienda1: 300,
+        tienda2: 200,
+        tienda3: 0,
+        bancoDepositado: 0,
+        retiroTienda: 150,
+        retiroBanco: 50,
+        motivoRetiro: 'Pago de inversión',
+        destinoRetiro: 'Banco / proveedor'
+      });
+
+      const savedDay = result.dias.find((day) => day.day === 4);
+      assert.equal(savedDay.retiroTienda, 150);
+      assert.equal(savedDay.retiroBanco, 50);
+
+      const persisted = JSON.parse(await fs.readFile(dataFilePath, 'utf8'));
+      const raw = persisted['2026-08'].days[0];
+      assert.equal(raw.motivoRetiro, 'Pago de inversión');
+      assert.equal(raw.destinoRetiro, 'Banco / proveedor');
+    }
+  );
+});

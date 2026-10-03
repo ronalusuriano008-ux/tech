@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Ingresos</title>
+    <title>Ingresos Servicio Técnico</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.4/css/all.min.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
@@ -62,7 +62,7 @@
             align-items: center;
             gap: 16px;
             padding: clamp(16px, 2.5vw, 28px);
-            background: linear-gradient(90deg, #020617 0%, #0f172a 45%, #1d4ed8 100%);
+            background: linear-gradient(90deg, #1d4ed8 0%, #0f172a 45%, #020617 100%);
             color: #fff;
         }
 
@@ -134,6 +134,151 @@
             color: #1d4ed8;
         }
 
+        .table-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .table-actions .btn {
+            border-radius: 10px;
+            padding: 6px 10px;
+            font-size: 0.76rem;
+            font-weight: 600;
+        }
+
+        .day-readonly-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 42px;
+            border-radius: 10px;
+            border: 1px solid rgba(148,163,184,0.22);
+            background: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.82));
+            color: #f8fafc;
+            padding: 8px 10px;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+            letter-spacing: 0.01em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .day-readonly-box--st1 { border-left: 3px solid #38bdf8; }
+        .day-readonly-box--st2 { border-left: 3px solid #34d399; }
+        .day-readonly-box--cash { color: #4ade80; }
+        .day-readonly-box--yape { color: #c084fc; }
+        .day-readonly-box--zero {
+            color: rgba(255, 255, 255, 0.92);
+            text-shadow: 0 0 8px rgba(255,255,255,0.08);
+        }
+
+        .day-cell--date {
+            min-width: 72px;
+            vertical-align: top;
+            text-align: center;
+            padding: 10px 8px;
+        }
+
+        .day-cell__number {
+            display: block;
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+        }
+
+        .day-cell__comment {
+            display: inline-block;
+            width: 100%;
+            margin-top: 6px;
+            font-size: 0.64rem;
+            line-height: 1.2;
+            color: #fbbf24;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            word-break: break-word;
+        }
+
+        .day-cell__comment--empty {
+            color: rgba(148, 163, 184, 0.75);
+            font-weight: 600;
+        }
+
+        .day-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .day-modal-overlay.is-open {
+            display: flex;
+        }
+
+        .day-modal-card {
+            width: min(760px, 92vw);
+            border-radius: 18px;
+            background: #0f172a;
+            border: 1px solid rgba(148,163,184,0.18);
+            box-shadow: 0 30px 60px rgba(2, 6, 23, 0.55);
+            padding: 20px;
+        }
+
+        .day-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .day-modal-header h3 {
+            margin: 0;
+            color: var(--text);
+            font-size: 1.2rem;
+        }
+
+        .day-modal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .day-modal-grid .full {
+            grid-column: 1 / -1;
+        }
+
+        .day-modal-grid label {
+            display: block;
+            color: #cbd5e1;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+
+        .day-modal-grid input {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid rgba(148,163,184,0.25);
+            background: rgba(15,23,42,0.9);
+            color: #fff;
+            padding: 10px 12px;
+        }
+
+        .day-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
         .dashboard-section {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -162,8 +307,29 @@
             background: rgba(56, 189, 248, 0.10);
         }
 
+        .metric-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .metric-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(148,163,184,0.18);
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
         .card-metric h5 {
-            margin: 0 0 8px;
+            margin: 0;
             font-size: 0.84rem;
             color: var(--muted);
             text-transform: uppercase;
@@ -176,6 +342,11 @@
             font-weight: 800;
             color: var(--text);
         }
+
+        .metric-value--green { color: #4ade80; }
+        .metric-value--blue { color: #7dd3fc; }
+        .metric-value--orange { color: #fbbf24; }
+        .metric-value--purple { color: #c4b5fd; }
 
         .card-metric.green { border-left: 4px solid var(--success); }
         .card-metric.blue { border-left: 4px solid var(--accent); }
@@ -199,21 +370,49 @@
             font-size: clamp(0.78rem, 1vw, 0.9rem);
         }
 
+        #mainTable {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
         #mainTable thead th {
             background: rgba(30,41,59,0.95);
             color: #cbd5e1;
             font-weight: 700;
             padding: 12px 10px;
             text-align: center;
+            border: 1px solid rgba(148,163,184,0.18);
             border-bottom: 1px solid var(--border);
         }
 
         #mainTable tbody td {
             padding: 10px;
+            border: 1px solid rgba(148,163,184,0.14);
             border-top: 1px solid rgba(148,163,184,0.16);
             background: rgba(15,23,42,0.96);
             color: #f8fafc;
+            font-variant-numeric: tabular-nums;
         }
+
+        #mainTable tbody td:first-child {
+            font-weight: 700;
+            width: 72px;
+            color: #e2e8f0;
+            background: rgba(15,23,42,0.98);
+        }
+
+        #mainTable tbody tr:hover td {
+            background: rgba(30,41,59,0.88);
+        }
+
+        .table-metric {
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .table-metric--cash { color: #4ade80; }
+        .table-metric--yape { color: #c084fc; }
 
         #mainTable input[type="number"] {
             width: 100%;
@@ -349,7 +548,7 @@
                 <div>
                     <p class="app-topbar__eyebrow">Operación</p>
                     <img src="/shared/icons/taller-tech-logo.svg" alt="Taller Tech" style="width:210px;max-width:55vw;height:auto;display:block;margin-bottom:0.5rem;filter:drop-shadow(0 8px 16px rgba(59,130,246,0.2));">
-                    <h1>Ingreso servicio técnico</h1>
+                    <h1>Ingreso mensual de servicio técnico</h1>
                 </div>
                 <div class="app-topbar__actions">
                     <span id="userInfo" class="app-badge"></span>
@@ -357,6 +556,9 @@
                         <i class="fa-solid fa-calendar-days"></i>
                         <input type="month" id="monthPicker">
                     </label>
+                    <button id="addDayBtn" class="app-button app-button-fill" type="button" aria-label="Agregar un día de servicio técnico">
+                        <i class="fa-solid fa-plus"></i> Agregar
+                    </button>
                     <button id="downloadPdfBtn" class="app-button app-button-fill" type="button" aria-label="Exportar el resumen del mes en PDF">
                         <i class="fa-solid fa-file-pdf"></i> Exportar PDF
                     </button>
@@ -366,34 +568,92 @@
             <main class="app-main">
                 <section class="dashboard-section no-print">
                     <div class="card-metric green">
-                        <h5>Producción ST1</h5>
-                        <h2 id="dash-prod-st1">S/ 0.00</h2>
+                        <div class="metric-head">
+                            <h5>Producción ST1</h5>
+                            <span class="metric-icon"><i class="fa-solid fa-user-gear"></i></span>
+                        </div>
+                        <h2 id="dash-prod-st1" class="metric-value--green">S/ 0.00</h2>
                     </div>
                     <div class="card-metric blue">
-                        <h5>Producción ST2</h5>
-                        <h2 id="dash-prod-st2">S/ 0.00</h2>
+                        <div class="metric-head">
+                            <h5>Producción ST2</h5>
+                            <span class="metric-icon"><i class="fa-solid fa-user-check"></i></span>
+                        </div>
+                        <h2 id="dash-prod-st2" class="metric-value--blue">S/ 0.00</h2>
                     </div>
                     <div class="card-metric orange">
-                        <h5>Total Efectivo</h5>
-                        <h2 id="dash-total-cash">S/ 0.00</h2>
+                        <div class="metric-head">
+                            <h5>Total Efectivo</h5>
+                            <span class="metric-icon"><i class="fa-solid fa-wallet"></i></span>
+                        </div>
+                        <h2 id="dash-total-cash" class="metric-value--orange">S/ 0.00</h2>
                     </div>
                     <div class="card-metric orange">
-                        <h5>Total Yape</h5>
-                        <h2 id="dash-total-yape">S/ 0.00</h2>
+                        <div class="metric-head">
+                            <h5>Total Yape</h5>
+                            <span class="metric-icon"><i class="fa-solid fa-mobile-screen-button"></i></span>
+                        </div>
+                        <h2 id="dash-total-yape" class="metric-value--purple">S/ 0.00</h2>
                     </div>
                     <div class="card-metric purple">
-                        <h5>Total General Mes</h5>
-                        <h2 id="dash-total-general">S/ 0.00</h2>
+                        <div class="metric-head">
+                            <h5>Total General Mes</h5>
+                            <span class="metric-icon"><i class="fa-solid fa-chart-column"></i></span>
+                        </div>
+                        <h2 id="dash-total-general" class="metric-value--purple">S/ 0.00</h2>
                     </div>
                 </section>
 
                 <div class="table-container" style="display:block; margin-top: 2rem; overflow-x: auto;">
-                    <table id="mainTable" style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                    <table id="mainTable" class="main-table">
                         <thead id="tableHead"></thead>
                         <tbody id="tableBody"></tbody>
                     </table>
                 </div>
             </main>
+        </div>
+    </div>
+
+    <div id="dayModal" class="day-modal-overlay" aria-hidden="true">
+        <div class="day-modal-card" role="dialog" aria-modal="true" aria-labelledby="dayModalTitle">
+            <div class="day-modal-header">
+                <h3 id="dayModalTitle">Agregar día</h3>
+                <button type="button" id="dayModalClose" class="app-button app-button-fill" aria-label="Cerrar modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="dayModalForm">
+                <div class="day-modal-grid">
+                    <div class="full">
+                        <label for="dayModalDay">Día</label>
+                        <input id="dayModalDay" type="number" min="1" step="1" required>
+                    </div>
+                    <div>
+                        <label for="dayModalSt1Cash">ST1 - Efectivo</label>
+                        <input id="dayModalSt1Cash" type="number" min="0" step="0.01" value="0">
+                    </div>
+                    <div>
+                        <label for="dayModalSt1Yape">ST1 - Yape</label>
+                        <input id="dayModalSt1Yape" type="number" min="0" step="0.01" value="0">
+                    </div>
+                    <div>
+                        <label for="dayModalSt2Cash">ST2 - Efectivo</label>
+                        <input id="dayModalSt2Cash" type="number" min="0" step="0.01" value="0">
+                    </div>
+                    <div>
+                        <label for="dayModalSt2Yape">ST2 - Yape</label>
+                        <input id="dayModalSt2Yape" type="number" min="0" step="0.01" value="0">
+                    </div>
+                    <div class="full">
+                        <label for="dayModalComment">Comentario</label>
+                        <textarea id="dayModalComment" rows="3" placeholder="Ejemplo: descanso, licencia, feriado, no asistió..." style="width:100%; border-radius:10px; border:1px solid rgba(148,163,184,0.25); background: rgba(15,23,42,0.9); color:#fff; padding:10px 12px; resize: vertical;"></textarea>
+                    </div>
+                </div>
+                <div class="day-modal-actions">
+                    <button type="button" id="dayModalCancel" class="btn btn-outline-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar día</button>
+                </div>
+            </form>
         </div>
     </div>
 

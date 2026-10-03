@@ -99,35 +99,177 @@ const getMetrics = async (req, res) => {
         const { fecha } = req.query;
         const servicios = await servicioService.getServicios(fecha);
 
-        const serviciosFiltrados = servicios.filter(s => s.tipo !== 'gasto');
-        const gastos = servicios.filter(s => s.tipo === 'gasto');
+        // ==========================================
+        // SEPARAR SERVICIOS Y GASTOS
+        // ==========================================
 
-        const totalIngresos = serviciosFiltrados.reduce((sum, s) => sum + (s.precio || 0), 0);
-        const totalCostos = serviciosFiltrados.reduce((sum, s) => sum + (s.costo || 0), 0);
-        const totalGastos = gastos.reduce((sum, s) => sum + (s.costo || 0), 0);
-        const utilidadBruta = Math.round((totalIngresos - totalCostos) * 100) / 100;
-        const utilidadNeta = Math.round((utilidadBruta - totalGastos) * 100) / 100;
+        const toNumber = (value) => {
+            const number = Number(value);
+            return Number.isFinite(number) ? number : 0;
+        };
+
+        const serviciosFiltrados = servicios.filter(s => {
+            const tipo = String(s.tipo || '').trim().toLowerCase();
+            return tipo !== 'gasto';
+        });
+
+        const gastos = servicios.filter(s => {
+            const tipo = String(s.tipo || '').trim().toLowerCase();
+            return tipo === 'gasto';
+        });
+
+        // ==========================================
+        // MÉTRICAS GENERALES
+        // ==========================================
+
+        const totalIngresos = serviciosFiltrados.reduce(
+            (sum, s) => sum + (Number(s.precio) || 0),
+            0
+        );
+
+        const totalCostos = serviciosFiltrados.reduce(
+            (sum, s) => sum + (Number(s.costo) || 0),
+            0
+        );
+
+        const totalGastos = gastos.reduce(
+            (sum, s) => sum + (Number(s.costo) || 0),
+            0
+        );
+
+        // Utilidad bruta general
+        const utilidadBruta = Math.round(
+            (totalIngresos - totalCostos) * 100
+        ) / 100;
+
+        // Utilidad neta general
+        const utilidadNeta = Math.round(
+            (utilidadBruta - totalGastos) * 100
+        ) / 100;
+
+        // ==========================================
+        // MÉTRICAS POR TÉCNICO
+        // ==========================================
 
         const porTecnico = {};
+
+        const getTecnicoMetricas = (tecnicoId) => {
+            if (!porTecnico[tecnicoId]) {
+                porTecnico[tecnicoId] = {
+                    count: 0,
+                    ingresos: 0,
+                    costos: 0,
+                    gastos: 0,
+                    utilidadBruta: 0,
+                    utilidadNeta: 0,
+                    porcentaje: 50,
+                    valorPorcentaje: 0,
+                    pagoTecnico: 0
+                };
+            }
+
+            return porTecnico[tecnicoId];
+        };
+
+        // ------------------------------------------
+        // 1. CALCULAR INGRESOS, COSTOS Y UTILIDAD
+        //    BRUTA DE CADA TÉCNICO
+        // ------------------------------------------
+
         serviciosFiltrados.forEach(s => {
-            if (!porTecnico[s.usuarioId]) porTecnico[s.usuarioId] = { count: 0, utilidad: 0 };
-            porTecnico[s.usuarioId].count++;
-            porTecnico[s.usuarioId].utilidad += (s.utilidad || 0);
+            const tecnicoId = s.usuarioId || s.usuario || s.tecnicoId || 'sin-tecnico';
+            const tecnico = getTecnicoMetricas(tecnicoId);
+            const precio = toNumber(s.precio);
+            const costo = toNumber(s.costo);
+            const utilidadDirecta = toNumber(s.utilidad);
+
+            tecnico.count++;
+            tecnico.ingresos += precio;
+            tecnico.costos += costo;
+
+            if (!precio && !costo && utilidadDirecta) {
+                tecnico.utilidadBruta += utilidadDirecta;
+            }
         });
 
+        // ------------------------------------------
+        // 2. AGREGAR LOS GASTOS AL TÉCNICO
+        //    QUE LOS GENERÓ
+        // ------------------------------------------
+
+        gastos.forEach(g => {
+            const tecnicoId = g.usuarioId || g.usuario || g.tecnicoId || 'sin-tecnico';
+            const tecnico = getTecnicoMetricas(tecnicoId);
+
+            tecnico.gastos += toNumber(g.costo);
+        });
+
+        // ------------------------------------------
+        // 3. CALCULAR UTILIDAD NETA, PORCENTAJE
+        //    Y VALOR DEL PORCENTAJE POR TÉCNICO
+        // ------------------------------------------
+
+        Object.values(porTecnico).forEach(tecnico => {
+            const porcentaje = Number(tecnico.porcentaje) > 0
+                ? Number(tecnico.porcentaje)
+                : 50;
+
+            const baseUtilidadBruta =
+                Number(tecnico.ingresos) > 0 || Number(tecnico.costos) > 0
+                    ? Number(tecnico.ingresos) - Number(tecnico.costos)
+                    : Number(tecnico.utilidadBruta || 0);
+
+            tecnico.utilidadBruta =
+                Math.round(baseUtilidadBruta * 100) / 100;
+
+            tecnico.utilidadNeta =
+                Math.round(
+                    (tecnico.utilidadBruta - Number(tecnico.gastos || 0)) * 100
+                ) / 100;
+
+            tecnico.porcentaje = porcentaje;
+
+            const valorPorcentaje =
+                Math.round(
+                    (tecnico.utilidadNeta * (porcentaje / 100)) * 100
+                ) / 100;
+
+            tecnico.valorPorcentaje = valorPorcentaje;
+            tecnico.pagoTecnico = valorPorcentaje;
+        });
+
+        // ==========================================
+        // RESPUESTA
+        // ==========================================
+
         res.json({
-            totalIngresos,
-            totalCostos,
-            totalGastos,
+            totalIngresos:
+                Math.round(totalIngresos * 100) / 100,
+
+            totalCostos:
+                Math.round(totalCostos * 100) / 100,
+
+            totalGastos:
+                Math.round(totalGastos * 100) / 100,
+
             utilidadBruta,
             utilidadNeta,
+
             serviciosPorTecnico: porTecnico,
+
             totalServicios: serviciosFiltrados.length,
+
             totalGastosCount: gastos.length
         });
+
     } catch (error) {
-        res.status(500).json({ message: 'Error al calcular métricas' });
+        console.error('[getMetrics]', error);
+
+        res.status(500).json({
+            message: 'Error al calcular métricas'
+        });
     }
 };
+
 
 module.exports = { getServicios, createServicio, updateServicio, deleteServicio, getMetrics };

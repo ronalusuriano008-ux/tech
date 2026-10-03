@@ -145,52 +145,197 @@ const formatDateSeparator = (dateStr) => {
         timeZone: 'America/Lima'
     });
 };
-
 // ===============================
 // MÉTRICAS
 // ===============================
 const loadMetrics = async () => {
     try {
         const [metricsRes, usersRes] = await Promise.all([
-            fetch(`${API}/servicios/metrics?fecha=${getFecha()}`, { headers: getHeaders(), credentials: 'include' }),
-            fetch(`${API}/users`, { headers: getHeaders(), credentials: 'include' })
+            fetch(
+                `${API}/servicios/metrics?fecha=${encodeURIComponent(getFecha())}`,
+                {
+                    headers: getHeaders(),
+                    credentials: 'include'
+                }
+            ),
+            fetch(
+                `${API}/users`,
+                {
+                    headers: getHeaders(),
+                    credentials: 'include'
+                }
+            )
         ]);
 
-        if (!metricsRes.ok) await parseResponseError(metricsRes, 'No se pudieron cargar las métricas');
-        if (!usersRes.ok) await parseResponseError(usersRes, 'No se pudieron cargar los usuarios');
+        if (!metricsRes.ok) {
+            await parseResponseError(
+                metricsRes,
+                'No se pudieron cargar las métricas'
+            );
+        }
+
+        if (!usersRes.ok) {
+            await parseResponseError(
+                usersRes,
+                'No se pudieron cargar los usuarios'
+            );
+        }
 
         const data = await metricsRes.json();
         const users = await usersRes.json();
-        const userMap = Object.fromEntries(users.map(u => [u.id, u.nombre]));
+
+        const userMap = Object.fromEntries(
+            users.map(u => [u.id, u.nombre])
+        );
+
+        // ===============================
+        // MÉTRICAS GENERALES
+        // ===============================
 
         document.getElementById('metricsContent').innerHTML = `
-            <div class="metric-card"><h4>Ingresos</h4><p class="money-positive">S/.${data.totalIngresos}</p></div>
-            <div class="metric-card"><h4>Costos</h4><p class="money-negative">S/.${data.totalCostos}</p></div>
-            <div class="metric-card"><h4>Gastos</h4><p class="money-negative">S/.${data.totalGastos || 0}</p></div>
-            <div class="metric-card"><h4>Utilidad Bruta</h4><p class="${data.utilidadBruta < 0 ? 'money-negative' : 'money-positive'}">S/.${data.utilidadBruta}</p></div>
-            <div class="metric-card"><h4>Utilidad Neta</h4><p class="${data.utilidadNeta < 0 ? 'money-negative' : 'money-positive'}">S/.${data.utilidadNeta}</p></div>
-            <div class="metric-card"><h4>Servicios</h4><p>${data.totalServicios}</p></div>
+            <div class="metric-card">
+                <h4>Ingresos</h4>
+                <p class="money-positive">
+                    S/.${Number(data.totalIngresos || 0).toFixed(2)}
+                </p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Costos</h4>
+                <p class="money-negative">
+                    S/.${Number(data.totalCostos || 0).toFixed(2)}
+                </p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Gastos</h4>
+                <p class="money-negative">
+                    S/.${Number(data.totalGastos || 0).toFixed(2)}
+                </p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Utilidad Bruta</h4>
+                <p class="${
+                    Number(data.utilidadBruta || 0) < 0
+                        ? 'money-negative'
+                        : 'money-positive'
+                }">
+                    S/.${Number(data.utilidadBruta || 0).toFixed(2)}
+                </p>
+            </div>
+
+            <div class="metric-card">
+                <h4>Utilidad Neta</h4>
+                <p class="${
+                    Number(data.utilidadNeta || 0) < 0
+                        ? 'money-negative'
+                        : 'money-positive'
+                }">
+                    S/.${Number(data.utilidadNeta || 0).toFixed(2)}
+                </p>
+            </div>
+
+
+<div class="metric-card">
+                <h4>Porcentaje tienda</h4>
+                <p class="${
+                    Number(data.utilidadNeta || 0) < 0
+                        ? 'money-negative'
+                        : 'money-positive'
+                }">
+                    S/.${Number(data.utilidadNeta / 2 || 0).toFixed(2)}
+                </p>
+            </div>
+
+
+            <div class="metric-card">
+                <h4>Servicios</h4>
+                <p>${data.totalServicios || 0}</p>
+            </div>
         `;
 
-        document.getElementById('techMetrics').innerHTML = Object.entries(data.serviciosPorTecnico || {})
-            .sort((a, b) => b[1].utilidad - a[1].utilidad)
-            .map(([id, val], index) => {
-                const nombre = userMap[id] || 'Desconocido';
-                return `
-                    <li class="tech-card">
-                        <div class="tech-rank">#${index + 1}</div>
-                        <div class="tech-info">
-                            <span class="tech-name">${nombre}</span>
-                            <span class="tech-services">${val.count} servicios</span>
-                        </div>
-                        <div class="tech-profit">S/.${val.utilidad}</div>
-                    </li>`;
-            })
-            .join('');
+        // ===============================
+        // SERVICIOS POR TÉCNICO
+        // ===============================
+
+        document.getElementById('techMetrics').innerHTML =
+            Object.entries(data.serviciosPorTecnico || {})
+                .sort(
+                    (a, b) =>
+                        Number(b[1].utilidadNeta || 0) -
+                        Number(a[1].utilidadNeta || 0)
+                )
+                .map(([id, val], index) => {
+
+                    const nombre =
+                        userMap[id] || 'Desconocido';
+
+                    const cantidadServicios =
+                        Number(val.count || 0);
+
+                    const porcentaje =
+                        Number(val.porcentaje ?? 50);
+
+                    const utilidadNeta =
+                        Number(val.utilidadNeta || 0);
+
+                    const valorPorcentaje =
+                        Number(val.valorPorcentaje ?? val.pagoTecnico ?? 0);
+
+                    const pagoTecnico =
+                        Number(val.pagoTecnico ?? valorPorcentaje ?? 0);
+
+                    return `
+                        <li class="tech-card">
+
+                            <div class="tech-rank">
+                                #${index + 1}
+                            </div>
+
+                            <div class="tech-info">
+
+                                <span class="tech-name">
+                                    ${nombre}
+                                </span>
+
+                                <span class="tech-services">
+                                    ${cantidadServicios} servicios
+                                </span>
+
+                                <span class="tech-services">
+                                    Porcentaje: ${valorPorcentaje.toFixed(2)}
+                                </span>
+
+                            </div>
+
+                            <div class="tech-profit"> S/.${utilidadNeta.toFixed(2)}
+                            </div>
+
+
+                        </li>
+                    `;
+                })
+                .join('');
+
     } catch (error) {
-        console.error('[admin-panel] Error cargando metricas:', error);
-        document.getElementById('metricsContent').innerHTML = '<p class="app-message-inline is-error">No se pudieron cargar las métricas.</p>';
-        window.AppMessages?.networkError(error, { title: 'Métricas no disponibles' });
+
+        console.error(
+            '[admin-panel] Error cargando metricas:',
+            error
+        );
+
+        document.getElementById('metricsContent').innerHTML =
+            '<p class="app-message-inline is-error">' +
+            'No se pudieron cargar las métricas.' +
+            '</p>';
+
+        window.AppMessages?.networkError(
+            error,
+            {
+                title: 'Métricas no disponibles'
+            }
+        );
     }
 };
 
