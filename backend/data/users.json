@@ -1,7 +1,7 @@
 [
   {
     "id": "8dc7f5de-b55a-4085-a870-0faea2322fbf",
-    "nombre": "rony",
+    "nombre": "Rony",
     "usuario": "rony",
     "password": "475587",
     "role": "TECNICO",
@@ -30,5 +30,14 @@
     "horarioSalida": "20:00",
     "password": "475587",
     "fechaRegistro": "2026-05-26T03:35:47.891Z"
+  },
+  {
+    "id": "684cc070-a5b7-4208-b03a-fb9fd27f40a7",
+    "nombre": "yuli",
+    "usuario": "yuli",
+    "password": "1234",
+    "role": "ADMIN",
+    "diasDescanso": [],
+    "fechaRegistro": "2026-10-02T14:09:24.315Z"
   }
 ]

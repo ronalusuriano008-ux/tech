@@ -101,6 +101,584 @@
           "cash": 31,
           "yape": 0
         }
+      },
+      {
+        "day": 10,
+        "st1": {
+          "cash": 6.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 11,
+          "yape": 0
+        }
+      },
+      {
+        "day": 11,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 11.8,
+          "yape": 0
+        }
+      },
+      {
+        "day": 12,
+        "st1": {
+          "cash": 76,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 13,
+        "st1": {
+          "cash": 45.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 14,
+        "st1": {
+          "cash": 0,
+          "yape": 25
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 15,
+        "st1": {
+          "cash": 80,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 43,
+          "yape": 0
+        }
+      },
+      {
+        "day": 16,
+        "st1": {
+          "cash": 53.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 17,
+        "st1": {
+          "cash": 92.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 39.8,
+          "yape": 0
+        }
+      },
+      {
+        "day": 18,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 27.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 19,
+        "st1": {
+          "cash": 35,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 20,
+        "st1": {
+          "cash": 15,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 41,
+          "yape": 0
+        }
+      },
+      {
+        "day": 21,
+        "st1": {
+          "cash": 0,
+          "yape": 51
+        },
+        "st2": {
+          "cash": 6.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 22,
+        "st1": {
+          "cash": 30,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 25.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 23,
+        "st1": {
+          "cash": 44,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 67.3,
+          "yape": 0
+        }
+      },
+      {
+        "day": 24,
+        "st1": {
+          "cash": 15,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 18.8,
+          "yape": 0
+        }
+      },
+      {
+        "day": 25,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 19,
+          "yape": 0
+        }
+      },
+      {
+        "day": 26,
+        "st1": {
+          "cash": 40,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 27,
+        "st1": {
+          "cash": 11,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 28,
+        "st1": {
+          "cash": 10,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 22.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 29,
+        "st1": {
+          "cash": 15,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 7.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 30,
+        "st1": {
+          "cash": 27.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 13.7,
+          "yape": 0
+        }
+      },
+      {
+        "day": 31,
+        "st1": {
+          "cash": 0,
+          "yape": 17.5
+        },
+        "st2": {
+          "cash": 13.3,
+          "yape": 0
+        }
+      }
+    ]
+  },
+  "2026-09": {
+    "year": 2026,
+    "month": 9,
+    "days": [
+      {
+        "day": 1,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 36.3,
+          "yape": 0
+        }
+      },
+      {
+        "day": 2,
+        "st1": {
+          "cash": 42.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 3,
+        "st1": {
+          "cash": 0,
+          "yape": 40
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 6.3
+        }
+      },
+      {
+        "day": 4,
+        "st1": {
+          "cash": 58.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 2.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 5,
+        "st1": {
+          "cash": 5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 4.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 6,
+        "st1": {
+          "cash": 37.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 42.5
+        }
+      },
+      {
+        "day": 7,
+        "st1": {
+          "cash": 47.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 22.3,
+          "yape": 0
+        }
+      },
+      {
+        "day": 8,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 25,
+          "yape": 0
+        }
+      },
+      {
+        "day": 9,
+        "st1": {
+          "cash": 0,
+          "yape": 56
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 10,
+        "st1": {
+          "cash": 70,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 1.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 11,
+        "st1": {
+          "cash": 25,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 31.3,
+          "yape": 0
+        }
+      },
+      {
+        "day": 12,
+        "st1": {
+          "cash": 35,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 25,
+          "yape": 0
+        }
+      },
+      {
+        "day": 13,
+        "st1": {
+          "cash": 50,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 24.3,
+          "yape": 0
+        }
+      },
+      {
+        "day": 14,
+        "st1": {
+          "cash": 22.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 25,
+          "yape": 0
+        }
+      },
+      {
+        "day": 15,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 44.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 16,
+        "st1": {
+          "cash": 42,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 17,
+        "st1": {
+          "cash": 25,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 18,
+          "yape": 0
+        }
+      },
+      {
+        "day": 18,
+        "st1": {
+          "cash": 5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 1.3,
+          "yape": 0
+        }
+      },
+      {
+        "day": 19,
+        "st1": {
+          "cash": 37.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 30.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 20,
+        "st1": {
+          "cash": 0,
+          "yape": 82.5
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 8.8
+        }
+      },
+      {
+        "day": 21,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 41.3,
+          "yape": 0
+        }
+      },
+      {
+        "day": 22,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 14.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 23,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 8.8,
+          "yape": 0
+        }
+      },
+      {
+        "day": 24,
+        "st1": {
+          "cash": 0,
+          "yape": 85
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
+      },
+      {
+        "day": 25,
+        "st1": {
+          "cash": 15,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 8,
+          "yape": 0
+        }
+      },
+      {
+        "day": 26,
+        "st1": {
+          "cash": 7.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 16.8,
+          "yape": 0
+        }
+      },
+      {
+        "day": 27,
+        "st1": {
+          "cash": 42,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 28.5
+        }
+      },
+      {
+        "day": 28,
+        "st1": {
+          "cash": 77.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 46.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 29,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 30,
+          "yape": 0
+        }
+      },
+      {
+        "day": 30,
+        "st1": {
+          "cash": 75,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        }
       }
     ]
   },
@@ -117,120 +695,145 @@
         "st2": {
           "cash": 0,
           "yape": 10
-        },
-        "comment": "descanso de ronal"
+        }
       },
       {
         "day": 2,
         "st1": {
-          "cash": 40,
+          "cash": 53.5,
           "yape": 0
         },
         "st2": {
           "cash": 0,
-          "yape": 10
-        }
+          "yape": 0
+        },
+        "comment": "No hubo servicios en ST2"
       },
       {
         "day": 3,
         "st1": {
-          "cash": 80,
-          "yape": 40
+          "cash": 52.5,
+          "yape": 0
         },
         "st2": {
-          "cash": 0,
+          "cash": 19,
           "yape": 0
         }
       },
       {
         "day": 4,
         "st1": {
-          "cash": 90,
-          "yape": 120
-        },
-        "st2": {
           "cash": 0,
           "yape": 0
-        }
+        },
+        "st2": {
+          "cash": 14,
+          "yape": 0
+        },
+        "comment": "permiso por elecciones del st1 rony"
       },
       {
         "day": 5,
         "st1": {
-          "cash": 210,
-          "yape": 500
+          "cash": 81.5,
+          "yape": 0
         },
         "st2": {
-          "cash": 0,
+          "cash": 27,
           "yape": 0
         }
       },
       {
         "day": 6,
         "st1": {
-          "cash": 10,
-          "yape": 40
-        },
-        "st2": {
           "cash": 0,
           "yape": 0
-        }
+        },
+        "st2": {
+          "cash": 35,
+          "yape": 0
+        },
+        "comment": "DESCANSO DEL ST1 RONNY"
       },
       {
         "day": 7,
         "st1": {
-          "cash": 30,
-          "yape": 25
+          "cash": 32.5,
+          "yape": 0
         },
         "st2": {
           "cash": 0,
-          "yape": 0
+          "yape": 12.5
         }
       },
       {
         "day": 8,
         "st1": {
-          "cash": 0,
+          "cash": 89,
           "yape": 0
         },
         "st2": {
-          "cash": 20,
+          "cash": 29,
           "yape": 0
-        },
-        "comment": "descanso del st1 RONAL"
+        }
       },
       {
         "day": 9,
         "st1": {
-          "cash": 230,
+          "cash": 27.5,
           "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 24
+        }
+      },
+      {
+        "day": 10,
+        "st1": {
+          "cash": 0,
+          "yape": 41
         },
         "st2": {
           "cash": 0,
           "yape": 0
         },
-        "comment": "descanso del st2 WILMER"
-      },
-      {
-        "day": 10,
-        "st1": {
-          "cash": 40,
-          "yape": 0
-        },
-        "st2": {
-          "cash": 100,
-          "yape": 0
-        }
+        "comment": "no hubo servicio en st2 wilmer"
       },
       {
         "day": 11,
         "st1": {
-          "cash": 900,
+          "cash": 47.5,
           "yape": 0
         },
         "st2": {
-          "cash": 123,
+          "cash": 10,
           "yape": 0
         }
+      },
+      {
+        "day": 12,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 10
+        },
+        "comment": "NO HUBO SERVICO EN ST1 RONNY"
+      },
+      {
+        "day": 13,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 44.5,
+          "yape": 0
+        },
+        "comment": "ST1- DESCANSO"
       }
     ]
   }

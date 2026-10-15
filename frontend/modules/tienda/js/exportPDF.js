@@ -16,7 +16,7 @@ function formatWithdrawalNote(dayData) {
   return `${base}. ${extra}${comentario ? ` Comentario: ${comentario}.` : ''}`;
 }
 
-export function exportToPDF(year, month, days) {
+export function exportToPDF(year, month, days, summaryFromBackend = {}) {
   if (typeof window.jspdf === 'undefined') {
     throw new Error('La librería jsPDF no está cargada');
   }
@@ -47,54 +47,33 @@ export function exportToPDF(year, month, days) {
     ? [...days].sort((a, b) => Number(a.day) - Number(b.day))
     : [];
 
-  const calcSummary = () => {
-    let totalDiario = 0;
-    let bancoDepositado = 0;
-    let retiroTienda = 0;
-    let retiroBanco = 0;
-    let saldoBanco = 0;
-    let acumuladoTienda = 0;
-
-    sortedDays.forEach((day) => {
-      totalDiario += parseDecimal(day?.totalDiario);
-      bancoDepositado += parseDecimal(day?.bancoDepositado);
-      retiroTienda += parseDecimal(day?.retiroTienda);
-      retiroBanco += parseDecimal(day?.retiroBanco);
-      saldoBanco += parseDecimal(day?.saldoBanco);
-      acumuladoTienda += parseDecimal(day?.acumuladoTienda);
-    });
-
-    return {
-      totalDiario,
-      bancoDepositado,
-      retiroTienda,
-      retiroBanco,
-      saldoBanco,
-      acumuladoTienda
-    };
+  const lastDay = sortedDays[sortedDays.length - 1] || {};
+  const summary = {
+    saldoTienda: Number(summaryFromBackend.saldoTienda ?? lastDay.acumuladoTienda ?? 0),
+    saldoBanco: Number(summaryFromBackend.saldoBanco ?? lastDay.saldoBanco ?? 0),
+    totalMes: Number(summaryFromBackend.totalMes ?? 0),
+    bancoDepositado: Number(summaryFromBackend.bancoDepositado ?? 0)
   };
 
-  const summary = calcSummary();
-
   doc.setFillColor(15, 23, 42);
-  doc.rect(0, 0, pageWidth, 20, 'F');
+  doc.rect(0, 0, pageWidth, 18, 'F');
 
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(18);
+  doc.setFontSize(14);
 
   doc.text(
     `Control diario de tiendas - ${monthName} ${year}`,
     pageWidth / 2,
-    13,
+    11.5,
     { align: 'center' }
   );
 
   doc.setTextColor(15, 23, 42);
 
-  const summaryY = 28;
-  const summaryBoxWidth = 70;
-  const summaryGap = 14;
+  const summaryY = 22;
+  const summaryBoxWidth = 100;
+  const summaryGap = 6;
 
   const summaryStartX =
     (pageWidth - ((2 * summaryBoxWidth) + summaryGap)) / 2;
@@ -102,7 +81,7 @@ export function exportToPDF(year, month, days) {
   const summaryBoxes = [
     {
       label: 'Saldo tienda disponible',
-      value: formatCurrency(summary.acumuladoTienda),
+      value: formatCurrency(summary.saldoTienda),
       color: [239, 68, 68]
     },
     {
@@ -123,7 +102,7 @@ export function exportToPDF(year, month, days) {
       x,
       summaryY,
       summaryBoxWidth,
-      20,
+      24,
       2,
       2,
       'F'
@@ -135,7 +114,7 @@ export function exportToPDF(year, month, days) {
       x,
       summaryY,
       summaryBoxWidth,
-      20,
+      24,
       2,
       2,
       'S'
@@ -148,7 +127,7 @@ export function exportToPDF(year, month, days) {
     doc.text(
       box.label,
       x + 3,
-      summaryY + 7,
+      summaryY + 6,
       {
         maxWidth: summaryBoxWidth - 6
       }
@@ -156,12 +135,12 @@ export function exportToPDF(year, month, days) {
 
     doc.setTextColor(...box.color);
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
+    doc.setFontSize(11.5);
 
     doc.text(
       box.value,
       x + 3,
-      summaryY + 15,
+      summaryY + 14,
       {
         maxWidth: summaryBoxWidth - 6
       }
@@ -279,6 +258,21 @@ export function exportToPDF(year, month, days) {
       }
     }
   });
+
+  const footerText = 'https://tumovil.xyz';
+
+  doc.setDrawColor(148, 163, 184);
+  doc.setTextColor(148, 163, 184);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(5.5);
+
+  const footerY = pageHeight - 4;
+  doc.text(
+    footerText,
+    pageWidth / 2,
+    footerY,
+    { align: 'center' }
+  );
 
   const notesY = doc.lastAutoTable
     ? doc.lastAutoTable.finalY + 8

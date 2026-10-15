@@ -189,23 +189,99 @@ label { color: #8a8a9a; font-size: 0.85rem; font-weight: 600; }
 /* Métricas */
 .metrics-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.55rem;
 }
 
 .metric-card {
     background: #12121a;
-    padding: 1.2rem;
-    border-radius: 10px;
-    text-align: center;
+    padding: 0.6rem 0.7rem;
+    border-radius: 8px;
     border: 1px solid #2a2a3a;
-    transition: transform 0.2s;
+    transition: border-color 0.2s ease;
 }
 
-.metric-card:hover { transform: translateY(-2px); border-color: var(--neon-blue); }
+.metric-card:hover { border-color: var(--neon-blue); }
 
-.metric-card h4 { margin: 0 0 0.5rem 0; color: #8a8a9a; font-size: 0.8rem; text-transform: uppercase; }
-.metric-card p { margin: 0; font-size: 1.8rem; font-weight: bold; color: var(--neon-blue); }
+.metric-card h4 {
+    margin: 0 0 0.3rem 0;
+    color: #8a8a9a;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.metric-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--neon-blue);
+    line-height: 1.2;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.section-toggle {
+    border: 1px solid #2a2a3a;
+    background: transparent;
+    color: var(--neon-blue);
+    border-radius: 999px;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.metrics-grid.is-collapsed,
+#techMetrics.is-collapsed {
+    display: none;
+}
+
+.tech-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.tech-card {
+    list-style: none;
+    background: #12121a;
+    border: 1px solid #2a2a3a;
+    border-radius: 8px;
+    padding: 0.6rem 0.7rem;
+    margin: 0;
+}
+
+.tech-card-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.tech-card-title {
+    color: #dfe7f5;
+    font-size: 0.76rem;
+    letter-spacing: 0;
+}
+
+.tech-value {
+    color: #4ade80;
+    font-size: 0.95rem;
+    font-weight: bold;
+    line-height: 1.2;
+}
 
 /* Forms */
 .grid-form-admin { display: flex; flex-direction: column; }
@@ -470,126 +546,65 @@ tbody tr:hover td { background: rgba(0, 243, 255, 0.05) !important; }
     }
 }
 /* ==========================================
-   TECH METRICS - FUTURISTIC PRO UI
+   TECH METRICS - VERSION COMPACTA
    ========================================== */
 
 #techMetrics {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: grid;
+    gap: 0.65rem;
 }
 
-/* Card base */
 .tech-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--bg-card);
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
+    display: block;
+    background: #12121a;
+    border-radius: 10px;
+    padding: 0.8rem 0.9rem;
+    margin-bottom: 0;
     border: 1px solid #2a2a3a;
-    transition: all 0.25s ease;
+    transition: border-color 0.2s ease, transform 0.2s ease;
     position: relative;
     overflow: hidden;
+    animation: fadeInUp 0.3s ease;
 }
 
-/* Glow + elevación */
 .tech-card:hover {
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-1px);
     border-color: var(--neon-blue);
-    box-shadow: 0 0 18px rgba(0, 243, 255, 0.18);
+    box-shadow: none;
 }
 
-/* Barra lateral visual (indicador rápido) */
 .tech-card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 4px;
-    background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple));
+    display: none;
 }
 
-/* Ranking */
-.tech-rank {
-    font-weight: bold;
-    font-size: 0.85rem;
-    color: var(--neon-purple);
-    width: 35px;
-    text-align: center;
-}
-
-/* Info central */
-.tech-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-/* Nombre */
-.tech-name {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-main);
-    letter-spacing: 0.3px;
-}
-
-/* Servicios */
-.tech-services {
-    font-size: 0.75rem;
-    color: #8a8a9a;
-}
-
-/* Utilidad (protagonista) */
-.tech-profit {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: var(--neon-blue);
-    text-shadow: 0 0 6px rgba(0, 243, 255, 0.4);
-}
-
-/* ==========================================
-   TOP 3 DESTACADOS
-   ========================================== */
-
-/* 🥇 */
-.tech-card.top-1 {
-    border-color: gold;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.25);
-}
-
-.tech-card.top-1 .tech-profit {
-    color: gold;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-}
-
-/* 🥈 */
-.tech-card.top-2 {
-    border-color: silver;
-}
-
-.tech-card.top-2 .tech-profit {
-    color: #c0c0c0;
-}
-
-/* 🥉 */
+.tech-card.top-1,
+.tech-card.top-2,
 .tech-card.top-3 {
-    border-color: #cd7f32;
+    border-color: #2a2a3a;
+    box-shadow: none;
 }
 
-.tech-card.top-3 .tech-profit {
-    color: #cd7f32;
+.tech-card.top-1 .tech-card-title,
+.tech-card.top-2 .tech-card-title,
+.tech-card.top-3 .tech-card-title {
+    color: #dfe7f5;
 }
 
-/* ==========================================
-   ANIMACIÓN DE ENTRADA
-   ========================================== */
+.tech-card .tech-value {
+    color: #4ade80;
+    font-size: 1.1rem;
+    margin-top: 0.25rem;
+}
 
-.tech-card {
-    animation: fadeInUp 0.4s ease;
+.tech-card .tech-detail {
+    display: none;
+}
+
+.tech-card.is-expanded .tech-detail {
+    display: block;
 }
 
 @keyframes fadeInUp {

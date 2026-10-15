@@ -74,6 +74,489 @@
         "bancoDepositado": 300,
         "retiroBanco": 0,
         "retiroTienda": 0
+      },
+      {
+        "day": 9,
+        "tienda1": 208,
+        "tienda2": 1202,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 4189.5
+      },
+      {
+        "day": 10,
+        "tienda1": 296,
+        "tienda2": 157.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 11,
+        "tienda1": 531,
+        "tienda2": 460,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 3300,
+        "retiroTienda": 0
+      },
+      {
+        "day": 12,
+        "tienda1": 1650.5,
+        "tienda2": 60,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 2255
+      },
+      {
+        "day": 13,
+        "tienda1": 187,
+        "tienda2": 10,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 14,
+        "tienda1": 142,
+        "tienda2": 240,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 15,
+        "tienda1": 606,
+        "tienda2": 202,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 16,
+        "tienda1": 982,
+        "tienda2": 192,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 1500,
+        "retiroTienda": 1361
+      },
+      {
+        "day": 17,
+        "tienda1": 700.5,
+        "tienda2": 229.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 18,
+        "tienda1": 94.5,
+        "tienda2": 190,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 19,
+        "tienda1": 27.5,
+        "tienda2": 40,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 900,
+        "retiroTienda": 382
+      },
+      {
+        "day": 20,
+        "tienda1": 10,
+        "tienda2": 42.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 21,
+        "tienda1": 714.5,
+        "tienda2": 97.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 22,
+        "tienda1": 544.5,
+        "tienda2": 300,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 23,
+        "tienda1": 865,
+        "tienda2": 57,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 1431
+      },
+      {
+        "day": 24,
+        "tienda1": 428,
+        "tienda2": 62,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 25,
+        "tienda1": 138.5,
+        "tienda2": 49.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 26,
+        "tienda1": 574.5,
+        "tienda2": 37,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 27,
+        "tienda1": 85,
+        "tienda2": 50,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 28,
+        "tienda1": 746,
+        "tienda2": 609,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 29,
+        "tienda1": 827.5,
+        "tienda2": 82,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 30,
+        "tienda1": 575,
+        "tienda2": 119.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 2125
+      },
+      {
+        "day": 31,
+        "tienda1": 70.5,
+        "tienda2": 80.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 3600,
+        "retiroTienda": 0
+      }
+    ]
+  },
+  "2026-09": {
+    "year": 2026,
+    "month": 9,
+    "days": [
+      {
+        "day": 1,
+        "tienda1": 70,
+        "tienda2": 344.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 2,
+        "tienda1": 223,
+        "tienda2": 265,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 3,
+        "tienda1": 590,
+        "tienda2": 89,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 4,
+        "tienda1": 310,
+        "tienda2": 104,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 5,
+        "tienda1": 544,
+        "tienda2": 2,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 6,
+        "tienda1": 230,
+        "tienda2": 712,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 7,
+        "tienda1": 429,
+        "tienda2": 12.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 8,
+        "tienda1": 407,
+        "tienda2": 150,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 9,
+        "tienda1": 1256,
+        "tienda2": 167.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 1000
+      },
+      {
+        "day": 10,
+        "tienda1": 143.5,
+        "tienda2": 300,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 11,
+        "tienda1": 30,
+        "tienda2": 87,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 620
+      },
+      {
+        "day": 12,
+        "tienda1": 420,
+        "tienda2": 1032,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 13,
+        "tienda1": 68,
+        "tienda2": 157,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 900,
+        "retiroTienda": 2632.5
+      },
+      {
+        "day": 14,
+        "tienda1": 448,
+        "tienda2": 680,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 15,
+        "tienda1": 181.5,
+        "tienda2": 145,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 16,
+        "tienda1": 273.5,
+        "tienda2": 200,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 17,
+        "tienda1": 110,
+        "tienda2": 373,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 4200,
+        "retiroTienda": 704.7
+      },
+      {
+        "day": 18,
+        "tienda1": 365,
+        "tienda2": 75,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 19,
+        "tienda1": 339.5,
+        "tienda2": 162,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 20,
+        "tienda1": 194,
+        "tienda2": 168,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 909.8
+      },
+      {
+        "day": 21,
+        "tienda1": 330,
+        "tienda2": 230,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 22,
+        "tienda1": 385.5,
+        "tienda2": 60,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 23,
+        "tienda1": 65,
+        "tienda2": 54,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 1800,
+        "retiroTienda": 200
+      },
+      {
+        "day": 24,
+        "tienda1": 215,
+        "tienda2": 101,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 25,
+        "tienda1": 646,
+        "tienda2": 0,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 26,
+        "tienda1": 817,
+        "tienda2": 40.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 27,
+        "tienda1": 40,
+        "tienda2": 306.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 28,
+        "tienda1": 70,
+        "tienda2": 110,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
+      },
+      {
+        "day": 29,
+        "tienda1": 200,
+        "tienda2": 64.5,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 800
+      },
+      {
+        "day": 30,
+        "tienda1": 158,
+        "tienda2": 135,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0
       }
     ]
   },
@@ -83,12 +566,181 @@
     "days": [
       {
         "day": 1,
-        "tienda1": 220,
-        "tienda2": 450,
+        "tienda1": 172,
+        "tienda2": 413,
         "tienda3": 0,
         "bancoDepositado": 300,
         "retiroBanco": 0,
-        "retiroTienda": 400
+        "retiroTienda": 0
+      },
+      {
+        "day": 2,
+        "tienda1": 232.5,
+        "tienda2": 65,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0,
+        "motivoRetiro": "",
+        "destinoRetiro": "",
+        "comentarioRetiro": "",
+        "tipoRetiro": "ninguno"
+      },
+      {
+        "day": 3,
+        "tienda1": 575,
+        "tienda2": 79,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0,
+        "motivoRetiro": "",
+        "destinoRetiro": "",
+        "comentarioRetiro": "",
+        "tipoRetiro": "ninguno"
+      },
+      {
+        "day": 4,
+        "tienda1": 415,
+        "tienda2": 433,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0,
+        "motivoRetiro": "",
+        "destinoRetiro": "",
+        "comentarioRetiro": "",
+        "tipoRetiro": "ninguno"
+      },
+      {
+        "day": 5,
+        "tienda1": 241,
+        "tienda2": 55,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0,
+        "motivoRetiro": "",
+        "destinoRetiro": "",
+        "comentarioRetiro": "",
+        "tipoRetiro": "ninguno"
+      },
+      {
+        "day": 6,
+        "tienda1": 170,
+        "tienda2": 57,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0,
+        "motivoRetiro": "",
+        "destinoRetiro": "",
+        "comentarioRetiro": "",
+        "tipoRetiro": "ninguno"
+      },
+      {
+        "day": 7,
+        "tienda1": 55,
+        "tienda2": 485,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 772.1,
+        "motivoRetiro": "",
+        "destinoRetiro": "",
+        "comentarioRetiro": "772.10 se completo a 1950 para darle al señor walter",
+        "tipoRetiro": "ninguno"
+      },
+      {
+        "day": 8,
+        "tienda1": 502.5,
+        "tienda2": 30,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 835.9,
+        "motivoRetiro": "deposito",
+        "destinoRetiro": "a tu movil",
+        "comentarioRetiro": "se deposito todo lo cacumulado",
+        "tipoRetiro": "tienda"
+      },
+      {
+        "day": 9,
+        "tienda1": 20.5,
+        "tienda2": 127,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0,
+        "motivoRetiro": "",
+        "destinoRetiro": "",
+        "comentarioRetiro": "",
+        "tipoRetiro": "ninguno"
+      },
+      {
+        "day": 10,
+        "tienda1": 240,
+        "tienda2": 400,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0,
+        "motivoRetiro": "",
+        "destinoRetiro": "",
+        "comentarioRetiro": "",
+        "tipoRetiro": "ninguno"
+      },
+      {
+        "day": 11,
+        "tienda1": 143,
+        "tienda2": 113,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 3127,
+        "retiroTienda": 0,
+        "motivoRetiro": "deposito",
+        "destinoRetiro": "tu movil",
+        "comentarioRetiro": "se le deposito lo restante hasta este dia lo acumulado del banco",
+        "tipoRetiro": "banco"
+      },
+      {
+        "day": 12,
+        "tienda1": 222,
+        "tienda2": 195,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 2273,
+        "retiroTienda": 0,
+        "motivoRetiro": "CUOTA",
+        "destinoRetiro": "BANCO CH",
+        "comentarioRetiro": "",
+        "tipoRetiro": "banco"
+      },
+      {
+        "day": 13,
+        "tienda1": 45,
+        "tienda2": 20,
+        "tienda3": 587.5,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0,
+        "motivoRetiro": "",
+        "destinoRetiro": "",
+        "comentarioRetiro": "",
+        "tipoRetiro": "ninguno"
+      },
+      {
+        "day": 14,
+        "tienda1": 311.8,
+        "tienda2": 60,
+        "tienda3": 0,
+        "bancoDepositado": 300,
+        "retiroBanco": 0,
+        "retiroTienda": 0,
+        "motivoRetiro": "",
+        "destinoRetiro": "",
+        "comentarioRetiro": "",
+        "tipoRetiro": "ninguno"
       }
     ]
   }

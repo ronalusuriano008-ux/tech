@@ -40,6 +40,10 @@ function calcularEstadoFinanciero(monthPayload, options = {}) {
       bancoDepositado,
       retiroTienda,
       retiroBanco,
+      motivoRetiro: String(d.motivoRetiro ?? '').trim(),
+      destinoRetiro: String(d.destinoRetiro ?? '').trim(),
+      comentarioRetiro: String(d.comentarioRetiro ?? '').trim(),
+      tipoRetiro: String(d.tipoRetiro ?? '').trim(),
       acumuladoTienda: runningAcumuladoTienda,
       saldoBanco: runningSaldoBanco,
       disponible: runningAcumuladoTienda

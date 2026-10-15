@@ -148,9 +148,24 @@ const formatDateSeparator = (dateStr) => {
 // ===============================
 // MÉTRICAS
 // ===============================
+const toggleSection = (event) => {
+    const button = event.currentTarget;
+    const targetId = button.dataset.target;
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    const isCollapsed = target.classList.toggle('is-collapsed');
+    button.textContent = isCollapsed ? '+' : '−';
+    button.setAttribute('aria-expanded', String(!isCollapsed));
+};
+
 const loadMetrics = async () => {
     try {
-        const [metricsRes, usersRes] = await Promise.all([
+        const selectedDate = getFecha() ? new Date(`${getFecha()}T12:00:00`) : new Date();
+        const selectedYear = Number.isFinite(selectedDate.getTime()) ? selectedDate.getFullYear() : new Date().getFullYear();
+        const selectedMonth = Number.isFinite(selectedDate.getTime()) ? selectedDate.getMonth() + 1 : new Date().getMonth() + 1;
+
+        const [metricsRes, usersRes, tiendaRes] = await Promise.all([
             fetch(
                 `${API}/servicios/metrics?fecha=${encodeURIComponent(getFecha())}`,
                 {
@@ -160,6 +175,13 @@ const loadMetrics = async () => {
             ),
             fetch(
                 `${API}/users`,
+                {
+                    headers: getHeaders(),
+                    credentials: 'include'
+                }
+            ),
+            fetch(
+                `${API}/tienda/month/${selectedYear}/${selectedMonth}`,
                 {
                     headers: getHeaders(),
                     credentials: 'include'
@@ -181,8 +203,19 @@ const loadMetrics = async () => {
             );
         }
 
+        if (!tiendaRes.ok) {
+            await parseResponseError(
+                tiendaRes,
+                'No se pudieron cargar las métricas de tienda'
+            );
+        }
+
         const data = await metricsRes.json();
         const users = await usersRes.json();
+        const tiendaData = await tiendaRes.json();
+        const tiendaResumen = tiendaData?.resumen || {};
+        const saldoTienda = Number(tiendaResumen.saldoTienda || 0);
+        const saldoBanco = Number(tiendaResumen.saldoBanco || 0);
 
         const userMap = Object.fromEntries(
             users.map(u => [u.id, u.nombre])
@@ -195,65 +228,49 @@ const loadMetrics = async () => {
         document.getElementById('metricsContent').innerHTML = `
             <div class="metric-card">
                 <h4>Ingresos</h4>
-                <p class="money-positive">
-                    S/.${Number(data.totalIngresos || 0).toFixed(2)}
-                </p>
+                <p class="money-positive">S/.${Number(data.totalIngresos || 0).toFixed(2)}</p>
             </div>
 
             <div class="metric-card">
                 <h4>Costos</h4>
-                <p class="money-negative">
-                    S/.${Number(data.totalCostos || 0).toFixed(2)}
-                </p>
+                <p class="money-negative">S/.${Number(data.totalCostos || 0).toFixed(2)}</p>
             </div>
 
             <div class="metric-card">
                 <h4>Gastos</h4>
-                <p class="money-negative">
-                    S/.${Number(data.totalGastos || 0).toFixed(2)}
-                </p>
+                <p class="money-negative">S/.${Number(data.totalGastos || 0).toFixed(2)}</p>
             </div>
 
             <div class="metric-card">
                 <h4>Utilidad Bruta</h4>
-                <p class="${
-                    Number(data.utilidadBruta || 0) < 0
-                        ? 'money-negative'
-                        : 'money-positive'
-                }">
-                    S/.${Number(data.utilidadBruta || 0).toFixed(2)}
-                </p>
+                <p class="${Number(data.utilidadBruta || 0) < 0 ? 'money-negative' : 'money-positive'}">S/.${Number(data.utilidadBruta || 0).toFixed(2)}</p>
             </div>
 
             <div class="metric-card">
                 <h4>Utilidad Neta</h4>
-                <p class="${
-                    Number(data.utilidadNeta || 0) < 0
-                        ? 'money-negative'
-                        : 'money-positive'
-                }">
-                    S/.${Number(data.utilidadNeta || 0).toFixed(2)}
-                </p>
+                <p class="${Number(data.utilidadNeta || 0) < 0 ? 'money-negative' : 'money-positive'}">S/.${Number(data.utilidadNeta || 0).toFixed(2)}</p>
             </div>
-
-
-<div class="metric-card">
-                <h4>Porcentaje tienda</h4>
-                <p class="${
-                    Number(data.utilidadNeta || 0) < 0
-                        ? 'money-negative'
-                        : 'money-positive'
-                }">
-                    S/.${Number(data.utilidadNeta / 2 || 0).toFixed(2)}
-                </p>
-            </div>
-
 
             <div class="metric-card">
                 <h4>Servicios</h4>
                 <p>${data.totalServicios || 0}</p>
             </div>
         `;
+
+        const tiendaMetricsContainer = document.getElementById('tiendaMetrics');
+        if (tiendaMetricsContainer) {
+            tiendaMetricsContainer.innerHTML = `
+                <div class="metric-card">
+                    <h4>Acumulado Tienda</h4>
+                    <p class="${saldoTienda < 0 ? 'money-negative' : 'money-positive'}">S/.${saldoTienda.toFixed(2)}</p>
+                </div>
+
+                <div class="metric-card">
+                    <h4>Acumulado Banco</h4>
+                    <p class="${saldoBanco < 0 ? 'money-negative' : 'money-positive'}">S/.${saldoBanco.toFixed(2)}</p>
+                </div>
+            `;
+        }
 
         // ===============================
         // SERVICIOS POR TÉCNICO
@@ -288,35 +305,18 @@ const loadMetrics = async () => {
 
                     return `
                         <li class="tech-card">
-
-                            <div class="tech-rank">
-                                #${index + 1}
+                            <div class="tech-card-line">
+                                <span class="tech-card-title">${nombre}</span>
+                                <span class="tech-value">S/.${utilidadNeta.toFixed(2)}</span>
                             </div>
-
-                            <div class="tech-info">
-
-                                <span class="tech-name">
-                                    ${nombre}
-                                </span>
-
-                                <span class="tech-services">
-                                    ${cantidadServicios} servicios
-                                </span>
-
-                                <span class="tech-services">
-                                    Porcentaje: ${valorPorcentaje.toFixed(2)}
-                                </span>
-
-                            </div>
-
-                            <div class="tech-profit"> S/.${utilidadNeta.toFixed(2)}
-                            </div>
-
-
                         </li>
                     `;
                 })
                 .join('');
+
+        document.querySelectorAll('.section-toggle').forEach((button) => {
+            button.addEventListener('click', toggleSection);
+        });
 
     } catch (error) {
 

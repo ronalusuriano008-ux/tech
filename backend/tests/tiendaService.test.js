@@ -124,3 +124,36 @@ test('saveDay guarda motivo y destino del retiro cuando se registran retiros', a
     }
   );
 });
+
+test('recalculateMonth conserva motivo y destino al devolver los días del mes', async () => {
+  await withFixture(
+    {
+      year: 2026,
+      month: 8,
+      days: [
+        {
+          day: 12,
+          tienda1: 100,
+          tienda2: 0,
+          tienda3: 0,
+          bancoDepositado: 0,
+          retiroBanco: 2273,
+          retiroTienda: 0,
+          motivoRetiro: 'retiro programado',
+          destinoRetiro: 'sin destino especificado',
+          comentarioRetiro: 'pago mensual',
+          tipoRetiro: 'banco'
+        }
+      ]
+    },
+    async () => {
+      const result = await recalculateMonth(2026, 8);
+      const day = result.dias.find((item) => item.day === 12);
+
+      assert.equal(day.motivoRetiro, 'retiro programado');
+      assert.equal(day.destinoRetiro, 'sin destino especificado');
+      assert.equal(day.comentarioRetiro, 'pago mensual');
+      assert.equal(day.tipoRetiro, 'banco');
+    }
+  );
+});

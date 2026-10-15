@@ -281,11 +281,44 @@
       line-height: 1.5;
     }
 
+    .withdrawal-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px 10px;
+    }
+
     .withdrawal-date {
-      display: inline-block;
-      margin-right: 6px;
+      flex: 0 0 auto;
       color: #fca5a5;
       font-weight: 800;
+    }
+
+    .withdrawal-text {
+      flex: 1 1 260px;
+      min-width: 0;
+      color: #e2e8f0;
+      word-break: break-word;
+    }
+
+    .withdrawal-amount {
+      color: #fca5a5;
+      font-weight: 800;
+    }
+
+    .withdrawal-reason {
+      color: #86efac;
+      font-weight: 700;
+    }
+
+    .withdrawal-destination {
+      color: #93c5fd;
+      font-weight: 700;
+    }
+
+    .withdrawal-comment {
+      color: #fcd34d;
+      font-style: italic;
     }
 
     .modal {

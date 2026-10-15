@@ -39,6 +39,7 @@ const destinoRetiroInput = document.getElementById('destinoRetiro');
 const comentarioRetiroInput = document.getElementById('comentarioRetiro');
 
 let currentDays = [];
+let currentSummary = {};
 let statusTimeout = null;
 
 function showStatus(message, type = 'success') {
@@ -108,6 +109,7 @@ async function loadTable() {
     const days = response.dias || [];
     const resumen = response.resumen || {};
     currentDays = days;
+    currentSummary = resumen;
     renderTable(days);
     renderSummary(resumen);
   } catch (error) {
@@ -187,13 +189,21 @@ function renderWithdrawalNotes(days) {
       if (amount <= 0) return null;
 
       const accountLabel = isTienda ? 'acumulado de tiendas' : 'acumulado del banco';
-      const detail = `por motivo: ${motivo}; dirigido a: ${destino}.`;
-      const extra = comentario ? ` Comentario: ${comentario}.` : '';
+      const reasonText = motivo ? ` por motivo: ${motivo}` : '';
+      const destinationText = destino ? `, dirigido a: ${destino}` : '';
+      const commentText = comentario ? ` Comentario: ${comentario}` : '';
 
       return `
         <div class="withdrawal-item">
-          <span class="withdrawal-date">Día ${dayData.day}</span>
-          <span>Se retiró ${formatCurrency(amount)} del ${accountLabel}. ${detail}${extra}</span>
+          <div class="withdrawal-row">
+            <span class="withdrawal-date">Día ${dayData.day}:</span>
+            <span class="withdrawal-text">
+              Se retiró <span class="withdrawal-amount">${formatCurrency(amount)}</span> del ${accountLabel}
+              <span class="withdrawal-reason">${reasonText || ' por motivo: retiro programado'}</span>
+              <span class="withdrawal-destination">${destinationText || ', dirigido a: sin destino especificado'}</span>.
+              ${commentText ? `<span class="withdrawal-comment">${commentText}</span>` : ''}
+            </span>
+          </div>
         </div>
       `;
     }).filter(Boolean);
@@ -317,7 +327,7 @@ async function handleGeneratePdf() {
     showStatus('Generando PDF...');
     await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
     await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js');
-    exportToPDF(year, month, currentDays);
+    exportToPDF(year, month, currentDays, currentSummary);
     showStatus('PDF descargado correctamente');
   } catch (error) {
     console.error(error);
