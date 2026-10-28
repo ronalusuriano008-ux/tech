@@ -1,4 +1,4 @@
-const VERSION = 'v8-tienda-pdf-20261002';
+const VERSION = 'v11-app-2.2.0-20261028';
 const STATIC = `taller-tech-${VERSION}-static`;
 const PAGES = `taller-tech-${VERSION}-pages`;
 const RUNTIME = `taller-tech-${VERSION}-runtime`;
@@ -17,23 +17,60 @@ self.addEventListener('install', (event) => event.waitUntil(caches.open(STATIC).
 self.addEventListener('activate', (event) => event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => ![STATIC, PAGES, RUNTIME].includes(key)).map((key) => caches.delete(key)))).then(() => self.clients.claim())));
 self.addEventListener('message', (event) => { if (event.data?.type === 'SKIP_WAITING') self.skipWaiting(); });
 
-async function networkFirst(request, cacheName, fallback) {
-  try { const response = await fetch(request); if (response?.ok) caches.open(cacheName).then((cache) => cache.put(request, response.clone())); return response; }
-  catch { return (await caches.match(request)) || (fallback && await caches.match(fallback)) || Response.error(); }
+function cacheResponse(event, request, cacheName, response) {
+  const cacheWrite = response.then(
+    (networkResponse) => {
+      if (!networkResponse?.ok) return;
+
+      const cachedResponse = networkResponse.clone();
+      return caches.open(cacheName)
+        .then((cache) => cache.put(request, cachedResponse))
+        .catch((error) => {
+          console.warn('[PWA] No se pudo guardar la respuesta en caché:', error);
+        });
+    },
+    () => undefined
+  );
+
+  event.waitUntil(cacheWrite);
 }
-async function staleWhileRevalidate(request) {
-  const cached = await caches.match(request);
-  const network = fetch(request).then((response) => { if (response?.ok) caches.open(RUNTIME).then((cache) => cache.put(request, response.clone())); return response; }).catch(() => null);
-  return cached || network || Response.error();
+
+function networkFirst(event, request, cacheName, fallback) {
+  const networkResponse = fetch(request);
+  cacheResponse(event, request, cacheName, networkResponse);
+
+  return networkResponse.catch(async () => (
+    (await caches.match(request)) ||
+    (fallback && await caches.match(fallback)) ||
+    Response.error()
+  ));
 }
+
+function staleWhileRevalidate(event, request) {
+  const cachedResponse = caches.match(request);
+  const networkResponse = fetch(request);
+  cacheResponse(event, request, RUNTIME, networkResponse);
+
+  return cachedResponse.then((cached) => {
+    if (cached) return cached;
+    return networkResponse.catch(() => Response.error());
+  });
+}
+
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return; // CDN no es requisito de arranque offline.
   if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/data/')) return; // DataService usa IndexedDB; no cachear datos autenticados en Cache Storage.
-  if (request.mode === 'navigate') { event.respondWith(networkFirst(request, PAGES, '/offline.html')); return; }
-  if (/\.(?:js|css|png|svg|woff2?|json)$/i.test(url.pathname)) { event.respondWith(staleWhileRevalidate(request)); return; }
-  event.respondWith(networkFirst(request, RUNTIME));
+  if (request.mode === 'navigate') {
+    event.respondWith(networkFirst(event, request, PAGES, '/offline.html'));
+    return;
+  }
+  if (/\.(?:js|css|png|svg|woff2?|json)$/i.test(url.pathname)) {
+    event.respondWith(staleWhileRevalidate(event, request));
+    return;
+  }
+  event.respondWith(networkFirst(event, request, RUNTIME));
 });
 self.addEventListener('sync', (event) => { if (event.tag === 'taller-tech-sync') event.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => clients.forEach((client) => client.postMessage({ type: 'REQUEST_SYNC' })))); });

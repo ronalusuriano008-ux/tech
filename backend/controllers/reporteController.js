@@ -5,8 +5,7 @@ const fs = require('fs');
 const reporteService =
     require('../services/reporteService');
 
-// Carga perezosa de la librería que usa `sharp`/`canvas` para evitar consumir
-// memoria al iniciar el proceso. Se require solo cuando se solicita la imagen.
+// Carga perezosa del generador de imágenes para evitar trabajo al iniciar el proceso.
 let reporteImageService;
 
 

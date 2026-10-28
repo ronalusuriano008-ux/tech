@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Iniciar sesión | Taller Tech</title>
     <meta name="theme-color" content="#0f172a">
     <meta name="application-name" content="Taller Tech">
     <meta name="apple-mobile-web-app-title" content="Taller Tech">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="/shared/manifest.json">
     <link rel="icon" href="/shared/icons/taller-tech-icon.svg" type="image/svg+xml">
@@ -25,26 +26,29 @@
 </head>
 <body>
     <main class="container">
-        <article class="card-futurist">
-            <header class="text-center" style="display:flex;flex-direction:column;align-items:center;gap:0.75rem;">
-                <img src="/shared/icons/taller-tech-logo.svg" alt="Taller Tech" style="width:min(260px,80%);height:auto;display:block;filter:drop-shadow(0 10px 18px rgba(59,130,246,0.22));">
-                <p style="margin:0;color:#cbd5e1;letter-spacing:0.08em;text-transform:uppercase;font-size:0.7rem;">Gestión de Servicios</p>
-                <p style="margin:0;font-size: 9px; font-style:italic; color: rgb(0, 102, 255) !important;"></p>
+        <article class="card-futurist login-card">
+            <header class="login-header">
+               <img class="login-logo" src="/shared/icons/taller-tech-logo.svg" alt="Taller Tech">
+                <span class="login-eyebrow">Gestión del taller</span>
+                <h1>Iniciar sesión</h1>
             </header>
             <form id="loginForm">
                 <div class="input-group">
                     <i class="bi bi-person-fill"></i>
-                    <input type="text" id="usuario" placeholder="Usuario" required autocomplete="username">
+                    <label class="visually-hidden" for="usuario">Usuario</label>
+                    <input type="text" id="usuario" placeholder="Usuario" required autocomplete="username" autocapitalize="none" spellcheck="false">
                 </div>
                 <div class="input-group">
                     <i class="bi bi-lock-fill"></i>
+                    <label class="visually-hidden" for="password">Contraseña</label>
                     <input type="password" id="password" placeholder="Contraseña" required autocomplete="current-password">
                 </div>
                 <button type="submit" class="btn-futurist">
                     <i class="bi bi-box-arrow-in-right"></i> Ingresar
                 </button>
-                <p id="error" class="error-msg" style="display:none;">Credenciales incorrectas</p>
+                <p id="error" class="error-msg" role="alert" aria-live="polite" style="display:none;">Credenciales incorrectas</p>
             </form>
+            <footer class="login-footer">Taller Tech <span aria-hidden="true">·</span> v<span id="appVersion">—</span></footer>
         </article>
     </main>
     <script src="/shared/js/config.js"></script>

@@ -2,6 +2,13 @@
 const redirectTo = window.redirectTo || ((path) => { window.location.href = path; });
 const getApiUrl = window.getApiUrl || ((path = '') => `/api${path.startsWith('/') ? path : `/${path}`}`);
 
+const appVersionEl = document.getElementById('appVersion');
+if (appVersionEl) {
+    window.AppConfigReady?.then((config) => {
+        appVersionEl.textContent = config?.appVersion || '—';
+    });
+}
+
 async function redirectIfAuthenticated() {
     try {
         const res = await fetch(getApiUrl('/auth/check'), { credentials: 'include' });

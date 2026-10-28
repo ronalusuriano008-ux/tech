@@ -834,6 +834,156 @@
           "yape": 0
         },
         "comment": "ST1- DESCANSO"
+      },
+      {
+        "day": 14,
+        "st1": {
+          "cash": 0,
+          "yape": 25
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        },
+        "comment": "Descanso del st2"
+      },
+      {
+        "day": 15,
+        "st1": {
+          "cash": 26,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 10,
+          "yape": 0
+        }
+      },
+      {
+        "day": 16,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        },
+        "comment": "Compra de zócalos st1"
+      },
+      {
+        "day": 17,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 98.8,
+          "yape": 0
+        },
+        "comment": "permiso st1"
+      },
+      {
+        "day": 18,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 22,
+          "yape": 0
+        },
+        "comment": "Permiso del ST1"
+      },
+      {
+        "day": 19,
+        "st1": {
+          "cash": 25,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 27.5
+        }
+      },
+      {
+        "day": 20,
+        "st1": {
+          "cash": 0,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        },
+        "comment": "DESCANSO DEL ST1, NO HUBO SERVICIOS."
+      },
+      {
+        "day": 21,
+        "st1": {
+          "cash": 52.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        },
+        "comment": "descanso del st2"
+      },
+      {
+        "day": 22,
+        "st1": {
+          "cash": 25,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 6,
+          "yape": 0
+        }
+      },
+      {
+        "day": 23,
+        "st1": {
+          "cash": 27.5,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 0,
+          "yape": 0
+        },
+        "comment": "no hubo servicios en st2"
+      },
+      {
+        "day": 24,
+        "st1": {
+          "cash": 0,
+          "yape": 70
+        },
+        "st2": {
+          "cash": 12.5,
+          "yape": 0
+        }
+      },
+      {
+        "day": 25,
+        "st1": {
+          "cash": 75,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 12,
+          "yape": 0
+        }
+      },
+      {
+        "day": 26,
+        "st1": {
+          "cash": 15,
+          "yape": 0
+        },
+        "st2": {
+          "cash": 9.5,
+          "yape": 0
+        }
       }
     ]
   }

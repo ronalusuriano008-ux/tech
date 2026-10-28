@@ -1,7 +1,7 @@
-const { createCanvas } = require('canvas');
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
+const appConfig = require('../../../config');
 
 const toNumber = (value) => {
     const number = Number(value);
@@ -10,160 +10,35 @@ const toNumber = (value) => {
 
 const money = (value) => `S/. ${toNumber(value).toFixed(2)}`;
 
+const escapeXml = (value) => String(value ?? '')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/g, '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+
 const generarReporteJPG = async (data) => {
-
     const url = process.env.PUBLIC_BASE_URL || process.env.API_BASE_URL || 'https://api.vixbox.xyz';
-    const version = process.env.VERSION || '4.0.1';
-
+    const version = appConfig.app.version;
     const servicios = Array.isArray(data.servicios) ? data.servicios : [];
 
-    // ===============================
-    // TAMAÑO DE IMAGEN
-    // ===============================
     const width = 1920;
-    const height = Math.max(1080, 420 + (servicios.length * 58) + 260);
+    const rowHeight = 67.2;
+    const totalsGap = 56;
+    const height = Math.ceil(Math.max(1080, 740 + (servicios.length * rowHeight)));
 
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
-
-    // ===============================
-    // PALETA DE COLORES
-    // ===============================
-    const black = '#000000';
-    const soft = '#6b7280';
-    const line = '#d1d5db';
-    const bg = '#ffffff';
-
-    // ===============================
-    // MÁRGENES 
-    // ===============================
     const marginL = 80;
     const marginR = 80;
-
     const lineStartX = marginL;
     const lineEndX = width - marginR;
-
     const contentStartX = marginL + 40;
-
-    // ===============================
-    // FONDO 
-    // ===============================
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, width, height);
-
-    // ===============================
-    // TIPOGRAFÍA 
-    // ===============================
-    const base = 1.40;
-
-    const font = {
-        title: 32 * base,
-        normal: 22 * base,
-        small: 18 * base,
-        bold: 24 * base
-    };
-
-    const rowH = 48 * base;
-    const gap = 40 * base;
-
-    // ===============================
-    // HEADER 
-    // ===============================
-    ctx.fillStyle = black;
-    ctx.font = `bold ${font.title}px Arial`;
-    ctx.fillText('Reporte Diario', contentStartX, 80);
-
-    ctx.font = `${font.normal}px Arial`;
-    ctx.fillText(`Técnico: ${data.tecnico || ''}`, contentStartX, 120);
-
-    ctx.textAlign = 'right';
-    ctx.fillText(`Fecha: ${data.fecha || ''}`, lineEndX, 120);
-    ctx.textAlign = 'left';
-
-    // línea header
-    ctx.strokeStyle = black;
-    ctx.beginPath();
-    ctx.moveTo(lineStartX, 145);
-    ctx.lineTo(lineEndX, 145);
-    ctx.stroke();
-
-    // ===============================
-    // TABLA HEADER 
-    // ===============================
-    let y = 200;
-
-    ctx.fillStyle = soft;
-    ctx.font = `bold ${font.bold}px Arial`;
-
     const c1 = contentStartX;
     const c2 = contentStartX + 230;
     const c3 = lineEndX - 620;
     const c4 = lineEndX - 420;
     const c5 = lineEndX - 200;
-
-    ctx.fillText('HORA', c1, y);
-    ctx.fillText('SERVICIO', c2, y);
-
-    ctx.textAlign = 'right';
-    ctx.fillText('PRECIO', c3, y);
-    ctx.fillText('COSTO', c4, y);
-    ctx.fillText('UTILIDAD', c5, y);
-    ctx.textAlign = 'left';
-
-    y += 20;
-
-    // línea tabla header
-    ctx.strokeStyle = black;
-    ctx.beginPath();
-    ctx.moveTo(lineStartX, y);
-    ctx.lineTo(lineEndX, y);
-    ctx.stroke();
-
-    // ===============================
-    // BODY
-    // ===============================
-    servicios.forEach((s) => {
-
-        y += rowH;
-
-        ctx.fillStyle = black;
-        ctx.font = `${font.normal}px Arial`;
-        ctx.fillText(s.hora || '--:--', c1, y);
-
-        ctx.fillStyle = '#111';
-        const servicio = s.servicio || 'Servicio';
-        const modelo = s.modelo ? ` (${s.modelo})` : '';
-        ctx.fillText(`${servicio}${modelo}`, c2, y, 750);
-
-        ctx.textAlign = 'right';
-
-        ctx.fillStyle = black;
-        ctx.fillText(money(s.precio), c3, y);
-
-        ctx.fillStyle = soft;
-        ctx.fillText(money(s.costo), c4, y);
-
-        ctx.fillStyle = black;
-        ctx.font = `bold ${font.bold}px Arial`;
-        ctx.fillText(money(s.utilidad), c5, y);
-
-        ctx.textAlign = 'left';
-
-        // línea separación
-        ctx.setLineDash([2, 4]);
-        ctx.strokeStyle = black;
-        ctx.beginPath();
-        ctx.moveTo(lineStartX, y + 10);
-        ctx.lineTo(lineEndX, y + 10);
-        ctx.stroke();
-        ctx.setLineDash([]);
-    });
-
-    // ===============================
-    // TOTALES
-    // ===============================
-    y += 120;
-
+    const rowFontSize = 30.8;
     const totals = [
         { label: `Ingresos (${servicios.length} srv)`, value: data.totalIngresos },
         { label: 'Costos', value: data.totalCostos },
@@ -171,50 +46,63 @@ const generarReporteJPG = async (data) => {
         { label: 'Distribución de utilidad', value: toNumber(data.utilidadTotal) / 2 }
     ];
 
-    ctx.textAlign = 'left';
+    const lines = servicios.map((service, index) => {
+        const y = 200 + rowHeight * (index + 1);
+        const description = `${service.servicio || 'Servicio'}${service.modelo ? ` (${service.modelo})` : ''}`;
 
-    totals.forEach(t => {
+        return `
+            <text x="${c1}" y="${y}" class="body">${escapeXml(service.hora || '--:--')}</text>
+            <text x="${c2}" y="${y}" class="description" textLength="750" lengthAdjust="spacingAndGlyphs">${escapeXml(description)}</text>
+            <text x="${c3}" y="${y}" class="body" text-anchor="end">${escapeXml(money(service.precio))}</text>
+            <text x="${c4}" y="${y}" class="muted" text-anchor="end">${escapeXml(money(service.costo))}</text>
+            <text x="${c5}" y="${y}" class="total" text-anchor="end">${escapeXml(money(service.utilidad))}</text>
+            <path d="M ${lineStartX} ${y + 10} H ${lineEndX}" class="row-divider"/>
+        `;
+    }).join('');
 
-        ctx.fillStyle = soft;
-        ctx.font = `${font.normal}px Arial`;
-        ctx.fillText(t.label, c1, y);
+    const totalsY = 320 + (servicios.length * rowHeight);
+    const totalLines = totals.map((item, index) => {
+        const y = totalsY + (index * totalsGap);
+        return `
+            <text x="${c1}" y="${y}" class="muted">${escapeXml(item.label)}</text>
+            <text x="${c1 + 500}" y="${y}" class="total">${escapeXml(money(item.value))}</text>
+        `;
+    }).join('');
 
-        ctx.fillStyle = black;
-        ctx.font = `bold ${font.bold}px Arial`;
-        ctx.fillText(money(t.value), c1 + 500, y);
+    const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+            <style>
+                text { font-family: Arial, sans-serif; fill: #000000; }
+                .title { font-size: 44.8px; font-weight: 700; }
+                .body { font-size: ${rowFontSize}px; }
+                .description { font-size: ${rowFontSize}px; fill: #111111; }
+                .muted { font-size: ${rowFontSize}px; fill: #6b7280; }
+                .table-heading { font-size: 33.6px; font-weight: 700; fill: #6b7280; }
+                .total { font-size: 33.6px; font-weight: 700; }
+                .divider { stroke: #000000; stroke-width: 2; }
+                .row-divider { stroke: #000000; stroke-width: 1.5; stroke-dasharray: 2 4; }
+                .footer-divider { stroke: #d1d5db; stroke-width: 2; }
+            </style>
+            <rect width="100%" height="100%" fill="#ffffff"/>
+            <text x="${contentStartX}" y="80" class="title">Reporte Diario</text>
+            <text x="${contentStartX}" y="120" class="body">Técnico: ${escapeXml(data.tecnico)}</text>
+            <text x="${lineEndX}" y="120" class="body" text-anchor="end">Fecha: ${escapeXml(data.fecha)}</text>
+            <path d="M ${lineStartX} 145 H ${lineEndX}" class="divider"/>
+            <text x="${c1}" y="200" class="table-heading">HORA</text>
+            <text x="${c2}" y="200" class="table-heading">SERVICIO</text>
+            <text x="${c3}" y="200" class="table-heading" text-anchor="end">PRECIO</text>
+            <text x="${c4}" y="200" class="table-heading" text-anchor="end">COSTO</text>
+            <text x="${c5}" y="200" class="table-heading" text-anchor="end">UTILIDAD</text>
+            <path d="M ${lineStartX} 220 H ${lineEndX}" class="divider"/>
+            ${lines}
+            ${totalLines}
+            <path d="M ${lineStartX} ${height - 80} H ${lineEndX}" class="footer-divider"/>
+            <text x="${contentStartX}" y="${height - 45}" class="muted" font-size="25.2px">Documento Versión ${escapeXml(version)} ${escapeXml(url)}.</text>
+            <text x="${lineEndX}" y="${height - 45}" class="total" font-size="25.2px" text-anchor="end">2026</text>
+        </svg>
+    `;
 
-        y += gap;
-    });
-
-    // ===============================
-    // FOOTER
-    // ===============================
-    // línea footer
-    ctx.strokeStyle = line;
-    ctx.beginPath();
-    ctx.moveTo(lineStartX, height - 80);
-    ctx.lineTo(lineEndX, height - 80);
-    ctx.stroke();
-
-    ctx.fillStyle = soft;
-    ctx.font = `${font.small}px Arial`;
-    ctx.fillText(
-        `Documento Versión  ${version} ${url}.`,
-        contentStartX,
-        height - 45
-    );
-
-    ctx.textAlign = 'right';
-    ctx.fillStyle = black;
-    ctx.font = `bold ${font.small}px Arial`;
-    ctx.fillText('2026', lineEndX, height - 45);
-
-    // ===============================
-    // EXPORTAR JPG
-    // ===============================
-    const png = canvas.toBuffer('image/png');
-
-    const jpg = await sharp(png)
+    const jpg = await sharp(Buffer.from(svg))
         .jpeg({ quality: 95 })
         .toBuffer();
 

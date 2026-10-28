@@ -131,8 +131,29 @@ const escapeHtml = (text) => {
 };
 
 const formatTime = (dateStr) => {
-    const d = new Date(dateStr);
-    return d.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
+    if (!dateStr) return '--:--';
+
+    const timeMatch = String(dateStr).trim().match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(a\.?\s*m\.?|p\.?\s*m\.?)?$/i);
+    let d;
+
+    if (timeMatch) {
+        let hours = Number(timeMatch[1]);
+        const minutes = Number(timeMatch[2]);
+        const period = timeMatch[3]?.replace(/\s|\./g, '').toLowerCase();
+        const isValidHour = period ? hours >= 1 && hours <= 12 : hours >= 0 && hours <= 23;
+        if (!isValidHour || minutes > 59) return String(dateStr);
+
+        if (period) {
+            hours = (hours % 12) + (period === 'pm' ? 12 : 0);
+        }
+
+        d = new Date(2000, 0, 1, hours, minutes);
+    } else {
+        d = new Date(dateStr);
+        if (Number.isNaN(d.getTime())) return String(dateStr);
+    }
+
+    return d.toLocaleTimeString('es-PE', { hour: 'numeric', minute: '2-digit', hour12: true });
 };
 
 const formatDateSeparator = (dateStr) => {
@@ -165,7 +186,8 @@ const loadServicios = async () => {
         if (!servicios.length) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="8" style="text-align:center; color:#9ca3af; padding:1rem;">
+                    <td colspan="9" class="table-empty">
+                        <i class="bi bi-clipboard2-check"></i>
                         No hay registros para esta fecha.
                     </td>
                 </tr>
@@ -173,20 +195,33 @@ const loadServicios = async () => {
         } else {
             tbody.innerHTML = servicios.map(s => {
                 const tipoLabel = s.tipo === 'gasto' ? 'Gasto' : 'Servicio';
+                const tipoClass = s.tipo === 'gasto' ? 'type-expense' : 'type-service';
+                const hora = formatTime(s.hora || s.fechaRegistro);
                 const precioValue = s.tipo === 'gasto' ? '-' : `S/.${Number(s.precio || 0).toFixed(2)}`;
                 const utilidadValue = `S/.${Number(s.utilidad || 0).toFixed(2)}`;
                 return `
-                <tr>
-                    <td>${s.hora || (s.fechaRegistro ? new Date(s.fechaRegistro).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' }) : '--:--')}</td>
-                    <td>${tipoLabel}</td>
-                    <td>${escapeHtml(s.servicio || '-')}</td>
-                    <td>${escapeHtml(s.modelo || '-')}</td>
-                    <td class="money-positive">${precioValue}</td>
-                    <td class="money-negative">S/.${Number(s.costo || 0).toFixed(2)}</td>
-                    <td class="${Number(s.utilidad || 0) < 0 ? 'money-negative' : 'money-positive'}">${utilidadValue}</td>
-                    <td>
-                        <button class="btn-table" onclick="deleteServicio('${s.id}')">
+                <tr class="${tipoClass}">
+                    <td data-label="Hora">${escapeHtml(hora)}</td>
+                    <td data-label="Tipo"><span class="activity-type ${tipoClass}">${tipoLabel}</span></td>
+                    <td data-label="Descripción">
+                        ${escapeHtml(s.servicio || '-')}
+                        <span class="activity-mobile-meta">
+                            <span class="activity-mobile-model">${escapeHtml(s.modelo || '-')}</span>
+                            <span class="activity-mobile-context">${escapeHtml(hora)} · ${tipoLabel}</span>
+                        </span>
+                    </td>
+                    <td data-label="Modelo / Categoría">${escapeHtml(s.modelo || '-')}</td>
+                    <td data-label="Precio" class="money-positive">${precioValue}</td>
+                    <td data-label="Costo" class="money-negative">S/.${Number(s.costo || 0).toFixed(2)}</td>
+                    <td data-label="Utilidad" class="${Number(s.utilidad || 0) < 0 ? 'money-negative' : 'money-positive'}">${utilidadValue}</td>
+                    <td data-label="Acción">
+                        <button class="btn-table" type="button" title="Eliminar registro" aria-label="Eliminar registro" onclick="deleteServicio('${s.id}')">
                             <i class="bi bi-trash3"></i>
+                        </button>
+                    </td>
+                    <td data-label="Detalle" class="activity-toggle-cell">
+                        <button class="activity-toggle" type="button" aria-expanded="false" aria-label="Mostrar detalles">
+                            <i class="bi bi-chevron-down" aria-hidden="true"></i>
                         </button>
                     </td>
                 </tr>
@@ -229,7 +264,8 @@ const loadServicios = async () => {
         const tbody = document.querySelector('#serviciosTable tbody');
         tbody.innerHTML = `
             <tr>
-                <td colspan="8" style="text-align:center; color:#f87171; padding:1rem;">
+                <td colspan="9" class="table-empty is-error">
+                    <i class="bi bi-exclamation-circle"></i>
                     No se pudieron cargar los registros.
                 </td>
             </tr>
@@ -241,6 +277,18 @@ const loadServicios = async () => {
         window.AppMessages?.networkError(error, { title: 'Servicios no disponibles' });
     }
 };
+
+document.querySelector('#serviciosTable tbody')?.addEventListener('click', (event) => {
+    const toggle = event.target.closest('.activity-toggle');
+    if (!toggle) return;
+
+    const row = toggle.closest('tr');
+    if (!row) return;
+
+    const expanded = row.classList.toggle('is-expanded');
+    toggle.setAttribute('aria-expanded', String(expanded));
+    toggle.setAttribute('aria-label', expanded ? 'Ocultar detalles' : 'Mostrar detalles');
+});
 
 // Calcula el monto acumulado del mes (utilidad neta hasta hoy).
 const loadMonthlyAvance = async () => {
@@ -296,23 +344,33 @@ const loadMonthlyAvance = async () => {
 
 const tipoSelect = document.getElementById('s-tipo');
 const precioInput = document.getElementById('s-precio');
+const costoInput = document.getElementById('s-costo');
 const modeloInput = document.getElementById('s-modelo');
 const submitButton = document.getElementById('submitButton');
+const servicioForm = document.getElementById('servicioForm');
 
 const updateFormMode = () => {
     const tipo = tipoSelect?.value || 'servicio';
+    const isExpense = tipo === 'gasto';
+    servicioForm?.classList.toggle('is-expense', isExpense);
     if (tipo === 'gasto') {
         modeloInput.placeholder = 'Ej: Herramienta / Suplemento';
         modeloInput.required = false;
         precioInput.value = '0';
         precioInput.disabled = true;
         precioInput.required = false;
+        document.getElementById('precioLabel').textContent = 'Precio';
+        document.getElementById('costoLabel').textContent = 'Importe';
+        costoInput.placeholder = 'Importe';
         submitButton.innerHTML = '<i class="bi bi-save"></i> Registrar Gasto';
     } else {
         modeloInput.placeholder = 'Ej: Samsung Galaxy S21';
         modeloInput.required = true;
         precioInput.disabled = false;
         precioInput.required = true;
+        document.getElementById('precioLabel').textContent = 'Precio';
+        document.getElementById('costoLabel').textContent = 'Costo';
+        costoInput.placeholder = 'Costo';
         submitButton.innerHTML = '<i class="bi bi-save"></i> Registrar Servicio';
     }
 };
@@ -322,7 +380,6 @@ if (tipoSelect) {
     updateFormMode();
 }
 
-const servicioForm = document.getElementById('servicioForm');
 if (servicioForm) {
     servicioForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -345,6 +402,7 @@ if (servicioForm) {
         try {
             const result = await window.DataService.create('/servicios', body, { resourceKey: `servicios:${body.fecha}` });
             e.target.reset();
+            updateFormMode();
             await loadServicios();
             window.AppMessages?.success(result.queued ? 'Servicio guardado en el dispositivo; se sincronizará al reconectar.' : 'Servicio registrado correctamente');
         } catch (error) {

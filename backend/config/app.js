@@ -6,6 +6,7 @@ function getRuntimeConfig() {
     apiBaseUrl: process.env.API_BASE_URL || appConfig.api.baseUrl,
     appBaseUrl: process.env.APP_BASE_URL || '',
     publicBaseUrl: process.env.PUBLIC_BASE_URL || appConfig.runtime.publicBaseUrl,
+    appVersion: appConfig.app.version,
     loginPath: appConfig.app.paths.login,
     dashboardPath: appConfig.app.paths.dashboard,
     adminPath: appConfig.app.paths.admin,

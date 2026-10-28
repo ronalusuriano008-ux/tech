@@ -4,6 +4,12 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { ensureApplicationRuntime } = require('../config/runtime');
+const { getRuntimeConfig } = require('../config/app');
+const appConfig = require('../../config');
+
+test('getRuntimeConfig publica la versión central de la aplicación', () => {
+  assert.equal(getRuntimeConfig().appVersion, appConfig.app.version);
+});
 
 test('ensureApplicationRuntime crea los archivos base y directorios requeridos', () => {
   const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'tech-runtime-'));

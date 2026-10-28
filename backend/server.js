@@ -19,6 +19,7 @@ const reporteRoutes = require('./routes/reporteRoutes');
 const backupRoutes = require('./routes/backupRoutes');
 const tiendaRoutes = require('./routes/tiendaRoutes');
 const { idempotency } = require('./middleware/idempotency');
+const { wrapSessionStoreWrites } = require('./utils/sessionStoreRetry');
 
 const app = express();
 
@@ -125,6 +126,14 @@ if (!fs.existsSync(sessionDir)) {
     fs.mkdirSync(sessionDir, { recursive: true });
 }
 
+const sessionStore = wrapSessionStoreWrites(new FileStore({
+    path: sessionDir,
+    retries: 3,
+    minTimeout: 25,
+    maxTimeout: 100,
+    logFn: (message) => console.warn(message)
+}));
+
 app.use(session({
     name: appConfig.session.cookieName,
 
@@ -138,11 +147,7 @@ app.use(session({
 
     rolling: true,
 
-    store: new FileStore({
-        path: sessionDir,
-        retries: 0,
-        logFn: () => {}
-    }),
+    store: sessionStore,
 
     cookie: {
         httpOnly: true,
@@ -352,7 +357,7 @@ const requireAdmin = (req, res, next) => {
 
     console.log(
         'Usuario sesión:',
-        req.session.user.username,
+        req.session.user.usuario || req.session.user.username || req.session.user.nombre || 'desconocido',
         '| Rol:',
         role
     );
@@ -530,6 +535,15 @@ app.use(async (req, res, next) => {
 // API
 // ─────────────────────────────────────────────
 
+app.get(
+    '/api/config/runtime',
+    (req, res) => {
+        res.json(
+            getRuntimeConfig()
+        );
+    }
+);
+
 app.use(
     '/api/auth',
     authRoutes
@@ -701,15 +715,6 @@ app.get(
             service: appConfig.app.serviceName,
             timestamp: new Date().toISOString()
         });
-    }
-);
-
-app.get(
-    '/api/config/runtime',
-    (req, res) => {
-        res.json(
-            getRuntimeConfig()
-        );
     }
 );
 
@@ -893,7 +898,7 @@ app.get(
 
         console.log(
             'ENTRANDO A TIENDA:',
-            req.session.user.username,
+            req.session.user.usuario || req.session.user.username || req.session.user.nombre || 'desconocido',
             '|',
             req.session.user.role
         );

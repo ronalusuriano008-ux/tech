@@ -4,7 +4,7 @@
   const defaultAppConfig = {
     appName: 'Taller Tech',
     appShortName: 'TallerTech',
-    appVersion: '1.4.0',
+    appVersion: runtimeConfig.appVersion || null,
     apiBaseUrl: '/api',
     appBaseUrl: '',
     timezone: 'America/Lima',
@@ -40,6 +40,32 @@
     apiBaseUrl,
     appBaseUrl
   };
+
+  window.AppConfigReady = (async () => {
+    if (window.AppConfig.appVersion) return window.AppConfig;
+    if (typeof fetch !== 'function') {
+      console.warn('[app-config] No se puede cargar la versión sin conexión.');
+      return window.AppConfig;
+    }
+
+    try {
+      const response = await fetch(`${apiBaseUrl}/config/runtime`);
+      if (!response.ok) {
+        throw new Error(`No se pudo cargar la configuración (${response.status}).`);
+      }
+
+      const runtime = await response.json();
+      if (typeof runtime.appVersion !== 'string' || !runtime.appVersion.trim()) {
+        throw new Error('La configuración runtime no incluye appVersion.');
+      }
+
+      window.AppConfig.appVersion = runtime.appVersion.trim();
+    } catch (error) {
+      console.warn('[app-config] No se pudo cargar la versión de la aplicación:', error);
+    }
+
+    return window.AppConfig;
+  })();
 
   window.getApiUrl = function getApiUrl(path = '') {
     if (/^https?:\/\//i.test(path)) return path;

@@ -9,6 +9,7 @@
     <meta name="application-name" content="Taller Tech">
     <meta name="apple-mobile-web-app-title" content="Taller Tech">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="/shared/manifest.json">
     <link rel="icon" href="/shared/icons/taller-tech-icon.svg" type="image/svg+xml">
@@ -592,9 +593,9 @@
     <div class="header-top">
         <img src="/shared/icons/taller-tech-logo.svg"
              alt="Taller Tech"
-             style="width:min(220px,58vw);height:auto;display:block;filter:drop-shadow(0 8px 16px rgba(59,130,246,0.22));">
+             class="admin-brand">
 
-        <h1><i class="bi bi-shield-lock-fill"></i> ADMIN PANEL</h1>
+        <h1><i class="bi bi-shield-lock-fill"></i> <span>ADMIN PANEL</span></h1>
     </div>
 
     <nav class="nav-scroll">
@@ -619,6 +620,10 @@
             <i class="bi bi-people-fill"></i> Usuarios
         </button>
 
+        <button onclick="showSection('config')" class="nav-item" id="nav-config">
+            <i class="bi bi-sliders"></i> Configuración
+        </button>
+
         <button onclick="showSection('backup')" class="nav-item" id="nav-backup">
             <i class="bi bi-database"></i> Backup
         </button>
@@ -634,6 +639,11 @@
 
        <!-- SECCIÓN: MÉTRICAS -->
 <section id="sec-metrics" class="section">
+    <div class="section-intro">
+        <span class="section-kicker">CENTRO DE CONTROL</span>
+        <h2>Resumen del taller</h2>
+        <p>Revisa el rendimiento diario y los acumulados de tu operación.</p>
+    </div>
 
     <!-- Filtro exclusivo de Métricas -->
     <div class="card-futurist top-bar-filter">
@@ -685,6 +695,11 @@
 
         <!-- SECCIÓN: USUARIOS -->
         <section id="sec-users" class="section" style="display:none;">
+            <div class="section-intro">
+                <span class="section-kicker">EQUIPO Y ACCESOS</span>
+                <h2>Usuarios</h2>
+                <p>Administra los perfiles y permisos de las personas del taller.</p>
+            </div>
             <article class="card-futurist">
                 <header class="card-header">
                     <h3 id="userFormTitle"><i class="bi bi-person-plus-fill"></i> Agregar usuario</h3>
@@ -703,10 +718,10 @@
                 </form>
             </article>
 
-            <article class="card-futurist table-container">
-                <div class="config-strip" style="margin-bottom:1rem;display:flex;gap:1rem;flex-wrap:wrap;">
-                    <span>Administradores: <strong id="adminCount" class="money-positive">0</strong></span>
-                    <span>Técnicos: <strong id="techCount" class="money-positive">0</strong></span>
+            <article class="card-futurist table-container users-table-card">
+                <div class="config-strip user-summary">
+                    <span><i class="bi bi-shield-check"></i> Administradores <strong id="adminCount" class="money-positive">0</strong></span>
+                    <span><i class="bi bi-wrench-adjustable"></i> Técnicos <strong id="techCount" class="money-positive">0</strong></span>
                 </div>
                 <table id="usersTable" role="grid">
                     <thead>
@@ -724,6 +739,11 @@
 
         <!-- SECCIÓN: REPORTES -->
         <section id="sec-reportes" class="section" style="display:none;">
+            <div class="section-intro">
+                <span class="section-kicker">DOCUMENTACIÓN</span>
+                <h2>Reportes</h2>
+                <p>Prepara una descarga del resumen de trabajo de cada técnico.</p>
+            </div>
             <article class="card-futurist">
                 <header class="card-header">
                     <h3><i class="bi bi-file-earmark-pdf"></i> Generar Reportes de Técnicos</h3>
@@ -756,6 +776,11 @@
 
         <!-- SECCIÓN: CONFIGURACIÓN -->
         <section id="sec-config" class="section" style="display:none;">
+            <div class="section-intro">
+                <span class="section-kicker">PREFERENCIAS DEL SISTEMA</span>
+                <h2>Configuración</h2>
+                <p>Ajusta los parámetros globales usados en los cálculos del taller.</p>
+            </div>
             <article class="card-futurist">
                 <header class="card-header">
                     <h3><i class="bi bi-sliders"></i> Parámetros de Cálculo Global</h3>
@@ -791,6 +816,11 @@
 
         <!-- SECCIÓN: BACKUP -->
         <section id="sec-backup" class="section" style="display:none;">
+            <div class="section-intro">
+                <span class="section-kicker">PROTECCIÓN DE DATOS</span>
+                <h2>Copias de seguridad</h2>
+                <p>Resguarda la información o restaura el sistema desde una copia.</p>
+            </div>
             <article class="card-futurist">
                 <header class="card-header">
                     <h3><i class="bi bi-database-fill-gear"></i> Gestión de Base de Datos</h3>

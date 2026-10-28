@@ -10,7 +10,7 @@
     --success-app: #34d399;
     --danger-app: #fb7185;
     --warning-app: #fbbf24;
-    --radius-app: 8px;
+    --radius-app: 12px;
 }
 
 body {
@@ -118,17 +118,29 @@ th {
     color: var(--neon-blue) !important;
 }
 
-td,
-p,
-small,
-label,
 .status-badge,
 .filter-date label,
 .header-title p,
 .config-strip {
     color: var(--text-muted-app) !important;
-    word-break: normal !important;
     overflow-wrap: anywhere !important;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid rgba(56, 189, 248, 0.78);
+    outline-offset: 3px;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+    cursor: not-allowed;
 }
 
 @media (max-width: 520px) {

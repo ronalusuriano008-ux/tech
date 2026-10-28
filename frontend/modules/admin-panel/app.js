@@ -276,43 +276,78 @@ const loadMetrics = async () => {
         // SERVICIOS POR TÉCNICO
         // ===============================
 
-        document.getElementById('techMetrics').innerHTML =
-            Object.entries(data.serviciosPorTecnico || {})
-                .sort(
-                    (a, b) =>
-                        Number(b[1].utilidadNeta || 0) -
-                        Number(a[1].utilidadNeta || 0)
-                )
-                .map(([id, val], index) => {
+        const techMetrics = document.getElementById('techMetrics');
+        const tecnicos = Object.entries(data.serviciosPorTecnico || {})
+            .sort(
+                (a, b) =>
+                    Number(b[1].utilidadNeta || 0) -
+                    Number(a[1].utilidadNeta || 0)
+            );
 
-                    const nombre =
-                        userMap[id] || 'Desconocido';
+        techMetrics.innerHTML = tecnicos.length
+            ? tecnicos.map(([id, val], index) => {
+                const nombre = userMap[id] || 'Desconocido';
+                const cantidadServicios = Number(val.count || 0);
+                const ingresos = Number(val.ingresos || 0);
+                const costos = Number(val.costos || 0);
+                const gastos = Number(val.gastos || 0);
+                const utilidadNeta = Number(val.utilidadNeta || 0);
+                const porcentajeTecnico = Number(val.porcentaje ?? 50);
+                const porcentajeTienda = 100 - porcentajeTecnico;
+                const pagoTecnico = Number(
+                    val.pagoTecnico ?? val.valorPorcentaje ?? 0
+                );
+                const porcentajeTecnicoLabel = Number.isInteger(porcentajeTecnico)
+                    ? porcentajeTecnico
+                    : porcentajeTecnico.toFixed(2);
+                const porcentajeTiendaLabel = Number.isInteger(porcentajeTienda)
+                    ? porcentajeTienda
+                    : porcentajeTienda.toFixed(2);
+                const utilidadTienda = utilidadNeta - pagoTecnico;
+                const utilidadClass = utilidadNeta < 0
+                    ? 'is-negative'
+                    : 'is-positive';
+                const rankClass = index < 3 ? `top-${index + 1}` : '';
 
-                    const cantidadServicios =
-                        Number(val.count || 0);
-
-                    const porcentaje =
-                        Number(val.porcentaje ?? 50);
-
-                    const utilidadNeta =
-                        Number(val.utilidadNeta || 0);
-
-                    const valorPorcentaje =
-                        Number(val.valorPorcentaje ?? val.pagoTecnico ?? 0);
-
-                    const pagoTecnico =
-                        Number(val.pagoTecnico ?? valorPorcentaje ?? 0);
-
-                    return `
-                        <li class="tech-card">
-                            <div class="tech-card-line">
-                                <span class="tech-card-title">${nombre}</span>
-                                <span class="tech-value">S/.${utilidadNeta.toFixed(2)}</span>
+                return `
+                    <li class="tech-card ${rankClass}">
+                        <div class="tech-card-heading">
+                            <span class="tech-rank">${index + 1}</span>
+                            <span class="tech-card-title">${escapeHtml(nombre)}</span>
+                            <span class="tech-service-count">${cantidadServicios} ${cantidadServicios === 1 ? 'servicio' : 'servicios'}</span>
+                        </div>
+                        <div class="tech-profit ${utilidadClass}">
+                            <span>Utilidad neta</span>
+                            <strong>S/.${utilidadNeta.toFixed(2)}</strong>
+                        </div>
+                        <div class="tech-stat-grid">
+                            <div class="tech-stat">
+                                <span>Ingresos</span>
+                                <strong>S/.${ingresos.toFixed(2)}</strong>
                             </div>
-                        </li>
-                    `;
-                })
-                .join('');
+                            <div class="tech-stat">
+                                <span>Costos</span>
+                                <strong>S/.${costos.toFixed(2)}</strong>
+                            </div>
+                            <div class="tech-stat">
+                                <span>Gastos</span>
+                                <strong>S/.${gastos.toFixed(2)}</strong>
+                            </div>
+                        </div>
+                        <div class="tech-split">
+                            <div>
+                                <span>Técnico · ${porcentajeTecnicoLabel}%</span>
+                                <strong>S/.${pagoTecnico.toFixed(2)}</strong>
+                            </div>
+                            <div>
+                                <span>Tienda · ${porcentajeTiendaLabel}%</span>
+                                <strong>S/.${utilidadTienda.toFixed(2)}</strong>
+                            </div>
+                        </div>
+                    </li>
+                `;
+            }).join('')
+            : '<li class="tech-empty">No hay servicios registrados para esta fecha.</li>';
 
         document.querySelectorAll('.section-toggle').forEach((button) => {
             button.addEventListener('click', toggleSection);
@@ -368,11 +403,12 @@ const loadUsers = async () => {
         const tbody = document.querySelector('#usersTable tbody');
         tbody.innerHTML = users.map(u => `
             <tr>
-                <td>${escapeHtml(u.nombre)}</td><td>${escapeHtml(u.usuario)}</td>
-                <td><span class="status-badge ${u.role === 'ADMIN' ? 'money-positive' : ''}">${u.role === 'ADMIN' ? 'Administrador' : 'Técnico'}</span></td>
-                <td>
-                    <button class="btn-table" title="Editar usuario" onclick="editUser('${u.id}')"><i class="bi bi-pencil-square"></i></button>
-                    <button class="btn-table" title="Eliminar usuario" onclick="deleteUser('${u.id}')"><i class="bi bi-trash3"></i></button>
+                <td data-label="Nombre"><strong class="user-name">${escapeHtml(u.nombre)}</strong></td>
+                <td data-label="Usuario"><span class="user-handle">@${escapeHtml(u.usuario)}</span></td>
+                <td data-label="Rol"><span class="status-badge ${u.role === 'ADMIN' ? 'money-positive' : ''}">${u.role === 'ADMIN' ? 'Administrador' : 'Técnico'}</span></td>
+                <td data-label="Acciones" class="user-actions">
+                    <button class="btn-table" title="Editar usuario" aria-label="Editar ${escapeHtml(u.nombre)}" onclick="editUser('${u.id}')"><i class="bi bi-pencil-square"></i></button>
+                    <button class="btn-table" title="Eliminar usuario" aria-label="Eliminar ${escapeHtml(u.nombre)}" onclick="deleteUser('${u.id}')"><i class="bi bi-trash3"></i></button>
                 </td>
             </tr>
         `).join('');
